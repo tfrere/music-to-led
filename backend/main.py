@@ -25,6 +25,7 @@ from outputs.zmq.zmqServer import ZmqServer
 
 from visualizations.visualizer import Visualizer
 from visualizations.modSwitcher import ModSwitcher
+from visualizations.pixelReshaper import PixelReshaper
 
 
 def zerorpcProcess(shared_list):
@@ -140,6 +141,70 @@ def stripProcess(index, shared_list):
         time.sleep(config.delay_between_frames)
 
 
+def singleStrip():
+
+    ConfigLoader.testConfig(path="./CONFIG.yml", verbose=False)
+    configLoader = ConfigLoader("./CONFIG.yml")
+
+    config = configLoader.data
+    index = 0
+    strip_config = config.strips[index]
+    print("Launching -> ", strip_config.name)
+    active_state = strip_config.active_state
+
+    audioDispatcher = AudioDispatcher(
+        audio_ports=config.audio_ports,
+        framerate=config.desirated_framerate
+    )
+
+    framerateCalculator = FramerateCalculator(config.desirated_framerate)
+
+    midi_ports_for_changing_mode = strip_config.midi_ports_for_changing_mode
+    midi_ports_for_visualization = strip_config.midi_ports_for_visualization
+
+    midiDispacther = MidiDispatcher(
+        midi_ports_for_changing_mode,
+        midi_ports_for_visualization
+    )
+
+    serial_port_name = config.strips[index].serial_port_name
+    number_of_pixels = strip_config.shapes[active_state.division_value].number_of_pixels
+
+    serial = Serial(
+        number_of_pixels=number_of_pixels,
+        port=serial_port_name
+    )
+
+    visualizer = Visualizer(
+        config,
+        index
+    )
+
+    modSwitcher = ModSwitcher(
+        visualizer,
+        config,
+        index,
+        True
+    )
+
+    while 1:
+
+        audioDispatcher.dispatch()
+        midiDispacther.dispatch()
+
+        visualizer.audio_datas = audioDispatcher.audio_datas
+        modSwitcher.midi_datas = midiDispacther.midi_datas_for_changing_mode
+        visualizer.midi_datas = midiDispacther.midi_datas_for_visualization
+
+        strip_config = modSwitcher.changeMod()
+
+        pixels = visualizer.drawFrame()
+
+        serial.update(
+            pixels
+        )
+
+
 if __name__ == "__main__":
 
     # for windows
@@ -186,7 +251,7 @@ if __name__ == "__main__":
     parser.add_argument(
         "--single-strip",
         help="Launch on the first strip.",
-        type=str
+        action="store_true"
     )
 
     parser.add_argument(
@@ -215,6 +280,9 @@ if __name__ == "__main__":
 
     elif(args.test_config_file):
         ConfigLoader.testConfig(path=args.test_config_file, verbose=False)
+
+    elif(args.single_strip):
+        singleStrip()
 
     elif((not len(sys.argv) > 1) or (len(sys.argv) > 1 and args.with_config_file)):
 
