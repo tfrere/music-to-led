@@ -1,0 +1,27 @@
+.splash-screen {
+  position: absolute;
+  top: 0;
+  left: 0;
+  z-index: 999;
+  background-color: #061b28;
+  text-align: center;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  height: 100%;
+  opacity: 1;
+  transition: all 200ms ease;
+}
+
+.splash-screen--invisible {
+  opacity: 0;
+  display: none;
+}
+
+.splash-screen__logo {
+  width: 100px;
+  height: 100px;
+  margin: 0 auto;
+  margin-bottom: 20px;
+}

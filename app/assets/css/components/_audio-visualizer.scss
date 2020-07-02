@@ -1,0 +1,11 @@
+.audio-visualizer {
+  display: inline-block;
+}
+
+.audio-visualizer__wrapper {
+  border-radius: 3px;
+  height: 85px;
+  width: 150px;
+  display: flex;
+  flex-wrap: wrap-reverse;
+}

@@ -1,0 +1,20 @@
+.card {
+  border: 1px solid rgba(255, 255, 255, 0.05);
+  background-color: $cardBackgroundColor;
+  padding: 1em;
+  margin: 0.5em 0.5em;
+  border-radius: 3px;
+  position: relative;
+}
+
+.card-title {
+  font-weight: 500;
+}
+
+.card__header {
+  display: flex;
+}
+
+.card__header__title {
+  margin-bottom: 20px;
+}

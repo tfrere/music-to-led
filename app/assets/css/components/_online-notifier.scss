@@ -1,0 +1,34 @@
+.online-notifier {
+  display: flex;
+  position: absolute;
+  top: 22px;
+  right: 20px;
+}
+.online-notifier__label {
+  text-transform: uppercase;
+  font-size: 10px;
+  line-height: 10px;
+}
+.online-notifier__circle {
+  width: 10px;
+  height: 10px;
+  background: red;
+  border-radius: 100%;
+  margin-left: 10px;
+}
+
+.online-notifier.online-notifier--online {
+  color: rgba(255, 255, 255, 0.5);
+}
+
+.online-notifier.online-notifier--offline {
+  color: red;
+}
+
+.online-notifier.online-notifier--online .online-notifier__circle {
+  background-color: rgba(255, 255, 255, 0.5);
+}
+
+.online-notifier.online-notifier--offline .online-notifier__circle {
+  background-color: red;
+}

@@ -1,0 +1,85 @@
+.pixels {
+  width: 100%;
+  height: auto;
+  display: flex;
+}
+
+.strip-controller {
+  width: 100%;
+}
+
+.strip-block {
+  display: block;
+  /* Card margin * 2 */
+  width: calc(100% - 2em);
+  padding-bottom: 0;
+  position: relative;
+}
+
+.strip-block h6 {
+  display: block;
+  width: 100%;
+}
+
+.strip:last-child {
+  margin-bottom: 0;
+}
+
+.pixels__elem {
+  height: 20px;
+  background-color: rgba(0, 0, 0, 0.5);
+  margin-right: 1px;
+  margin-bottom: 15px;
+  flex-basis: 100%;
+}
+
+.pixels__elem--space {
+  margin-left: 15px;
+}
+
+.pixels__elem--breakline {
+  clear: both;
+}
+
+.strip__color {
+  display: inline-block;
+  width: 10px;
+  height: 10px;
+  background-color: #000;
+  margin-right: 5px;
+}
+
+.strip__label {
+  opacity: 0.4;
+}
+
+.strip__label:not(:first-child) {
+  margin-left: 20px;
+}
+
+.strip-controller-group {
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+}
+
+.strip-controller__title {
+  margin-top: 10px;
+  margin-bottom: 10px;
+  text-transform: uppercase;
+  letter-spacing: 0.05rem;
+  font-size: 10px;
+  text-align: center;
+}
+
+.button.midi {
+}
+
+.button.audio {
+}
+
+.button.time {
+}
+
+.button.generic {
+}

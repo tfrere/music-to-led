@@ -1,0 +1,51 @@
+nav {
+  color: white;
+  display: flex;
+  border-bottom: 1px solid lighten($backgroundColor, 7%);
+  background: $backgroundColor;
+  position: relative;
+  height: 40px;
+  align-items: center;
+  margin-bottom: 20px;
+  position: fixed;
+  top: 25px;
+  left: 0;
+  width: 100%;
+  z-index: 9;
+  padding: 0 0px 0 10px;
+  i {
+    opacity: 0.7;
+  }
+
+  &:after {
+    content: '';
+    position: absolute;
+    width: 100%;
+    border-bottom: 1px solid darken($backgroundColor, 5%);
+    height: 1px;
+    bottom: 0;
+    left: 0;
+  }
+  a {
+    color: $textColor;
+    display: block;
+    margin-right: 20px;
+    text-decoration: none;
+    opacity: 0.4;
+    &.active {
+      opacity: 1;
+    }
+    div {
+      display: block;
+    }
+  }
+  button {
+    margin-bottom: 0;
+  }
+}
+
+.nav__right {
+  margin-left: auto;
+  display: flex;
+  align-items: center;
+}

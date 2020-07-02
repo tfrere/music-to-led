@@ -1,0 +1,136 @@
+$primary-color: #061b28;
+$primary-color-darken-1: #04131d;
+$primary-color-lighten-1: lighten($primary-color, 15%);
+
+$backgroundColor: #061b28;
+$textColor: rgba(255, 255, 255, 0.7);
+$cardBackgroundColor: #04131d;
+
+@import 'const/_font.scss';
+@import 'const/_normalize.scss';
+@import 'const/line-awesome.scss';
+
+* {
+  box-sizing: border-box;
+}
+
+html,
+body,
+.screen-size,
+#app,
+#root {
+  margin: 0;
+  padding: 0;
+  width: 100%;
+  height: 100%;
+  background-color: #061b28;
+  color: white;
+  user-select: none;
+  cursor: default;
+  position: absolute;
+  top: 0;
+  left: 0;
+}
+
+.page {
+  position: absolute;
+  top: 65px;
+  height: calc(100% - 85px);
+  width: 100%;
+  padding: 10px;
+  overflow: scroll;
+}
+
+.flex-center-wrapper {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.slider-holder {
+  width: calc(25%);
+  display: inline-block;
+  &:not(:last-child) {
+    padding-right: 10px;
+  }
+  label {
+    color: rgba(255, 255, 255, 0.5);
+    text-transform: uppercase;
+    letter-spacing: 0.05rem;
+    font-size: 12px;
+    span {
+      color: rgba(255, 255, 255, 0.8);
+    }
+  }
+}
+
+button {
+  margin-right: 5px;
+  margin-bottom: 5px;
+  display: block;
+}
+
+input[type='range'] {
+  width: 100%;
+  display: block;
+}
+
+select {
+  background: transparent;
+  color: white;
+}
+
+.title {
+  color: rgba(255, 255, 255, 0.2);
+  text-transform: uppercase;
+  margin-left: 10px;
+  margin-top: 10px;
+  display: flex;
+  align-items: center;
+  .la {
+    font-size: 1.4em;
+  }
+}
+
+.title span {
+  color: rgba(255, 255, 255, 0.4);
+  margin-left: 5px;
+  margin-right: 5px;
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  background-color: rgba(0, 0, 0, 0);
+  margin: 0;
+  font-family: 'Roboto Condensed';
+  font-weight: 900;
+  color: rgba(255, 255, 255, 0.5);
+}
+
+#strip-holder > div {
+  display: block;
+}
+
+.software-version {
+  color: rgba(255, 255, 255, 0.15);
+  display: block;
+  position: absolute;
+  top: 5px;
+  right: 5px;
+  margin-left: auto;
+}
+
+@import 'components/_nav.scss';
+@import 'components/_draggable-bar.scss';
+@import 'components/_card.scss';
+@import 'components/_loading.scss';
+@import 'components/_splash-screen.scss';
+@import 'components/_range.scss';
+@import 'components/_button.scss';
+@import 'components/_online-notifier.scss';
+@import 'components/_strip-controller.scss';
+@import 'components/_audio-visualizer.scss';
