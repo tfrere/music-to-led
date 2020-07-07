@@ -1,5 +1,5 @@
 {
-  "execName": "python-backend-main",
-  "connString": "tcp://127.0.0.1:5678",
+  "execName": "music-2-led",
+  "connString": "tcp://127.0.0.1:8000",
   "devUsePackaged": false
 }

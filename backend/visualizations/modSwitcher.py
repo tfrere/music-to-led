@@ -49,7 +49,7 @@ class ModSwitcher:
                     old_vizualizer_effect = self.active_state.active_visualizer_effect
                     # VISUALIZATIONS EFFECTS
                     base_note_increment = 48
-                    if(mode >= base_note_increment + 0 and mode < base_note_increment + 20):
+                    if(mode >= base_note_increment + 0 and mode < base_note_increment + 16):
 
                         # SOUND BASED
                         if(mode == base_note_increment + 0):

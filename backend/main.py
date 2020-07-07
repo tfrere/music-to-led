@@ -1,4 +1,7 @@
 import sys
+import signal
+import psutil
+import subprocess
 import os
 import time
 import multiprocessing
@@ -24,18 +27,38 @@ from outputs.serial import Serial
 from outputs.zmq.zmqServer import ZmqServer
 
 from visualizations.visualizer import Visualizer
-from visualizations.modSwitcher import ModSwitcher
 from visualizations.pixelReshaper import PixelReshaper
+from visualizations.modSwitcher import ModSwitcher
 
 
-def zerorpcProcess(shared_list):
-    addr = 'tcp://127.0.0.1:8000'
-    print('└-> Init zeromq socket process running on : {}'.format(addr))
-    server = ZmqServer(addr, shared_list)
+def kill_proc_tree(pid, frame):
+    print("└-> Bye !")
+    if(config.display_shell_interface):
+        shellInterface.clearTerminal()
+    parent = psutil.Process(os.getpid())
+    children = parent.children(recursive=False)
+    for child in children:
+        child.kill()
+    gone, still_alive = psutil.wait_procs(children, timeout=5)
+    parent.kill()
+    parent.wait(5)
+
+
+signal.signal(signal.SIGINT, kill_proc_tree)
+signal.signal(signal.SIGTERM, kill_proc_tree)
+
+
+def zmqProcess(shared_list):
+    setproctitle.setproctitle("music-2-led - zmq api")
+
+    host = 'tcp://127.0.0.1:8000'
+    print('└-> Init zmq socket process running on : {}'.format(host))
+    server = ZmqServer(host, shared_list)
     server.launch()
 
 
 def audioProcess(shared_list):
+    setproctitle.setproctitle("music-2-led - audio process")
 
     config = shared_list[0]
     ports = ""
@@ -62,8 +85,10 @@ def serialProcess(index, shared_list):
     active_state = config.states[strip_config.active_state_index]
 
     serial_port_name = strip_config.serial_port_name
-    number_of_pixels = active_state.shapes[active_state.active_shape_index].number_of_pixels
+    number_of_pixels = strip_config.shapes[active_state.division_value].number_of_pixels
 
+    setproctitle.setproctitle(
+        "music-2-led - serial process - " + serial_port_name)
     print("└-> Init Serial process on port : ", serial_port_name)
 
     serial = Serial(
@@ -89,6 +114,8 @@ def stripProcess(index, shared_list):
     audio_datas = shared_list[1]
     strip_config.midi_logs = []
 
+    setproctitle.setproctitle(
+        "music-2-led - strip process - " + strip_config.name)
     print("└-> Init strip process : ", strip_config.name)
 
     framerateCalculator = FramerateCalculator(config.desirated_framerate)
@@ -110,7 +137,7 @@ def stripProcess(index, shared_list):
         visualizer,
         config,
         index,
-        verbose=not config.display_interface
+        verbose=not config.display_shell_interface
     )
 
     while 1:
@@ -135,13 +162,19 @@ def stripProcess(index, shared_list):
         pixels = visualizer.applyMaxBrightness(
             pixels, active_state.max_brightness)
 
+        # print(strip_config.name)
+        # print(active_state.name)
+
         shared_list[2 + index] = [pixels, strip_config,
                                   active_state, framerateCalculator.getFps()]
 
         time.sleep(config.delay_between_frames)
+        print(1)
 
 
-def singleStrip():
+def singleProcessStrip():
+
+    setproctitle.setproctitle("music-2-led - single strip")
 
     ConfigLoader.testConfig(path="./CONFIG.yml", verbose=False)
     configLoader = ConfigLoader("./CONFIG.yml")
@@ -167,7 +200,7 @@ def singleStrip():
         midi_ports_for_visualization
     )
 
-    serial_port_name = config.strips[index].serial_port_name
+    serial_port_name = strip_config.serial_port_name
     number_of_pixels = strip_config.shapes[active_state.division_value].number_of_pixels
 
     serial = Serial(
@@ -199,6 +232,7 @@ def singleStrip():
         strip_config = modSwitcher.changeMod()
 
         pixels = visualizer.drawFrame()
+        print(pixels)
 
         serial.update(
             pixels
@@ -210,7 +244,7 @@ if __name__ == "__main__":
     # for windows
     multiprocessing.freeze_support()
 
-    setproctitle.setproctitle("music-2-led")
+    setproctitle.setproctitle("music-2-led - main process")
 
     parser = argparse.ArgumentParser()
 
@@ -250,8 +284,8 @@ if __name__ == "__main__":
 
     parser.add_argument(
         "--single-strip",
-        help="Launch on the first strip.",
-        action="store_true"
+        help="Launch on the first strip on specified visualizer. Default is energy",
+        action="store_true",
     )
 
     parser.add_argument(
@@ -282,7 +316,7 @@ if __name__ == "__main__":
         ConfigLoader.testConfig(path=args.test_config_file, verbose=False)
 
     elif(args.single_strip):
-        singleStrip()
+        singleProcessStrip()
 
     elif((not len(sys.argv) > 1) or (len(sys.argv) > 1 and args.with_config_file)):
 
@@ -322,33 +356,26 @@ if __name__ == "__main__":
         print("- Starting " + str(number_of_workers) +
               " sub-processes... ( on " + str(max_workers) + " physical cores available )")
 
-        try:
+        with concurrent.futures.ProcessPoolExecutor(
+            max_workers=number_of_workers
+        ) as executor:
 
-            with concurrent.futures.ProcessPoolExecutor(
-                max_workers=number_of_workers
-            ) as executor:
+            executor.submit(audioProcess, shared_list)
+            if(config.is_zmq_api_enabled):
+                executor.submit(zmqProcess, shared_list)
 
-                executor.submit(audioProcess, shared_list)
-                executor.submit(zerorpcProcess, shared_list)
+            for i in range(config.number_of_strips):
+                executor.submit(stripProcess, i, shared_list)
+                executor.submit(serialProcess, i, shared_list)
 
-                for i in range(config.number_of_strips):
-                    executor.submit(stripProcess, i, shared_list)
-                    executor.submit(serialProcess, i, shared_list)
+            if(config.display_shell_interface):
 
-                if(config.display_interface):
+                time.sleep(1)
+                print("└-> Starting console GUI...")
+                time.sleep(1)
 
-                    time.sleep(1)
-                    print("└-> Starting console GUI...")
-                    time.sleep(1)
+                shellInterface = ShellInterface(config)
 
-                    shellInterface = ShellInterface(config)
-
-                    while 1:
-                        shellInterface.drawFrame(shared_list)
-                        time.sleep(0.05)
-
-        except KeyboardInterrupt:
-            print("└-> Bye !")
-            if(config.display_interface):
-                shellInterface.clearTerminal()
-            sys.exit()
+                while 1:
+                    shellInterface.drawFrame(shared_list)
+                    time.sleep(0.05)

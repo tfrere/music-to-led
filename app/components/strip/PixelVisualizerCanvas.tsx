@@ -1,19 +1,46 @@
 import React from 'react';
 import { SizeMe } from 'react-sizeme';
+import isShallowEqual from 'shallowequal';
 
 class SizedPixelVisualizerCanvas extends React.Component {
   constructor(props) {
     super(props);
-    this.updateCanvas = this.updateCanvas.bind(this);
-    this.initVisualizer = this.initVisualizer.bind(this);
 
     this.initVisualizer();
   }
 
-  initVisualizer() {
-    console.log('toto');
-    const shape_offsets = this.props.active_shape.offsets;
-    const number_of_chunks = this.props.active_shape.offsets.length - 1;
+  componentDidMount() {
+    this.startLoop();
+  }
+
+  componentWillUnmount() {
+    this.stopLoop();
+  }
+
+  startLoop = () => {
+    if (!this._frameId) {
+      this._frameId = window.requestAnimationFrame(this.loop);
+    }
+  };
+
+  stopLoop = () => {
+    window.cancelAnimationFrame(this._frameId);
+    // Note: no need to worry if the loop has already been cancelled
+    // cancelAnimationFrame() won't throw an error
+  };
+
+  loop = () => {
+    // perform loop work here
+    this.updateCanvas();
+
+    // Set up next iteration of the loop
+    this._frameId = window.requestAnimationFrame(this.loop);
+  };
+
+  initVisualizer = () => {
+    console.log('initviz', this.props.width);
+    const shape_offsets = this.props.physical_shape.offsets;
+    const number_of_chunks = this.props.physical_shape.offsets.length - 1;
     const number_of_pixels = this.props.pixels[0].length;
     const gap_size = 5;
     const pixel_width =
@@ -26,19 +53,33 @@ class SizedPixelVisualizerCanvas extends React.Component {
       pixel_width: pixel_width,
       gap_size: gap_size
     };
-  }
+  };
+
+  updateVisualizer = () => {
+    console.log('updateviz');
+    const shape_offsets = this.props.physical_shape.offsets;
+    const number_of_chunks = this.props.physical_shape.offsets.length - 1;
+    const number_of_pixels = this.props.pixels[0].length;
+    const gap_size = 5;
+    const pixel_width =
+      (this.props.width - number_of_chunks * gap_size) / number_of_pixels;
+
+    this.setState({
+      shape_offsets: shape_offsets,
+      number_of_chunks: number_of_chunks,
+      number_of_pixels: number_of_pixels,
+      pixel_width: pixel_width,
+      gap_size: gap_size
+    });
+  };
 
   componentDidUpdate(prevProps) {
-    if (this.props.active_shape !== prevProps.active_shape) {
-      this.initVisualizer();
+    if (!isShallowEqual(this.props.active_shape, prevProps.active_shape)) {
+      this.updateVisualizer();
     }
   }
 
-  componentDidMount() {
-    requestAnimationFrame(this.updateCanvas);
-  }
-
-  updateCanvas() {
+  updateCanvas = () => {
     const ctx = this.refs.canvas.getContext('2d');
     ctx.clearRect(0, 0, 150, 100);
 
@@ -66,9 +107,7 @@ class SizedPixelVisualizerCanvas extends React.Component {
         30
       );
     });
-
-    requestAnimationFrame(this.updateCanvas);
-  }
+  };
 
   render() {
     return (

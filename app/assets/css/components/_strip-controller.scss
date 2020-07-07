@@ -11,7 +11,6 @@
 .strip-block {
   display: block;
   /* Card margin * 2 */
-  width: calc(100% - 2em);
   padding-bottom: 0;
   position: relative;
 }
@@ -82,4 +81,29 @@
 }
 
 .button.generic {
+}
+
+.strip-controller__button {
+  position: relative;
+  padding-left: 25px;
+  &--with-gap {
+    margin-right: 20px;
+  }
+  &.active {
+    background: white;
+    color: black;
+  }
+}
+
+.strip-controller__button__type {
+  position: absolute;
+  top: 0;
+  left: 0;
+  border-right: 1px solid rgba(255, 255, 255, 0.2);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+  color: rgba(255, 255, 255, 0.2);
+  border-bottom-right-radius: 3px;
+  font-size: 6px;
+  line-height: 6px;
+  padding: 5px;
 }

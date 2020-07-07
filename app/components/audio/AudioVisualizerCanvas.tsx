@@ -13,12 +13,10 @@ class AudioVisualizerCanvas extends React.Component {
 
   componentDidMount() {
     this.startLoop();
-    requestAnimationFrame(this.updateCanvas);
   }
 
   componentWillUnmount() {
     this.stopLoop();
-    requestAnimationFrame(this.updateCanvas);
   }
 
   startLoop = () => {

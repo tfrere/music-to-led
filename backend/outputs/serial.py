@@ -111,6 +111,8 @@ class Serial:
             if(self.verbose):
                 print(
                     "Hey it seem's that your cable is not plugged on port ", self.serial_port)
+
+            # time.sleep(5)
             return
 
         self.serial_class.setDTR(False)
@@ -156,12 +158,12 @@ class Serial:
 
     def update(self, pixels):
         """ Send frame to the arduino """
-        # if(self.number_of_pixels != len(pixels[0])):
         self.pixels = np.tile(.0, (3, len(pixels[0])))
         self.number_of_pixels = len(pixels[0])
         self.pixels = pixels
         if(not self.trying_to_connect and self.serial_class):
             try:
+                print("try")
                 self.serial_class.write(self.show_command)
                 self.serial_class.read(1)
                 number_of_pixel_command = self.number_of_pixels.to_bytes(
@@ -172,6 +174,7 @@ class Serial:
                 self.serial_class.write(message)
                 self.is_connected = True
             except IOError:
+                print("except")
                 # TO DO : Remove display and find a way to display if it's ONLINE or not
                 #print("Hey it seem's that your cable has been unpluged on port ", self.serial_port)
                 self.trying_to_connect = True

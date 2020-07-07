@@ -1,5 +1,4 @@
 import yaml
-import json
 import sys
 import os
 import numpy as np
@@ -14,8 +13,6 @@ from inputs.midi import Midi
 from inputs.audio import Audio
 
 from outputs.serial import Serial
-
-import json
 
 
 def isAnEvenArray(arr):
@@ -177,9 +174,6 @@ class StateConfig():
             self.color_schemes
         )
 
-    def getJsonFromState(self):
-        return json.dumps(self.__dict__, default=lambda o: o.__dict__, indent=4)
-
     def print(self):
         print("--")
         print("----------------")
@@ -267,7 +261,8 @@ class Config():
     def __init__(
         self,
         desirated_framerate=60,
-        display_interface=True,
+        display_shell_interface=True,
+        is_zmq_api_enabled=True,
         debug=False,
         audio_ports=[
             {
@@ -305,7 +300,8 @@ class Config():
     ):
 
         self.desirated_framerate = desirated_framerate
-        self.display_interface = display_interface
+        self.display_shell_interface = display_shell_interface
+        self.is_zmq_api_enabled = is_zmq_api_enabled
         self.delay_between_frames = 1 / desirated_framerate
         self.timeSinceStart = TimeSinceStart()
         self.audio_ports = []
@@ -360,9 +356,6 @@ class Config():
             )
         self.number_of_strips = len(self.strips)
 
-    def getJsonFromConfig(self):
-        return json.dumps(self.__dict__, default=lambda o: o.__dict__, indent=4)
-
     # def saveToYmlFile():
 
     def print(self):
@@ -371,7 +364,8 @@ class Config():
         print("Config : ")
         print("----------------")
         print("desirated_framerate -> ", self.desirated_framerate)
-        print("display_interface -> ", self.display_interface)
+        print("display_shell_interface -> ", self.display_shell_interface)
+        print("is_zmq_api_enabled -> ", self.is_zmq_api_enabled)
         print("delay_between_frames -> ", self.delay_between_frames)
         for audio_port in self.audio_ports:
             audio_port.print()
@@ -401,7 +395,8 @@ class ConfigLoader():
 
                 self.data = Config(
                     desirated_framerate=file["desirated_framerate"],
-                    display_interface=file["display_interface"],
+                    display_shell_interface=file["display_shell_interface"],
+                    is_zmq_api_enabled=file["is_zmq_api_enabled"],
                     audio_ports=file["audio_ports"],
                     strips=file["strips"],
                     states=file["states"],

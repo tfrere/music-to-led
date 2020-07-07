@@ -1,3 +1,4 @@
+import { Subscriber } from 'zeromq';
 import React from 'react';
 import { Link } from 'react-router-dom';
 import routes from '../constants/routes.json';
@@ -5,8 +6,42 @@ import { promiseTimeout, zeromqMessages } from '../utils/zeromq';
 
 import AudioVisualizer from './audio/AudioVisualizer';
 import AudioVisualizerCanvas from './audio/AudioVisualizerCanvas';
+import Strip from './strip/Strip';
 import StripController from './strip/StripController';
 import PixelVisualizerCanvas from './strip/PixelVisualizerCanvas';
+
+let client_time = new Date().getTime();
+let server_time = 0;
+let object = null;
+
+async function getZMQData() {
+  const sock = new Subscriber();
+
+  const topic = 'sendInfos';
+
+  sock.connect('tcp://127.0.0.1:8000');
+  sock.subscribe(topic);
+  console.log('Subscriber connected to port 8000');
+  var re = new RegExp("'", 'g');
+  var re2 = new RegExp('True', 'g');
+  var re3 = new RegExp('False', 'g');
+
+  for await (const [buffer, msg] of sock) {
+    const timestamp = new Date().getTime();
+
+    const json_string = buffer
+      .toString('utf8')
+      .slice(topic.length + 1)
+      .replace(re, '"')
+      .replace(re2, '1')
+      .replace(re3, '0');
+    object = JSON.parse(json_string);
+    const current_server_timestamp = Math.round(object.time * 1000);
+
+    server_time = timestamp;
+  }
+}
+getZMQData();
 
 class Builder extends React.Component {
   constructor(props) {
@@ -18,46 +53,37 @@ class Builder extends React.Component {
       midi: [],
       active_states: [],
       are_strips_online: [],
-      isZMQConnected: false,
-      timeSinceLastConnection: 0
+      isZMQConnected: false
     };
   }
   componentDidMount() {
     let that = this;
-    that._intervalId = setInterval(() => that.getZMQData(), 50);
+    that._intervalId = setInterval(() => that.computeTime(), 50);
+  }
+
+  computeTime() {
+    client_time = new Date().getTime();
+    let is_connected = server_time - client_time;
+    if (is_connected > -200) {
+      this.setState({
+        config: object.config,
+        audios: object.audios,
+        strips: object.strips,
+        active_states: object.active_states,
+        are_strips_online: object.are_strips_online,
+        framerates: object.framerates,
+        isZMQConnected: true
+      });
+    } else {
+      this.setState({
+        isZMQConnected: false
+      });
+      console.log('disconnected');
+    }
   }
 
   componentWillUnmount() {
     clearInterval(this._intervalId);
-  }
-
-  getZMQData() {
-    let that = this;
-
-    let res = zeromqMessages({ type: 'getInfos' });
-    console.log('request');
-    that.setState({
-      timeSinceLastConnection: this.state.timeSinceLastConnection + 1
-    });
-    res
-      .then(data => {
-        console.log('succes');
-        // console.log(data);
-        that.setState({
-          config: data.config,
-          audios: data.audios,
-          strips: data.strips,
-          active_states: data.active_states,
-          are_strips_online: data.are_strips_online,
-          framerates: data.framerates,
-          isZMQConnected: true,
-          timeSinceLastConnection: 0
-        });
-        return data;
-      })
-      .catch(data => {
-        console.log('error');
-      });
   }
 
   render() {
@@ -68,19 +94,15 @@ class Builder extends React.Component {
       framerates,
       audios,
       strips,
-      isZMQConnected,
-      timeSinceLastConnection
+      isZMQConnected
     } = this.state;
 
     let audiosElem = [];
     let stripsElem = [];
 
-    if (timeSinceLastConnection > 10) {
-      isZMQConnected = false;
-    }
-
     if (
       active_states &&
+      active_states[0] &&
       are_strips_online &&
       config &&
       framerates &&
@@ -97,58 +119,44 @@ class Builder extends React.Component {
           />
         );
       });
+      stripsElem = config.strips.map((strip, index) => {
+        const pixels = strips[index];
+        const is_strip_online = are_strips_online[index];
+        const active_state = active_states[strip.active_state_index];
+        const active_shape = strip.shapes[active_state.division_value];
+        const framerate = framerates[index];
+        const onlineClassNames = is_strip_online
+          ? ' online-notifier--online'
+          : ' online-notifier--offline';
 
-      // stripsElem = config.strips.map((strip, index) => {
-      //   const pixels = strips[index];
-      //   const is_strip_online = are_strips_online[index];
-      //   const active_state = active_states[strip.active_state_index];
-      //   console.log(active_state.division_value);
-      //   const active_shape = strip.shapes[active_state.division_value];
-      //   const framerate = framerates[index];
-      //   const onlineClassNames = is_strip_online
-      //     ? ' online-notifier--online'
-      //     : ' online-notifier--offline';
+        // console.log('isonline', is_strip_online);
+        // console.log('strip', strip);
+        // console.log('active_state', active_state);
+        // console.log('active_shape', active_shape);
+        // console.log('framerate', framerate);
+        // console.log('audio', audio);
+        // console.log('pixels', pixels);
 
-      //   // console.log('isonline', is_strip_online);
-      //   // console.log('strip', strip);
-      //   // console.log('active_state', active_state);
-      //   // console.log('active_shape', active_shape);
-      //   // console.log('framerate', framerate);
-      //   // console.log('audio', audio);
-      //   // console.log('pixels', pixels);
-
-      //   return (
-      //     <div key={'strip' + index} className="strip card strip-block">
-      //       <div className="card__header">
-      //         <h4 className="card__header__title">{strip.name}</h4>
-      //       </div>
-
-      //       <div className={'online-notifier' + onlineClassNames}>
-      //         {!is_strip_online ? (
-      //           <label className="online-notifier__label">
-      //             {framerate}&nbsp; FPS
-      //           </label>
-      //         ) : (
-      //           <label className="online-notifier__label">Offline</label>
-      //         )}
-      //         <div className="online-notifier__circle"></div>
-      //       </div>
-
-      //       <PixelVisualizerCanvas
-      //         name={strip.name}
-      //         physical_shape={strip.physical_shape.shape}
-      //         active_shape={active_shape}
-      //         pixels={pixels}
-      //       />
-      //       <StripController
-      //         name={strip.midi_ports_for_changing_mode[0]}
-      //         audios={audios}
-      //         strip={strip}
-      //         active_state={active_state}
-      //       />
-      //     </div>
-      //   );
-      // });
+        return (
+          <Strip
+            key={strip + index}
+            framerate={framerate}
+            physical_shape={strip.physical_shape}
+            active_shape={active_shape}
+            pixels={pixels}
+            name={strip.midi_ports_for_changing_mode[0]}
+            audios={audios}
+            strip={strip}
+            active_state={active_state}
+            config={config}
+            is_strip_online={is_strip_online}
+            active_audio_channel_name={
+              config.audio_ports[active_state.active_audio_channel_index].name
+            }
+            index={index}
+          ></Strip>
+        );
+      });
     }
 
     return (

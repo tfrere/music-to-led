@@ -55,8 +55,8 @@
     ]
   },
   "build": {
-    "productName": "ElectronReact",
-    "appId": "org.develar.ElectronReact",
+    "productName": "Music2Led",
+    "appId": "org.develar.Music2Led",
     "files": [
       "dist/",
       "node_modules/",
@@ -295,15 +295,18 @@
     "electron-updater": "^4.2.0",
     "history": "^4.10.1",
     "postcss-scss": "^2.1.1",
+    "python-shell": "^2.0.1",
     "react": "^16.12.0",
     "react-dom": "^16.12.0",
     "react-hot-loader": "^4.12.19",
     "react-redux": "^7.1.3",
     "react-router": "^5.1.2",
     "react-router-dom": "^5.1.2",
+    "react-scrollbar": "^0.5.6",
     "react-sizeme": "^2.6.12",
     "redux": "^4.0.5",
     "redux-thunk": "^2.3.0",
+    "shallowequal": "^1.1.0",
     "source-map-support": "^0.5.16"
   },
   "devEngines": {

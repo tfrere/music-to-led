@@ -6,100 +6,117 @@ const NOTE_OFF = 0x80;
 import convertRange from '../../utils/convertRange.js';
 import guessNoteNumber from '../../utils/guessNoteNumber.js';
 
+import Select from '../generic/Select';
+
 const keyConfiguration = {
   effects: [
     {
       name: 'scroll',
       label: 'Scroll',
       note: 'C3',
-      type: 'sound'
+      type: 'audio',
+      has_gap: false
     },
     {
       name: 'energy',
       label: 'Energy',
       note: 'C#3',
-      type: 'sound'
+      type: 'audio',
+      has_gap: false
     },
     {
       name: 'channel_flash',
       label: 'Chan. Flash',
       note: 'D3',
-      type: 'sound'
+      type: 'audio',
+      has_gap: false
     },
     {
       name: 'channel_intensity',
       label: 'Chan. Intensity',
       note: 'D#3',
-      type: 'sound'
+      type: 'audio',
+      has_gap: true
     },
 
     {
       name: 'piano_scroll',
       label: 'Midi Scroll',
       note: 'F3',
-      type: 'midi'
+      type: 'midi',
+      has_gap: false
     },
     {
       name: 'piano_note',
       label: 'Midi note',
       note: 'F#3',
-      type: 'midi'
+      type: 'midi',
+      has_gap: false
     },
     {
       name: 'pitchwheel_flash',
       label: 'Pitch. Flash',
       note: 'G3',
-      type: 'midi'
+      type: 'midi',
+      has_gap: true
     },
     {
       name: 'alternate_color_chunks',
       label: 'Alt. Chunks',
       note: 'G#3',
-      type: 'time'
+      type: 'time',
+      has_gap: false
     },
 
     {
       name: 'alternate_color_shapes',
       label: 'Alt. Shapes',
       note: 'A3',
-      type: 'time'
+      type: 'time',
+      has_gap: false
     },
     {
       name: 'transition_color_shapes',
       label: 'Fade colors',
       note: 'A#3',
-      type: 'time'
+      type: 'time',
+      has_gap: true
     },
     {
       name: 'draw_line',
       label: 'Draw',
       note: 'B3',
-      type: 'generic'
+      type: 'generic',
+      has_gap: false
     },
 
     {
       name: 'full_color',
       label: 'Full',
       note: 'B#3',
-      type: 'generic'
+      type: 'generic',
+      has_gap: false
     },
     {
       name: 'fade_out',
       label: 'Fade to black',
       note: 'C#4',
-      type: 'generic'
+      type: 'generic',
+      has_gap: false
     },
     {
       name: 'clear_frame',
       label: 'Clear',
       note: 'D4',
-      type: 'generic'
+      type: 'generic',
+      has_gap: false
     },
     {
       name: 'fire',
       label: 'Fire',
       note: 'D#4',
-      type: 'generic'
+      type: 'generic',
+      has_gap: false
     }
   ],
   modifiers: [
@@ -205,7 +222,12 @@ class StripController extends React.Component {
   }
 
   render() {
-    const { audios, active_state, strip } = this.props;
+    const {
+      active_audio_channel_name,
+      active_states,
+      active_state,
+      strip
+    } = this.props;
 
     let active_shape = strip.shapes[active_state.division_value].shape;
     let active_color_scheme =
@@ -216,51 +238,79 @@ class StripController extends React.Component {
     let max_brightness = active_state.max_brightness;
     let chunk_size = active_state.chunk_size;
     let blur_value = active_state.blur_value;
-    let active_audio_channel_name =
-      audios[active_state.active_audio_channel_index].name;
-
-    let colorSchemeElem = [];
-    colorSchemeElem = active_color_scheme.map((color, index) => {
-      return (
-        <span
-          key={'color' + index}
-          ref={color + index}
-          className="strip__color"
-          style={{ backgroundColor: color }}
-        ></span>
-      );
-    });
+    let division_value = active_state.division_value;
 
     return (
       <div className="strip-controller">
         {this.state.midiOutput ? (
           <div>
-            <button
-              className="button"
-              onClick={() => {
-                this.handleChange('G#4');
-              }}
-            >
-              Audio {active_audio_channel_name}
-            </button>
+            <div className="strip-controller-group">
+              <Select
+                options={this.props.config.audio_ports.map(elem => {
+                  return { name: elem.name };
+                })}
+                defaultValue={active_audio_channel_name}
+                setValue={value => {
+                  let stateIndex = -1;
+                  this.props.config.audio_ports.map((elem, index) => {
+                    if (elem.name === value) {
+                      stateIndex = index;
+                    }
+                  });
 
-            <button
-              className="button"
-              onClick={() => {
-                this.handleChange('G4');
-              }}
-            >
-              Colors {colorSchemeElem}
-            </button>
+                  this.handleChange('G#4', stateIndex);
+                }}
+              />
 
+              <Select
+                options={this.props.config.states.map(elem => {
+                  return { name: elem.name };
+                })}
+                defaultValue={this.props.strip.active_state.name}
+                setValue={value => {
+                  let stateIndex = -1;
+                  this.props.config.states.map((elem, index) => {
+                    if (elem.name === value) {
+                      stateIndex = index;
+                    }
+                  });
+
+                  this.handleChange('D5', stateIndex);
+                }}
+              />
+
+              <Select
+                options={active_state.color_schemes.map((elem, index) => {
+                  return {
+                    name: index,
+                    scheme: active_state.color_schemes[index]
+                  };
+                })}
+                defaultValue={active_state.active_color_scheme_index}
+                setValue={value => {
+                  let stateIndex = -1;
+                  active_state.color_schemes.map((elem, index) => {
+                    if (index == value) {
+                      stateIndex = index;
+                    }
+                  });
+                  this.handleChange('G4', stateIndex);
+                }}
+              />
+            </div>
             <h5 className="strip-controller__title">Effects</h5>
             <div className="strip-controller-group">
               {keyConfiguration.effects.map(elem => {
-                let isActiveClass = 'button ';
+                let isActiveClass = 'strip-controller__button ';
+                let hasGapClass = elem.has_gap
+                  ? ' strip-controller__button--with-gap'
+                  : '';
                 isActiveClass +=
                   active_state.active_visualizer_effect === elem.name
                     ? 'active'
                     : ' ';
+
+                isActiveClass += hasGapClass;
 
                 isActiveClass += ' ' + elem.type;
 
@@ -272,6 +322,9 @@ class StripController extends React.Component {
                       this.handleChange(elem.note);
                     }}
                   >
+                    <span className="strip-controller__button__type">
+                      {elem.type[0]}
+                    </span>
                     {elem.label}
                   </button>
                 );
@@ -310,7 +363,7 @@ class StripController extends React.Component {
                   this.handleChange('F#4');
                 }}
               >
-                Divide
+                Divide {division_value}
               </button>
             </div>
             <h5 className="strip-controller__title">Parameters</h5>
@@ -380,23 +433,6 @@ class StripController extends React.Component {
                     value={blur_value}
                   />
                 </div>
-                {/* 
-            <div className="slider-holder">
-              <label htmlFor="blur_value">
-                Gain <span>{blur_value}</span>
-              </label>
-              <input
-                className="input"
-                onChange={e => {
-                  this.handleChange('B#4', e.target.value);
-                }}
-                type="range"
-                name="blur_value"
-                min="1"
-                max="127"
-                value={blur_value}
-              />
-            </div> */}
               </div>
             </div>
           </div>

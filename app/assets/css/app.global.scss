@@ -35,10 +35,9 @@ body,
 .page {
   position: absolute;
   top: 65px;
-  height: calc(100% - 85px);
+  height: calc(100% - 65px);
   width: 100%;
   padding: 10px;
-  overflow: scroll;
 }
 
 .flex-center-wrapper {
@@ -131,6 +130,7 @@ h6 {
 @import 'components/_splash-screen.scss';
 @import 'components/_range.scss';
 @import 'components/_button.scss';
+@import 'components/_select.scss';
 @import 'components/_online-notifier.scss';
 @import 'components/_strip-controller.scss';
 @import 'components/_audio-visualizer.scss';

@@ -11,14 +11,27 @@
 import path from 'path';
 import { app, BrowserWindow } from 'electron';
 import { autoUpdater } from 'electron-updater';
-import { ChildProcess, spawn } from 'child_process';
+import { ChildProcess, spawn, exec } from 'child_process';
 import log from 'electron-log';
 import MenuBuilder from './menu';
 import pythonConfig from './constants/python.json';
+import { PythonShell } from 'python-shell';
 
 let http = require('http');
 const cors = require('cors');
 const HTTPPort = 8080;
+
+// /*************************************************************
+//  * GLOBALS
+//  *************************************************************/
+
+let mainWindow: BrowserWindow | null = null;
+let httpServerApi = null;
+let pythonBackendProcess = null;
+
+// /*************************************************************
+//  * ELECTRON DEV
+//  *************************************************************/
 
 export default class AppUpdater {
   constructor() {
@@ -27,8 +40,6 @@ export default class AppUpdater {
     autoUpdater.checkForUpdatesAndNotify();
   }
 }
-
-let mainWindow: BrowserWindow | null = null;
 
 if (process.env.NODE_ENV === 'production') {
   const sourceMapSupport = require('source-map-support');
@@ -52,6 +63,10 @@ const installExtensions = async () => {
   ).catch(console.log);
 };
 
+// /*************************************************************
+//  * ELECTRON WINDOW
+//  *************************************************************/
+
 const createWindow = async () => {
   if (
     process.env.NODE_ENV === 'development' ||
@@ -59,6 +74,8 @@ const createWindow = async () => {
   ) {
     await installExtensions();
   }
+
+  launchHTTPApi();
 
   mainWindow = new BrowserWindow({
     show: false,
@@ -110,51 +127,16 @@ const createWindow = async () => {
   // Remove this if your app does not use auto updates
   // eslint-disable-next-line
   new AppUpdater();
-
-  // Spawning python backend process
-
-  function exitHandler(child: ChildProcess) {
-    child.kill();
-  }
-
-  const isProduction = process.env.NODE_ENV === 'production';
-  const isDevelopment = process.env.NODE_ENV === 'development';
-
-  if (!isDevelopment && !pythonConfig.devUsePackaged) {
-    const root = process.cwd();
-
-    const binariesPath =
-      isProduction && app.isPackaged
-        ? path.join(
-            path.dirname(app.getAppPath()),
-            '..',
-            './Resources',
-            './bin'
-          )
-        : path.join(root, './resources', pythonConfig.execName);
-
-    const execPath = path.resolve(
-      path.join(binariesPath, `./${pythonConfig.execName}`)
-    );
-    const pythonProcess = spawn(execPath, [], {});
-
-    pythonProcess.on('error', function handler(e: Error) {
-      console.log(`Cannot spawn process. ${e}`);
-    });
-
-    // python event listeneres
-    process.stdin.resume();
-    process.on('exit', exitHandler.bind(null, pythonProcess));
-    process.on('SIGINT', exitHandler.bind(null, pythonProcess));
-    process.on('SIGUSR1', exitHandler.bind(null, pythonProcess));
-    process.on('SIGUSR2', exitHandler.bind(null, pythonProcess));
-    process.on('uncaughtException', exitHandler.bind(null, pythonProcess));
-  }
 };
 
-/**
- * Add event listeners...
- */
+process.on('exit', function() {
+  killHTTPApi();
+  // killPythonBackendProcess();
+});
+
+// /*************************************************************
+//  * ELECTRON WINDOW EVENT LISTENERS
+//  *************************************************************/
 
 app.on('window-all-closed', () => {
   // Respect the OSX convention of having the application in memory even
@@ -171,9 +153,100 @@ app.on('activate', () => {
   // dock icon is clicked and there are no other windows open.
   if (mainWindow === null) {
     createWindow();
-    launchHTTPApi();
   }
 });
+
+// /*************************************************************
+//  * SPAWN PYTHON PROCESS
+//  *************************************************************/
+
+const spawnPythonBackendProcess = () => {
+  const isProduction = process.env.NODE_ENV === 'production';
+  const isDevelopment = process.env.NODE_ENV === 'development';
+
+  if (
+    (!isDevelopment || !pythonConfig.devUsePackaged) &&
+    !pythonBackendProcess
+  ) {
+    console.log('Launching python process...');
+    // const root = process.cwd();
+
+    // const binariesPath =
+    //   isProduction && app.isPackaged
+    //     ? path.join(
+    //         path.dirname(app.getAppPath()),
+    //         '..',
+    //         './Resources',
+    //         './bin'
+    //       )
+    //     : path.join(root, './resources', pythonConfig.execName);
+
+    // const execPath = path.resolve(
+    //   path.join(binariesPath, `./${pythonConfig.execName}`)
+    // );
+
+    // pythonBackendProcess = spawn(
+    //   '/Users/thibaudfrere/Documents/music-2-led/backend/dist/music2led',
+    //   // 'conda run -n audio-2-led python /Users/thibaudfrere/Documents/music-2-led/backend/main.py',
+    //   [],
+    //   { detached: true }
+    // );
+
+    pythonBackendProcess = exec(
+      '/Users/thibaudfrere/Documents/music-2-led/backend/dist/music2led',
+      { async: true }
+    );
+
+    // console.log(
+    //   'binPath',
+    //   binariesPath,
+    //   'execPath',
+    //   execPath,
+    //   'process',
+    //   pythonBackendProcess
+    // );
+
+    // python event listeneres
+    // process.on('error', function handler(e: Error) {
+    //   console.log(`Cannot spawn process. ${e}`);
+    // });
+    // process.stdin.resume();
+    // process.on('exit', killPythonBackendProcess);
+    // process.on('SIGINT', killPythonBackendProcess);
+    // process.on('SIGUSR1', killPythonBackendProcess);
+    // process.on('SIGUSR2', killPythonBackendProcess);
+    // process.on('uncaughtException', killPythonBackendProcess);
+  }
+};
+
+const killPythonBackendProcess = () => {
+  if (pythonBackendProcess) {
+    console.log('Killing python process...');
+    pythonBackendProcess.kill();
+    pythonBackendProcess = null;
+  }
+};
+
+// /*************************************************************
+//  * PYTHON SCRIPT PROCESS
+//  *************************************************************/
+
+const spawnDevPythonBackendProcess = () => {
+  pythonBackendProcess = PythonShell.run('./backend/main.py', null, function(
+    err
+  ) {
+    console.log('Launching dev python process...');
+    if (err) throw err;
+  });
+};
+
+const killDevPythonBackendProcess = () => {
+  if (pythonBackendProcess) {
+    console.log('Killing dev python process...');
+    pythonBackendProcess.kill();
+    pythonBackendProcess = null;
+  }
+};
 
 // /*************************************************************
 //  * HTTP API PROCESS
@@ -181,9 +254,9 @@ app.on('activate', () => {
 
 const launchHTTPApi = () => {
   let pythonProcess = null;
-
+  console.log('Launching HTTP API...');
   //create a server object:
-  http
+  httpServerApi = http
     .createServer(function(req, res) {
       // Set CORS headers
       res.setHeader('Access-Control-Allow-Origin', '*');
@@ -193,18 +266,24 @@ const launchHTTPApi = () => {
       var url = req.url;
       if (url === '/launchPython') {
         console.log('/launchPython');
-        // pythonProcess = launchPythonProcess();
-        // console.log(pythonProcess);
+        spawnDevPythonBackendProcess();
       } else if (url === '/killPython') {
         console.log('/killPython');
-        // console.log(pythonProcess);
-        // if (pythonProcess) pythonProcess.kill(-pythonProcess.pid);
+        killDevPythonBackendProcess();
       }
       res.writeHead(200, { 'Content-Type': 'text/html' }); // http header
       res.write('OK'); //write a response
       res.end(); //end the response
     })
     .listen(HTTPPort, function() {
-      console.log('HTTP Server start at port ' + HTTPPort); //the server object listens on port 3000
+      console.log('HTTP API started at port ' + HTTPPort); //the server object listens on port 3000
     });
+};
+
+const killHTTPApi = () => {
+  if (httpServerApi) {
+    httpServerApi.close(function() {
+      console.log('HTTP API killed.');
+    });
+  }
 };
