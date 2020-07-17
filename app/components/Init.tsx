@@ -6,7 +6,11 @@ class Init extends React.Component {
   }
 
   render() {
-    return <div className="card">Init Page</div>;
+    return (
+      <div>
+        <div className="card">Init Page</div>
+      </div>
+    );
   }
 }
 

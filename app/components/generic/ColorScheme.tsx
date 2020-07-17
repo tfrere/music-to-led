@@ -2,7 +2,6 @@ import React from 'react';
 
 class ColorScheme extends React.Component {
   render(props) {
-    console.log(this.props.scheme);
     let colorSchemeElem = [];
     if (this.props.scheme) {
       colorSchemeElem = this.props.scheme.map((color, index) => {
@@ -16,7 +15,7 @@ class ColorScheme extends React.Component {
       });
     }
 
-    return <div>{colorSchemeElem}</div>;
+    return <span>{colorSchemeElem}</span>;
   }
 }
 

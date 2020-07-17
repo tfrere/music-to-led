@@ -9,9 +9,10 @@ import numpy as np
 class Serial:
     """ Send pixels data to arduino via serial port """
 
-    def __init__(self, verbose=False, number_of_pixels=30, port="", baud_rate=1000000):
+    def __init__(self, verbose=False, desirated_framerate=0.016, number_of_pixels=30, port="", baud_rate=1000000):
         self.serial_port = port
         self.serial_class = None
+        self.desirated_framerate = desirated_framerate
         self.trying_to_connect = False
         self.is_connected = False
         self.clear_command = b'\xff'
@@ -90,7 +91,7 @@ class Serial:
         pixels[1, 1] = 125  # Set 2nd pixel green
         pixels[2, 2] = 125  # Set 3rd pixel blue
 
-        serialClass = Serial(True, number_of_pixels, name)
+        serialClass = Serial(True, 0.016, number_of_pixels, name)
 
         while True:
             pixels = np.roll(pixels, 1, axis=1)
@@ -112,7 +113,7 @@ class Serial:
                 print(
                     "Hey it seem's that your cable is not plugged on port ", self.serial_port)
 
-            # time.sleep(5)
+            time.sleep(5)
             return
 
         self.serial_class.setDTR(False)
@@ -163,7 +164,6 @@ class Serial:
         self.pixels = pixels
         if(not self.trying_to_connect and self.serial_class):
             try:
-                print("try")
                 self.serial_class.write(self.show_command)
                 self.serial_class.read(1)
                 number_of_pixel_command = self.number_of_pixels.to_bytes(

@@ -2,8 +2,6 @@
 
   # README AND DOC
 
-    - Make physical shapes unmutable
-    - Remove virtual shapes, propose a divide by X ( 2, 4, 8 ) via options
     -
 
     - Bel exemple réel en gif

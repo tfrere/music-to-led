@@ -59,28 +59,30 @@ class Spectrum():
 
         self.r_filt = ExpFilter(
             np.tile(0.01, new_length),
-            alpha_decay = 0.2,
+            alpha_decay=0.2,
             alpha_rise=0.99
         )
         self.g_filt = ExpFilter(
             np.tile(0.01, new_length),
-            alpha_decay = 0.05,
+            alpha_decay=0.05,
             alpha_rise=0.3
         )
         self.b_filt = ExpFilter(
             np.tile(0.01, new_length),
-            alpha_decay = 0.1,
+            alpha_decay=0.1,
             alpha_rise=0.5
         )
         self.common_mode = ExpFilter(
             np.tile(0.01, new_length),
-            alpha_decay = 0.99,
+            alpha_decay=0.99,
             alpha_rise=0.01
         )
 
     def visualizeSpectrum(self):
         """Effect that maps the Mel filterbank frequencies onto the LED strip"""
 
+        active_color_scheme = self.active_state.formatted_color_schemes[
+            self.active_state.active_color_scheme_index]
         new_length = self.number_of_pixels
 
         audio_data = np.copy(interpolate(self.audio_data, new_length))
@@ -89,18 +91,20 @@ class Spectrum():
         diff = audio_data - self.prev_spectrum
         self.prev_spectrum = np.copy(audio_data)
 
-
         # Color channel mappings
 
-        # r = self.r_filt.update(audio_data - self.common_mode.value)
-        # g = np.abs(diff)
-        # b = self.b_filt.update(np.copy(audio_data))
+        r = self.r_filt.update(
+            audio_data - self.common_mode.value) * active_color_scheme[0][0] / 100
+        g = np.abs(diff) * active_color_scheme[0][1] / 1000
+        b = self.b_filt.update(np.copy(audio_data)) * \
+            active_color_scheme[0][2] / 100
 
-        r = self.r_filt.update(audio_data - self.common_mode.value)
-        g = self.g_filt.update(
-            np.copy(audio_data - self.common_mode.value))
-        b = self.b_filt.update(
-            np.copy(audio_data - self.common_mode.value))
+        # r = self.r_filt.update(
+        #     audio_data - self.common_mode.value) * active_color_scheme[0][0]
+        # g = self.g_filt.update(
+        #     np.copy(audio_data - self.common_mode.value)) * active_color_scheme[0][1]
+        # b = self.b_filt.update(
+        #     np.copy(audio_data - self.common_mode.value)) * active_color_scheme[0][2]
 
         self.pixels = np.array([r, g, b]) * 255
 

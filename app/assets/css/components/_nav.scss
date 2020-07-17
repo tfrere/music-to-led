@@ -1,18 +1,17 @@
 nav {
   color: white;
   display: flex;
-  border-bottom: 1px solid lighten($backgroundColor, 7%);
-  background: $backgroundColor;
+  border-top: 1px solid lighten($backgroundColor, 15%);
+  background: lighten($backgroundColor, 7%);
   position: relative;
-  height: 40px;
+  height: 80px;
   align-items: center;
-  margin-bottom: 20px;
   position: fixed;
-  top: 25px;
+  bottom: 0px;
   left: 0;
   width: 100%;
   z-index: 9;
-  padding: 0 0px 0 10px;
+  padding: 0 20px 0 20px;
   i {
     opacity: 0.7;
   }

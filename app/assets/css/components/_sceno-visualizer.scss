@@ -1,0 +1,99 @@
+.sceno-visualizer {
+  padding: 0;
+  margin-bottom: 10px;
+  box-sizing: content-box;
+  position: relative;
+}
+
+.sceno-visualizer__toolbar {
+  position: absolute;
+  top: 5px;
+  right: 5px;
+  padding: 0;
+
+  button {
+    border: 0;
+    font-size: 20px;
+    border-radius: 5px;
+    margin-right: 0;
+    margin-left: 5px;
+  }
+}
+
+.sceno-visualizer__canvas {
+}
+
+/* Settings */
+:root {
+  --offset: 0rem;
+  --columns: 10;
+  --gutter: 0rem;
+  --baseline: 10%;
+  --baseline-shift: calc(var(--baseline) / 2);
+  --line-thickness: 1px;
+  --color: hsla(204, 80%, 72%, 0.05);
+  --media-query: 'base';
+}
+
+/* Helper variables */
+:root {
+  --repeating-width: calc(100% / var(--columns));
+  --column-width: calc((100% / var(--columns)) - var(--gutter));
+  --background-width: calc(100% + var(--gutter));
+  --background-columns: repeating-linear-gradient(
+    to right,
+    var(--color),
+    var(--color) var(--line-thickness),
+    transparent var(--line-thickness),
+    transparent calc(var(--column-width) - var(--line-thickness)),
+    var(--color) calc(var(--column-width) - var(--line-thickness)),
+    var(--color) var(--column-width),
+    transparent var(--column-width),
+    transparent var(--repeating-width)
+  );
+  --background-baseline: repeating-linear-gradient(
+    to bottom,
+    var(--color),
+    var(--color) 1px,
+    transparent 1px,
+    transparent var(--baseline)
+  );
+}
+
+.grid-overlay {
+  position: relative;
+  overflow: hidden;
+  height: 100%;
+}
+
+.grid-overlay::before {
+  position: absolute;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  margin-right: 0;
+  margin-left: 0;
+  width: calc(100% - (2 * var(--offset)));
+  max-width: var(--max_width);
+  height: 100%;
+  content: '';
+  background-image: var(--background-columns), var(--background-baseline);
+  background-size: var(--background-width) 99%;
+  background-position: 0 var(--baseline-shift);
+  z-index: 1000;
+  pointer-events: none;
+}
+
+.grid-overlay::after {
+  content: '0,0';
+  position: absolute;
+  top: calc(50% + 2px);
+  left: calc(50% + 4px);
+  max-width: var(--max_width);
+  color: rgba(255, 255, 255, 0.2);
+  height: 0px;
+  z-index: 1000;
+  font-size: 10px;
+  pointer-events: none;
+}

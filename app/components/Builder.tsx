@@ -4,11 +4,12 @@ import { Link } from 'react-router-dom';
 import routes from '../constants/routes.json';
 import { promiseTimeout, zeromqMessages } from '../utils/zeromq';
 
-import AudioVisualizer from './audio/AudioVisualizer';
-import AudioVisualizerCanvas from './audio/AudioVisualizerCanvas';
 import Strip from './strip/Strip';
 import StripController from './strip/StripController';
-import PixelVisualizerCanvas from './strip/PixelVisualizerCanvas';
+import ScenoVisualizerCanvas from './sceno/ScenoVisualizerCanvas';
+import hapticjs from 'hapticjs';
+
+hapticjs.vibrate();
 
 let client_time = new Date().getTime();
 let server_time = 0;
@@ -53,6 +54,7 @@ class Builder extends React.Component {
       midi: [],
       active_states: [],
       are_strips_online: [],
+      active_strip_index: 0,
       isZMQConnected: false
     };
   }
@@ -68,7 +70,7 @@ class Builder extends React.Component {
       this.setState({
         config: object.config,
         audios: object.audios,
-        strips: object.strips,
+        pixels: object.pixels,
         active_states: object.active_states,
         are_strips_online: object.are_strips_online,
         framerates: object.framerates,
@@ -93,12 +95,13 @@ class Builder extends React.Component {
       config,
       framerates,
       audios,
-      strips,
+      pixels,
       isZMQConnected
     } = this.state;
 
-    let audiosElem = [];
     let stripsElem = [];
+    let active_strip_data = null;
+    let active_strip_index = this.state.active_strip_index;
 
     if (
       active_states &&
@@ -108,42 +111,45 @@ class Builder extends React.Component {
       framerates &&
       audios &&
       framerates &&
-      strips
+      pixels
     ) {
-      audiosElem = audios.map((audio, index) => {
-        return (
-          <AudioVisualizerCanvas
-            key={'audio' + index}
-            name={config.audio_ports[index].name}
-            audio={audios[index]}
-          />
-        );
-      });
       stripsElem = config.strips.map((strip, index) => {
-        const pixels = strips[index];
+        console.log(active_strip_index);
+        const isActiveStrip = active_strip_index == index;
+
+        const pixelsFrame = pixels[index];
         const is_strip_online = are_strips_online[index];
-        const active_state = active_states[strip.active_state_index];
+        const active_state = active_states[index];
+        // console.log('strip', strip);
+        // console.log('active_states', active_states);
+        // console.log('active_state', active_state);
         const active_shape = strip.shapes[active_state.division_value];
         const framerate = framerates[index];
         const onlineClassNames = is_strip_online
           ? ' online-notifier--online'
           : ' online-notifier--offline';
 
-        // console.log('isonline', is_strip_online);
-        // console.log('strip', strip);
-        // console.log('active_state', active_state);
-        // console.log('active_shape', active_shape);
-        // console.log('framerate', framerate);
-        // console.log('audio', audio);
-        // console.log('pixels', pixels);
-
+        if (isActiveStrip) {
+          active_strip_data = {
+            name: strip.midi_ports_for_changing_mode[0],
+            audios: audios,
+            strip: strip,
+            is_strip_online: is_strip_online,
+            framerate: framerate,
+            active_state: active_state,
+            config: config,
+            active_audio_channel_name:
+              config.audio_ports[active_state.active_audio_channel_index].name,
+            strip_index: index
+          };
+        }
         return (
           <Strip
             key={strip + index}
             framerate={framerate}
             physical_shape={strip.physical_shape}
             active_shape={active_shape}
-            pixels={pixels}
+            pixels={pixelsFrame}
             name={strip.midi_ports_for_changing_mode[0]}
             audios={audios}
             strip={strip}
@@ -154,30 +160,58 @@ class Builder extends React.Component {
               config.audio_ports[active_state.active_audio_channel_index].name
             }
             index={index}
+            className={isActiveStrip ? 'card--reverse' : ''}
+            onClick={() => {
+              this.setState({ active_strip_index: index });
+            }}
           ></Strip>
         );
       });
     }
-
     return (
       <React.Fragment>
         {isZMQConnected ? (
-          <div>
-            <div>
-              <h4 className="title">
-                <i className="la la-microphone la-2x" />
-                <span>{audiosElem.length}</span> Audio channel
-                {audiosElem.length > 1 ? 's' : ''}{' '}
-              </h4>
-              {audiosElem}
+          <>
+            <div className="builder-column-holder">
+              <div>
+                <h4 className="title">
+                  <i className="la la-lightbulb la-2x" />
+                  <span>{stripsElem.length}</span> Strip
+                  {stripsElem.length > 1 ? 's' : ''}
+                </h4>
+                {stripsElem}
+              </div>
+              <div style={{ height: '330px' }}>
+                <ScenoVisualizerCanvas
+                  config={config}
+                  pixels={pixels}
+                  height={330}
+                  hasDarkMode={false}
+                  hasGrid={true}
+                />
+              </div>
             </div>
-            <h4 className="title">
-              <i className="la la-lightbulb la-2x" />
-              <span>{stripsElem.length}</span> Strip
-              {stripsElem.length > 1 ? 's' : ''}
-            </h4>
-            {stripsElem}
-          </div>
+            {active_strip_data ? (
+              <div>
+                <div className="card">
+                  <StripController
+                    name={active_strip_data.name}
+                    audios={active_strip_data.audios}
+                    strip={active_strip_data.strip}
+                    is_strip_online={active_strip_data.is_strip_online}
+                    framerate={active_strip_data.framerate}
+                    active_state={active_strip_data.active_state}
+                    config={active_strip_data.config}
+                    active_audio_channel_name={
+                      active_strip_data.active_audio_channel_name
+                    }
+                    className={'active'}
+                    strip_index={active_strip_data.strip_index}
+                  />
+                </div>
+              </div>
+            ) : null}
+          </>
         ) : (
           <div className="screen-size flex-center-wrapper">
             <span className="loading"></span>

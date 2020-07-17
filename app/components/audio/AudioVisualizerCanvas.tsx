@@ -1,14 +1,16 @@
 import React from 'react';
 
-const width = 150;
-const channels = 24;
-const gap = 2;
-const channel_size = width / channels;
-
 class AudioVisualizerCanvas extends React.Component {
   constructor(props) {
     super(props);
     this.updateCanvas = this.updateCanvas.bind(this);
+
+    const channels = 24;
+    this.state = {
+      channels: channels,
+      gap: 2,
+      channel_size: this.props.width / channels
+    };
   }
 
   componentDidMount() {
@@ -42,16 +44,24 @@ class AudioVisualizerCanvas extends React.Component {
   updateCanvas = () => {
     if (this.refs.canvas) {
       const ctx = this.refs.canvas.getContext('2d');
-      ctx.clearRect(0, 0, 150, 100);
+      ctx.clearRect(0, 0, 150, this.props.height);
 
       this.props.audio.map((audio_atom, index) => {
         const opacity = Math.round(audio_atom * 10) / 10 + 0.4;
-        ctx.fillStyle = 'rgba(255,255,255,' + opacity + ')';
+        const audio_channel = audio_atom * this.props.audio_gain;
+        if (
+          index < this.props.audio_samples_filter_min ||
+          index > this.props.audio_samples_filter_max
+        ) {
+          ctx.fillStyle = 'rgba(255,0,0,' + opacity + ')';
+        } else {
+          ctx.fillStyle = 'rgba(255,255,255,' + opacity + ')';
+        }
         ctx.fillRect(
-          index * channel_size,
-          100 - audio_atom * 80,
-          channel_size - gap,
-          audio_atom * 80
+          index * this.state.channel_size,
+          this.props.height - audio_channel * this.props.height,
+          this.state.channel_size - this.state.gap,
+          audio_channel * this.props.height
         );
       });
     }
@@ -61,13 +71,12 @@ class AudioVisualizerCanvas extends React.Component {
     let audioElems = [];
 
     return (
-      <div className="audio-visualizer card">
-        <h4 className="audio-visualizer__title">{this.props.name}</h4>
+      <div className="audio-visualizer">
         <canvas
           className="audio-visualizer__canvas"
           ref="canvas"
           width="100%"
-          height={100}
+          height={this.props.height}
         />
       </div>
     );

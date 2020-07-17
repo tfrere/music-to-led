@@ -1,11 +1,14 @@
-.pixels {
-  width: 100%;
-  height: auto;
-  display: flex;
-}
-
 .strip-controller {
   width: 100%;
+  position: relative;
+  & > hr {
+    margin-left: -15px;
+    margin-right: -15px;
+    width: calc(100% + 30px);
+  }
+  .select {
+    margin-bottom: 5px;
+  }
 }
 
 .strip-block {
@@ -24,28 +27,15 @@
   margin-bottom: 0;
 }
 
-.pixels__elem {
-  height: 20px;
-  background-color: rgba(0, 0, 0, 0.5);
-  margin-right: 1px;
-  margin-bottom: 15px;
-  flex-basis: 100%;
-}
-
-.pixels__elem--space {
-  margin-left: 15px;
-}
-
-.pixels__elem--breakline {
-  clear: both;
-}
-
 .strip__color {
   display: inline-block;
-  width: 10px;
-  height: 10px;
+  width: 9px;
+  height: 9px;
   background-color: #000;
   margin-right: 5px;
+  &:first-child {
+    margin-left: 10px;
+  }
 }
 
 .strip__label {
@@ -58,8 +48,28 @@
 
 .strip-controller-group {
   display: flex;
-  justify-content: center;
+  flex-direction: row;
+  margin-top: 20px;
+}
+
+.strip-controller-group__item--effect {
+  width: 75%;
+  display: flex;
+  padding-right: 0px;
+  margin-right: 20px;
   flex-wrap: wrap;
+  .strip-controller__button {
+    flex-grow: 1;
+    height: 45px;
+  }
+  .strip-controller__title {
+    margin-right: 20px;
+    line-height: 45px;
+  }
+}
+
+.strip-controller__name {
+  margin-bottom: 10px;
 }
 
 .strip-controller__title {
@@ -68,7 +78,15 @@
   text-transform: uppercase;
   letter-spacing: 0.05rem;
   font-size: 10px;
-  text-align: center;
+}
+
+.strip-controller__audio {
+  margin: 0;
+  margin-top: 10px;
+  padding: 5px;
+  .audio-visualizer {
+    width: 20%;
+  }
 }
 
 .button.midi {
@@ -83,27 +101,6 @@
 .button.generic {
 }
 
-.strip-controller__button {
-  position: relative;
-  padding-left: 25px;
-  &--with-gap {
-    margin-right: 20px;
-  }
-  &.active {
-    background: white;
-    color: black;
-  }
-}
-
-.strip-controller__button__type {
-  position: absolute;
-  top: 0;
-  left: 0;
-  border-right: 1px solid rgba(255, 255, 255, 0.2);
-  border-bottom: 1px solid rgba(255, 255, 255, 0.2);
-  color: rgba(255, 255, 255, 0.2);
-  border-bottom-right-radius: 3px;
-  font-size: 6px;
-  line-height: 6px;
-  padding: 5px;
+.slider-holder label {
+  font-size: 10px;
 }

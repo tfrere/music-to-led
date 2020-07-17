@@ -13,12 +13,13 @@ import { app, BrowserWindow } from 'electron';
 import { autoUpdater } from 'electron-updater';
 import { ChildProcess, spawn, exec } from 'child_process';
 import log from 'electron-log';
+import { PythonShell } from 'python-shell';
+import fs from 'fs';
+import url from 'url';
+import http from 'http';
 import MenuBuilder from './menu';
 import pythonConfig from './constants/python.json';
-import { PythonShell } from 'python-shell';
 
-let http = require('http');
-const cors = require('cors');
 const HTTPPort = 8080;
 
 // /*************************************************************
@@ -64,97 +65,75 @@ const installExtensions = async () => {
 };
 
 // /*************************************************************
-//  * ELECTRON WINDOW
+//  * HTTP API PROCESS
 //  *************************************************************/
 
-const createWindow = async () => {
-  if (
-    process.env.NODE_ENV === 'development' ||
-    process.env.DEBUG_PROD === 'true'
-  ) {
-    await installExtensions();
-  }
+const launchHTTPApi = () => {
+  console.log('Launching HTTP API...');
+  // Create a server object
+  httpServerApi = http
+    .createServer(function(req, res) {
+      // Set CORS headers
+      res.setHeader('Access-Control-Allow-Origin', '*');
+      res.setHeader('Access-Control-Request-Method', '*');
+      res.setHeader('Access-Control-Allow-Methods', 'OPTIONS, GET');
+      res.setHeader('Access-Control-Allow-Headers', '*');
+      var baseUrl = req.url;
+      console.log('--------');
+      console.log('from url -> ' + baseUrl);
 
-  launchHTTPApi();
-
-  mainWindow = new BrowserWindow({
-    show: false,
-    width: 1024,
-    height: 728,
-    // minWidth: 900,
-    // minHeight: 600,
-    // maxWidth: 1100,
-    // maxHeight: 800,
-    center: true,
-    titleBarStyle: 'hidden',
-    frame: false,
-    // titlebarAppearsTransparent: true,
-    backgroundColor: '#061B28',
-    webPreferences:
-      process.env.NODE_ENV === 'development' || process.env.E2E_BUILD === 'true'
-        ? {
-            nodeIntegration: true,
-            preload: path.join(__dirname, 'preload.js')
+      if (baseUrl.includes('/listConfigFiles')) {
+        console.log('/listConfigFiles');
+        const testFolder = './backend';
+        const files = [];
+        fs.readdirSync(testFolder).forEach(file => {
+          if (file.includes('CONFIG')) {
+            files.push(file);
           }
-        : {
-            preload: path.join(__dirname, 'dist/renderer.prod.js')
-          }
-  });
+        });
+        var body = JSON.stringify({
+          files: files
+        });
+        console.log('Config files founded : ', files);
+        res.writeHead(200, { 'Content-Type': 'text/json' });
 
-  mainWindow.loadURL(`file://${__dirname}/app.html`);
-
-  // @TODO: Use 'ready-to-show' event
-  //        https://github.com/electron/electron/blob/master/docs/api/browser-window.md#using-ready-to-show-event
-  mainWindow.webContents.on('did-finish-load', () => {
-    if (!mainWindow) {
-      throw new Error('"mainWindow" is not defined');
-    }
-    if (process.env.START_MINIMIZED) {
-      mainWindow.minimize();
-    } else {
-      mainWindow.show();
-      mainWindow.focus();
-    }
-  });
-
-  mainWindow.on('closed', () => {
-    mainWindow = null;
-  });
-
-  const menuBuilder = new MenuBuilder(mainWindow);
-  menuBuilder.buildMenu();
-
-  // Remove this if your app does not use auto updates
-  // eslint-disable-next-line
-  new AppUpdater();
+        res.write(body);
+        res.end();
+      } else if (baseUrl.includes('spawnKill')) {
+        console.log('/spawnKill');
+        const queryObject = url.parse(req.url, true).query;
+        killDevPythonBackendProcess();
+        spawnDevPythonBackendProcess(queryObject.file);
+        res.writeHead(200, { 'Content-Type': 'text/html' });
+        res.write('OK');
+        res.end();
+      } else if (baseUrl.includes('/spawn')) {
+        console.log('/spawn');
+        spawnDevPythonBackendProcess('./CONFIG.yml');
+        res.writeHead(200, { 'Content-Type': 'text/html' });
+        res.write('OK');
+        res.end();
+      } else if (baseUrl.includes('/kill')) {
+        console.log('/kill');
+        killDevPythonBackendProcess();
+        res.writeHead(200, { 'Content-Type': 'text/html' });
+        res.write('OK');
+        res.end();
+      }
+      console.log('--------');
+    })
+    .listen(HTTPPort, function() {
+      console.log('HTTP API started at port ' + HTTPPort);
+    });
 };
 
-process.on('exit', function() {
-  killHTTPApi();
-  // killPythonBackendProcess();
-});
-
-// /*************************************************************
-//  * ELECTRON WINDOW EVENT LISTENERS
-//  *************************************************************/
-
-app.on('window-all-closed', () => {
-  // Respect the OSX convention of having the application in memory even
-  // after all windows have been closed
-  if (process.platform !== 'darwin') {
-    app.quit();
+const killHTTPApi = () => {
+  if (httpServerApi) {
+    httpServerApi.close(function() {
+      console.log('HTTP API killed.');
+    });
   }
-});
-
-app.on('ready', createWindow);
-
-app.on('activate', () => {
-  // On macOS it's common to re-create a window in the app when the
-  // dock icon is clicked and there are no other windows open.
-  if (mainWindow === null) {
-    createWindow();
-  }
-});
+};
 
 // /*************************************************************
 //  * SPAWN PYTHON PROCESS
@@ -231,12 +210,24 @@ const killPythonBackendProcess = () => {
 //  * PYTHON SCRIPT PROCESS
 //  *************************************************************/
 
-const spawnDevPythonBackendProcess = () => {
-  pythonBackendProcess = PythonShell.run('./backend/main.py', null, function(
-    err
+const spawnDevPythonBackendProcess = configFile => {
+  const options = {
+    // mode: 'text',
+    // pythonPath: 'path/to/python',
+    // pythonOptions: ['--with-config-file'], // get print results in real-time
+    // scriptPath: 'path/to/my/scripts',
+    args: ['--with-config-file', './backend/' + configFile]
+  };
+
+  console.log(options);
+
+  pythonBackendProcess = PythonShell.run('./backend/main.py', options, function(
+    err,
+    res
   ) {
-    console.log('Launching dev python process...');
     if (err) throw err;
+    console.log('Launching dev python process...');
+    console.log('results: %j', res);
   });
 };
 
@@ -249,41 +240,96 @@ const killDevPythonBackendProcess = () => {
 };
 
 // /*************************************************************
-//  * HTTP API PROCESS
+//  * ELECTRON WINDOW
 //  *************************************************************/
 
-const launchHTTPApi = () => {
-  let pythonProcess = null;
-  console.log('Launching HTTP API...');
-  //create a server object:
-  httpServerApi = http
-    .createServer(function(req, res) {
-      // Set CORS headers
-      res.setHeader('Access-Control-Allow-Origin', '*');
-      res.setHeader('Access-Control-Request-Method', '*');
-      res.setHeader('Access-Control-Allow-Methods', 'OPTIONS, GET');
-      res.setHeader('Access-Control-Allow-Headers', '*');
-      var url = req.url;
-      if (url === '/launchPython') {
-        console.log('/launchPython');
-        spawnDevPythonBackendProcess();
-      } else if (url === '/killPython') {
-        console.log('/killPython');
-        killDevPythonBackendProcess();
-      }
-      res.writeHead(200, { 'Content-Type': 'text/html' }); // http header
-      res.write('OK'); //write a response
-      res.end(); //end the response
-    })
-    .listen(HTTPPort, function() {
-      console.log('HTTP API started at port ' + HTTPPort); //the server object listens on port 3000
-    });
+const createWindow = async () => {
+  if (
+    process.env.NODE_ENV === 'development' ||
+    process.env.DEBUG_PROD === 'true'
+  ) {
+    await installExtensions();
+  }
+
+  launchHTTPApi();
+
+  mainWindow = new BrowserWindow({
+    show: false,
+    width: 1280,
+    height: 900,
+    minWidth: 900,
+    minHeight: 900,
+    // maxWidth: 1100,
+    // maxHeight: 800,
+    center: true,
+    titleBarStyle: 'hidden',
+    frame: false,
+    // titlebarAppearsTransparent: true,
+    backgroundColor: '#061B28',
+    webPreferences:
+      process.env.NODE_ENV === 'development' || process.env.E2E_BUILD === 'true'
+        ? {
+            scrollBounce: true,
+            nodeIntegration: true,
+            preload: path.join(__dirname, 'preload.js')
+          }
+        : {
+            scrollBounce: true,
+            preload: path.join(__dirname, 'dist/renderer.prod.js')
+          }
+  });
+
+  mainWindow.loadURL(`file://${__dirname}/app.html`);
+
+  // @TODO: Use 'ready-to-show' event
+  //        https://github.com/electron/electron/blob/master/docs/api/browser-window.md#using-ready-to-show-event
+  mainWindow.webContents.on('did-finish-load', () => {
+    if (!mainWindow) {
+      throw new Error('"mainWindow" is not defined');
+    }
+    if (process.env.START_MINIMIZED) {
+      mainWindow.minimize();
+    } else {
+      mainWindow.show();
+      mainWindow.focus();
+    }
+  });
+
+  mainWindow.on('closed', () => {
+    mainWindow = null;
+  });
+
+  const menuBuilder = new MenuBuilder(mainWindow);
+  menuBuilder.buildMenu();
+
+  // Remove this if your app does not use auto updates
+  // eslint-disable-next-line
+  new AppUpdater();
 };
 
-const killHTTPApi = () => {
-  if (httpServerApi) {
-    httpServerApi.close(function() {
-      console.log('HTTP API killed.');
-    });
+process.on('exit', function() {
+  killHTTPApi();
+  // killPythonBackendProcess();
+});
+
+// /*************************************************************
+//  * ELECTRON WINDOW EVENT LISTENERS
+//  *************************************************************/
+
+app.on('window-all-closed', () => {
+  // Respect the OSX convention of having the application in memory even
+  // after all windows have been closed
+  if (process.platform !== 'darwin') {
+    app.quit();
   }
-};
+});
+
+app.on('ready', createWindow);
+
+app.on('activate', () => {
+  // On macOS it's common to re-create a window in the app when the
+  // dock icon is clicked and there are no other windows open.
+  if (mainWindow === null) {
+    createWindow();
+  }
+});

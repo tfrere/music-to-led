@@ -1,7 +1,7 @@
-$track-color: rgba(255, 255, 255, 0.6) !default;
-$thumb-color: $primary-color-lighten-1 !default;
+$track-color: rgba(255, 255, 255, 0.3) !default;
+$thumb-color: rgb(150, 150, 150) !default;
 
-$thumb-radius: 18px !default;
+$thumb-radius: 4px !default;
 $thumb-height: 18px !default;
 $thumb-width: 18px !default;
 $thumb-shadow-size: 4px !default;
@@ -14,9 +14,9 @@ $track-width: 100% !default;
 $track-height: 1px !default;
 $track-shadow-size: 0px !default;
 $track-shadow-blur: 0px !default;
-$track-shadow-color: rgba(255, 255, 255, 0.7) !default;
+$track-shadow-color: rgba(255, 255, 255, 0) !default;
 $track-border-width: 1px !default;
-$track-border-color: rgba(255, 255, 255, 0.7) !default;
+$track-border-color: rgba(255, 255, 255, 0.1) !default;
 
 $track-radius: 5px !default;
 $contrast: 5% !default;
@@ -41,7 +41,7 @@ $ie-bottom-track-color: darken($track-color, $contrast) !default;
   border: $thumb-border-width solid $thumb-border-color;
   border-radius: $thumb-radius;
   box-sizing: border-box;
-  cursor: default;
+  cursor: pointer;
   height: $thumb-height;
   width: $thumb-width;
 }
@@ -49,9 +49,9 @@ $ie-bottom-track-color: darken($track-color, $contrast) !default;
 [type='range'] {
   -webkit-appearance: none;
   background: transparent;
-  margin: $thumb-height / 2 0;
+  margin: ($thumb-height - 10) 0 $thumb-height 0;
   width: $track-width;
-  margin-bottom: 35px;
+  margin-bottom: 5px;
 
   &::-moz-focus-outer {
     border: 0;
@@ -75,11 +75,6 @@ $ie-bottom-track-color: darken($track-color, $contrast) !default;
 
   &::-webkit-slider-runnable-track {
     @include track;
-    @include shadow(
-      $track-shadow-size,
-      $track-shadow-blur,
-      $track-shadow-color
-    );
     background: $track-color;
     border: $track-border-width solid $track-border-color;
     border-radius: $track-radius;
@@ -94,11 +89,6 @@ $ie-bottom-track-color: darken($track-color, $contrast) !default;
   }
 
   &::-moz-range-track {
-    @include shadow(
-      $track-shadow-size,
-      $track-shadow-blur,
-      $track-shadow-color
-    );
     @include track;
     background: $track-color;
     border: $track-border-width solid $track-border-color;
@@ -119,22 +109,12 @@ $ie-bottom-track-color: darken($track-color, $contrast) !default;
   }
 
   &::-ms-fill-lower {
-    @include shadow(
-      $track-shadow-size,
-      $track-shadow-blur,
-      $track-shadow-color
-    );
     background: $ie-bottom-track-color;
     border: $track-border-width solid $track-border-color;
     border-radius: ($track-radius * 2);
   }
 
   &::-ms-fill-upper {
-    @include shadow(
-      $track-shadow-size,
-      $track-shadow-blur,
-      $track-shadow-color
-    );
     background: $track-color;
     border: $track-border-width solid $track-border-color;
     border-radius: ($track-radius * 2);

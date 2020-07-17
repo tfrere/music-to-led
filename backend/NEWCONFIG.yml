@@ -16,58 +16,16 @@ audio_ports:
 delay_between_frames: 0.016666666666666666
 desirated_framerate: 60
 display_shell_interface: false
-file_name: ./backend/CONFIG.yml
+file_name: ./backend/NEWCONFIG.yml
 is_zmq_api_enabled: true
 number_of_audio_ports: 2
-number_of_states: 2
-number_of_strips: 2
+number_of_states: 10
+number_of_strips: 1
 states:
-- active_audio_channel_index: 0
-  active_color_scheme_index: 0
-  active_visualizer_effect: scroll
-  audio_decay: 0.1
-  audio_gain: 1
-  audio_samples_filter_max: 24
-  audio_samples_filter_min: 0
-  blur_value: 1.0
-  chunk_size: 50
-  color_schemes: &id003
-  - - red
-    - green
-    - blue
-  - - red
-    - green
-  - - blue
-  division_value: 0
-  formatted_color_schemes:
-  - - - 255
-      - 0
-      - 0
-    - - 0
-      - 128
-      - 0
-    - - 0
-      - 0
-      - 255
-  - - - 255
-      - 0
-      - 0
-    - - 0
-      - 128
-      - 0
-  - - - 0
-      - 0
-      - 255
-  is_mirror: false
-  is_reverse: false
-  max_brightness: 100
-  name: Classic energy
-  number_of_color_schemes: 3
-  time_interval: 10
 - &id001
   active_audio_channel_index: 0
   active_color_scheme_index: 0
-  active_visualizer_effect: scroll
+  active_visualizer_effect: spectrum
   audio_decay: 0.1
   audio_gain: 1
   audio_samples_filter_max: 24
@@ -107,24 +65,76 @@ states:
   name: Classic energy 2
   number_of_color_schemes: 3
   time_interval: 10
+- active_audio_channel_index: 0
+  active_color_scheme_index: 0
+  active_visualizer_effect: channel_intensity
+  audio_decay: 0.1
+  audio_gain: 1
+  audio_samples_filter_max: 24
+  audio_samples_filter_min: 0
+  blur_value: 4.0
+  chunk_size: 5
+  color_schemes:
+  - - '#FF0000'
+    - '#00FF00'
+  division_value: 0
+  formatted_color_schemes:
+  - - - 255
+      - 0
+      - 0
+    - - 0
+      - 255
+      - 0
+  is_mirror: false
+  is_reverse: false
+  max_brightness: 120
+  name: dududu
+  number_of_color_schemes: 1
+  time_interval: 120
+- active_audio_channel_index: 0
+  active_color_scheme_index: 0
+  active_visualizer_effect: channel_flash
+  audio_decay: 0.1
+  audio_gain: 1
+  audio_samples_filter_max: 24
+  audio_samples_filter_min: 0
+  blur_value: 4.0
+  chunk_size: 5
+  color_schemes:
+  - - '#FF0000'
+    - '#00FF00'
+  division_value: 0
+  formatted_color_schemes:
+  - - - 255
+      - 0
+      - 0
+    - - 0
+      - 255
+      - 0
+  is_mirror: false
+  is_reverse: false
+  max_brightness: 120
+  name: dwadawdawd
+  number_of_color_schemes: 1
+  time_interval: 120
 strips:
 - active_state: *id001
-  active_state_index: 1
+  active_state_index: 0
   is_online: false
   midi_logs:
-  - note: 1
-    port: Audio2Led ChangeMod Side
-    type: note_on
-    velocity: 127
   - note: 0
     port: Audio2Led ChangeMod Side
     type: note_on
     velocity: 127
-  - note: 26
+  - action: updatestate
+    data: Classic energy 2
+    port: Audio2Led ChangeMod Side
+    type: sysex
+  - note: 9
     port: Audio2Led ChangeMod Side
     type: note_on
-    velocity: 1
-  - note: 0
+    velocity: 127
+  - note: 4
     port: Audio2Led ChangeMod Side
     type: note_on
     velocity: 127
@@ -229,161 +239,6 @@ strips:
     - 10
     - 10
     - 10
-- active_state:
-    active_audio_channel_index: 0
-    active_color_scheme_index: 0
-    active_visualizer_effect: scroll
-    audio_decay: 0.1
-    audio_gain: 1
-    audio_samples_filter_max: 24
-    audio_samples_filter_min: 0
-    blur_value: 1.0
-    chunk_size: 50
-    color_schemes: *id003
-    division_value: 0
-    formatted_color_schemes:
-    - - - 255
-        - 0
-        - 0
-      - - 0
-        - 128
-        - 0
-      - - 0
-        - 0
-        - 255
-    - - - 255
-        - 0
-        - 0
-      - - 0
-        - 128
-        - 0
-    - - - 0
-        - 0
-        - 255
-    is_mirror: false
-    is_reverse: false
-    max_brightness: 100
-    name: Classic energy
-    number_of_color_schemes: 3
-    time_interval: 10
-  active_state_index: 0
-  is_online: false
-  midi_ports_for_changing_mode:
-  - Audio2Led ChangeMod Center
-  midi_ports_for_visualization:
-  - Audio2Led Synth
-  name: Bar2
-  original_physical_shape: &id004
-  - 80
-  physical_shape:
-    number_of_pixels: 80
-    number_of_substrip: 1
-    offsets:
-    - 80
-    shape: *id004
-  scene:
-    shapes:
-    - offset:
-      - 50
-      - -15
-      pixel_range:
-      - 0
-      - 80
-      svg_string: M0, -100 150, 150
-    - offset:
-      - 50
-      - -15
-      pixel_range:
-      - 0
-      - 80
-      svg_string: M150, 150 -150, 150
-    - offset:
-      - 50
-      - -15
-      pixel_range:
-      - 0
-      - 80
-      svg_string: M-150, 150 0,-100
-    - offset:
-      - 0
-      - 0
-      pixel_range:
-      - 0
-      - 80
-      svg_string: M0, 0 0,100
-    - offset:
-      - 0
-      - 0
-      pixel_range:
-      - 0
-      - 80
-      svg_string: M0, 100 100,100
-    - offset:
-      - 0
-      - 0
-      pixel_range:
-      - 0
-      - 80
-      svg_string: M100, 100 100,0
-    - offset:
-      - 0
-      - 0
-      pixel_range:
-      - 0
-      - 80
-      svg_string: M100, 0 0,0
-    size:
-      height: 100
-      scale: 1
-      width: 100
-  serial_port_name: /dev/tty.usbserial-A50285BI2
-  shapes:
-  - number_of_pixels: 80
-    number_of_substrip: 1
-    offsets:
-    - 80
-    shape:
-    - 80
-  - number_of_pixels: 80
-    number_of_substrip: 2
-    offsets:
-    - 40
-    - 80
-    shape:
-    - 40
-    - 40
-  - number_of_pixels: 80
-    number_of_substrip: 4
-    offsets:
-    - 20
-    - 40
-    - 60
-    - 80
-    shape:
-    - 20
-    - 20
-    - 20
-    - 20
-  - number_of_pixels: 80
-    number_of_substrip: 8
-    offsets:
-    - 10
-    - 20
-    - 30
-    - 40
-    - 50
-    - 60
-    - 70
-    - 80
-    shape:
-    - 10
-    - 10
-    - 10
-    - 10
-    - 10
-    - 10
-    - 10
-    - 10
 timeSinceStart:
-  end: 1594965795.255635
-  start: 1594965795.255635
+  end: 1594908497.740295
+  start: 1594908497.0250828

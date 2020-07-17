@@ -1,0 +1,26 @@
+.strip {
+  padding-bottom: 10px;
+  cursor: pointer;
+  hr {
+    margin-top: 0;
+    margin-bottom: 0;
+  }
+}
+
+.strip__header {
+  display: flex;
+}
+
+.strip__header__title {
+  font-size: 12px;
+  text-transform: uppercase;
+  color: rgba(255, 255, 255, 1);
+  span {
+    color: rgba(255, 255, 255, 0.5);
+    margin: 0 5px;
+  }
+}
+
+.strip__live-view {
+  padding-top: 5px;
+}

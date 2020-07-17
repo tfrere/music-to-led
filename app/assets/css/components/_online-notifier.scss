@@ -1,8 +1,7 @@
 .online-notifier {
   display: flex;
-  position: absolute;
-  top: 22px;
-  right: 20px;
+  margin-left: auto;
+  cursor: pointer;
 }
 .online-notifier__label {
   text-transform: uppercase;

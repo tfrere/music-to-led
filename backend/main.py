@@ -10,6 +10,7 @@ import setproctitle
 import concurrent.futures
 from multiprocessing import Pool
 import numpy as np
+from copy import deepcopy
 
 from config.configLoader import ConfigLoader
 
@@ -33,7 +34,7 @@ from visualizations.modSwitcher import ModSwitcher
 
 def kill_proc_tree(pid, frame):
     print("└-> Bye !")
-    if(config.display_shell_interface):
+    if(config.display_shell_interface and shellInterface):
         shellInterface.clearTerminal()
     parent = psutil.Process(os.getpid())
     children = parent.children(recursive=False)
@@ -53,8 +54,11 @@ def zmqProcess(shared_list):
 
     host = 'tcp://127.0.0.1:8000'
     print('└-> Init zmq socket process running on : {}'.format(host))
-    server = ZmqServer(host, shared_list)
-    server.launch()
+    server = ZmqServer(host)
+
+    while True:
+        server.socket.send_string(server.computeInfos(shared_list))
+        time.sleep(0.050)
 
 
 def audioProcess(shared_list):
@@ -72,6 +76,7 @@ def audioProcess(shared_list):
     )
 
     while 1:
+        config = shared_list[0]
 
         audioDispatcher.dispatch()
         shared_list[1] = audioDispatcher.audio_datas
@@ -99,6 +104,7 @@ def serialProcess(index, shared_list):
     i = 0
 
     while 1:
+        config = shared_list[0]
         shared_list[2 + config.number_of_strips +
                     index] = serial.isOnline()
         serial.update(
@@ -109,6 +115,7 @@ def serialProcess(index, shared_list):
 def stripProcess(index, shared_list):
 
     config = shared_list[0]
+
     strip_config = config.strips[index]
     active_state = config.states[strip_config.active_state_index]
     audio_datas = shared_list[1]
@@ -139,8 +146,10 @@ def stripProcess(index, shared_list):
         index,
         verbose=not config.display_shell_interface
     )
+    hasStatesChanged = False
 
     while 1:
+        config = shared_list[0]
 
         visualizer.audio_datas = shared_list[1]
 
@@ -152,8 +161,18 @@ def stripProcess(index, shared_list):
         # Updating midi logs
         strip_config.midi_logs += midiDispatcher.midi_datas_for_changing_mode
         strip_config.midi_logs += midiDispatcher.midi_datas_for_visualization
-        if(len(strip_config.midi_logs) > 10):
+        while(len(strip_config.midi_logs) > 5):
             strip_config.midi_logs.pop(0)
+
+        if(modSwitcher.hasStatesChanged):
+            print("updatedstate")
+            hasStatesChanged = True
+            shared_list[0] = modSwitcher.config
+
+        elif(hasStatesChanged):
+            print("otherstates")
+            modSwitcher.config = shared_list[0]
+            hasStatesChanged = False
 
         strip_config = modSwitcher.changeMod()
         active_state = strip_config.active_state
@@ -162,14 +181,10 @@ def stripProcess(index, shared_list):
         pixels = visualizer.applyMaxBrightness(
             pixels, active_state.max_brightness)
 
-        # print(strip_config.name)
-        # print(active_state.name)
-
         shared_list[2 + index] = [pixels, strip_config,
                                   active_state, framerateCalculator.getFps()]
 
         time.sleep(config.delay_between_frames)
-        print(1)
 
 
 def singleProcessStrip():
@@ -187,7 +202,7 @@ def singleProcessStrip():
 
     audioDispatcher = AudioDispatcher(
         audio_ports=config.audio_ports,
-        framerate=config.desirated_framerate
+        framerate=config.delay_between_frames
     )
 
     framerateCalculator = FramerateCalculator(config.desirated_framerate)
@@ -205,6 +220,7 @@ def singleProcessStrip():
 
     serial = Serial(
         number_of_pixels=number_of_pixels,
+        desirated_framerate=config.delay_between_frames,
         port=serial_port_name
     )
 
@@ -232,11 +248,11 @@ def singleProcessStrip():
         strip_config = modSwitcher.changeMod()
 
         pixels = visualizer.drawFrame()
-        print(pixels)
 
         serial.update(
             pixels
         )
+        time.sleep(config.delay_between_frames)
 
 
 if __name__ == "__main__":
@@ -367,6 +383,10 @@ if __name__ == "__main__":
             for i in range(config.number_of_strips):
                 executor.submit(stripProcess, i, shared_list)
                 executor.submit(serialProcess, i, shared_list)
+
+            time.sleep(1)
+            print("-- Program successfully launched !")
+            time.sleep(1)
 
             if(config.display_shell_interface):
 

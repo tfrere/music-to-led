@@ -39,14 +39,17 @@ class Visualizer(Spectrum, FullColor, FadeOut, Clear, AlternateColors, Transitio
         self.strip_config = config.strips[index]
         self.pixelReshaper = PixelReshaper(self.config, index)
 
+        self.hasBegun = False
         self.audio_datas = []
         self.audio_data = []
+        self.old_audio_data = []
         self.midi_datas = []
 
         self.initVizualiser()
 
     def initVizualiser(self):
 
+        # self.active_state = deepcopy(self.strip_config.active_state)
         self.active_state = self.strip_config.active_state
         self.number_of_pixels = self.strip_config.shapes[
             self.active_state.division_value].number_of_pixels
@@ -54,6 +57,8 @@ class Visualizer(Spectrum, FullColor, FadeOut, Clear, AlternateColors, Transitio
         self.timeSinceStart = self.config.timeSinceStart
         self.number_of_audio_samples = self.config.audio_ports[
             self.active_state.active_audio_channel_index].number_of_audio_samples
+
+        self.old_audio_data = np.tile(0.0, self.number_of_audio_samples)
 
         self.gain = ExpFilter(
             np.tile(0.01, self.number_of_audio_samples),
@@ -80,9 +85,25 @@ class Visualizer(Spectrum, FullColor, FadeOut, Clear, AlternateColors, Transitio
 
         self.pixelReshaper.initActiveShape()
 
+    def smoothDecay(self, audio_data, decay_value):
+
+        new_audio_data = audio_data.copy()
+        for i, channel in enumerate(new_audio_data):
+            if(new_audio_data[i] > self.old_audio_data[i]):
+                new_audio_data[i] = new_audio_data[i]
+            else:
+                if(new_audio_data[i] > decay_value):
+                    new_audio_data[i] = self.old_audio_data[i] - decay_value
+
+        self.old_audio_data = new_audio_data.copy()
+
+        return new_audio_data
+
     def filterAudioDatas(self, audio_data):
 
         # self.config.audio_datas
+        audio_data = self.smoothDecay(
+            audio_data, self.active_state.audio_decay)
 
         min = self.active_state.audio_samples_filter_min
         max = self.active_state.audio_samples_filter_max
@@ -91,9 +112,11 @@ class Visualizer(Spectrum, FullColor, FadeOut, Clear, AlternateColors, Transitio
         # audio_channel_min_frequency, audio_channel_max_frequency
         for i, sample in enumerate(audio_data):
             if(i < min or i > max):
-                new_audio_data[i] = sample * 0
+                new_audio_data[i] = 0
             else:
-                new_audio_data[i] = sample
+                new_audio_data[i] = sample * self.active_state.audio_gain
+
+        self.old_audio_data = audio_data
 
         return new_audio_data
 

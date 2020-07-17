@@ -3,7 +3,7 @@ import Show from '../components/Show';
 
 export default function ShowPage() {
   return (
-    <div className="page page--show">
+    <div className="page page--builder">
       <Show />
     </div>
   );

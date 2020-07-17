@@ -2,6 +2,8 @@ import numpy as np
 
 from copy import deepcopy
 
+from config.configLoader import StateConfig
+
 
 def convertRange(value, r1, r2, rounded=True):
     value = ((value - r1[0]) * (r2[1] - r2[0])) / (r1[1] - r1[0]) + r2[0]
@@ -16,8 +18,10 @@ class ModSwitcher:
     def __init__(self, visualizer, config, index, verbose=False):
 
         self.config = config
+        self.strip_index = index
         self.strip_config = config.strips[index]
         self.active_state = self.strip_config.active_state
+        self.hasStatesChanged = False
 
         self.visualizer = visualizer
         self.verbose = verbose
@@ -43,12 +47,99 @@ class ModSwitcher:
     def changeMod(self):
         if(self.midi_datas):
             for midi_data in self.midi_datas:
+                # STATES CRUD
+                if(midi_data["type"] == "sysex"):
+                    if(midi_data["action"] == "newstate"):
+                        try:
+                            self.visualizer.resetFrame()
+
+                            currentState = deepcopy(StateConfig())
+                            currentState.name = midi_data["data"]
+                            self.config.states.append(currentState)
+                            self.config.number_of_states = len(
+                                self.config.states)
+
+                            newActiveStateIndex = len(self.config.states) - 1
+                            self.strip_config.active_state_index = newActiveStateIndex
+                            self.strip_config.active_state = deepcopy(
+                                self.config.states[newActiveStateIndex])
+                            self.active_state = self.strip_config.active_state
+                            self.config.strips[self.strip_index].active_state_index = newActiveStateIndex
+
+                            self.config.saveToYmlFile()
+
+                            self.hasStatesChanged = True
+
+                            self.visualizer.initVizualiser()
+
+                            self.logger(self.strip_config.name,
+                                        "is adding new state named " + midi_data["data"])
+
+                        except:
+                            print("add error")
+
+                    if(midi_data["action"] == "updatestate"):
+                        try:
+
+                            name = midi_data["data"]
+
+                            print(name)
+                            print(
+                                self.config.states[0].active_visualizer_effect)
+                            print(
+                                self.strip_config.active_state.active_visualizer_effect)
+                            print(
+                                self.config.strips[0].active_state.active_visualizer_effect)
+
+                            self.config.states[self.strip_config.active_state_index] = (
+                                self.active_state)
+
+                            self.strip_config.active_state.name = name
+                            self.config.saveToYmlFile()
+                            self.hasStatesChanged = True
+                            self.logger(self.strip_config.name,
+                                        "is updating state named " + name)
+                        except:
+                            print("update error")
+
+                    if(midi_data["action"] == "deletestate"):
+                        try:
+                            name = midi_data["data"]
+
+                            if(len(self.config.states) > 1):
+
+                                for i, state in enumerate(self.config.states):
+                                    print(i, state.name, name)
+
+                                    if(state.name == name):
+                                        print("removing", self.config.states)
+                                        del self.config.states[i]
+
+                                        newActiveStateIndex = len(
+                                            self.config.states) - 1
+                                        print(newActiveStateIndex)
+                                        self.strip_config.active_state_index = newActiveStateIndex
+                                        self.strip_config.active_state = deepcopy(
+                                            self.config.states[newActiveStateIndex])
+                                        self.active_state = self.strip_config.active_state
+                                        self.config.strips[self.strip_index].active_state_index = newActiveStateIndex
+
+                                        self.config.saveToYmlFile()
+                                        self.hasStatesChanged = True
+                                        self.logger(self.strip_config.name,
+                                                    "is deleting state named " + name)
+                            else:
+                                self.logger(self.strip_config.name,
+                                            "cannot delete state named " + name + " - config must have at least one state")
+                        except:
+                            print("delete error")
+                # MOD CHANGER
                 if(midi_data["type"] == "note_on"):
                     mode = midi_data["note"]
                     velocity = midi_data["velocity"]
                     old_vizualizer_effect = self.active_state.active_visualizer_effect
                     # VISUALIZATIONS EFFECTS
-                    base_note_increment = 48
+                    base_note_increment = 0
                     if(mode >= base_note_increment + 0 and mode < base_note_increment + 16):
 
                         # SOUND BASED
@@ -107,7 +198,7 @@ class ModSwitcher:
                             self.logger(self.strip_config.name, message)
 
                     # MODIFIERS
-                    if(mode >= base_note_increment + 16 and mode <= base_note_increment + 26):
+                    if(mode >= base_note_increment + 16 and mode <= base_note_increment + 35):
 
                         if(mode == base_note_increment + 16):
                             self.active_state.is_reverse = not self.active_state.is_reverse
@@ -189,8 +280,9 @@ class ModSwitcher:
                                 self.strip_config.name, "is changing blur value to " + str(self.active_state.blur_value))
 
                         elif(mode == base_note_increment + 25):
+                            print(velocity)
                             self.active_state.division_value = convertRange(
-                                velocity, [1, 127], [0, 8], rounded=False)
+                                velocity, [1, 127], [0, 3], rounded=True)
                             self.logger(
                                 self.strip_config.name, "is changing division value to " + str(self.active_state.division_value))
 
@@ -211,5 +303,29 @@ class ModSwitcher:
 
                             self.logger(self.strip_config.name, "is changing state for " +
                                         self.config.states[self.strip_config.active_state_index].name)
+
+                        elif(mode == base_note_increment + 27):
+                            self.active_state.audio_samples_filter_min = convertRange(
+                                velocity, [1, 25], [0, 24], rounded=True)
+                            self.logger(
+                                self.strip_config.name, "is changing audio filter min to " + str(self.active_state.audio_samples_filter_min))
+
+                        elif(mode == base_note_increment + 28):
+                            self.active_state.audio_samples_filter_max = convertRange(
+                                velocity, [1, 25], [0, 24], rounded=True)
+                            self.logger(
+                                self.strip_config.name, "is changing audio filter max to " + str(self.active_state.audio_samples_filter_max))
+
+                        elif(mode == base_note_increment + 29):
+                            self.active_state.audio_gain = convertRange(
+                                velocity, [1, 127], [0.0, 1.0], rounded=False)
+                            self.logger(
+                                self.strip_config.name, "is changing audio gain to " + str(self.active_state.audio_gain))
+
+                        elif(mode == base_note_increment + 30):
+                            self.active_state.audio_decay = convertRange(
+                                velocity, [1, 127], [0.00001, 0.1], rounded=False)
+                            self.logger(
+                                self.strip_config.name, "is changing audio decay to " + str(self.active_state.audio_decay))
 
         return self.strip_config

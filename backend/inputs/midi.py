@@ -8,7 +8,11 @@ class Midi:
         self.notes = []
         self.port = 0
         self.port_name = port_name
-        self.port = mido.open_input(self.port_name)
+        try:
+            self.port = mido.open_input(self.port_name)
+        except IOError:
+            time.sleep(5)
+            self.port = mido.open_input(self.port_name)
 
     @staticmethod
     def tryPort(port_name):
@@ -50,17 +54,25 @@ class Midi:
     def getRawData(self):
         """ Return actual midi data """
         self.notes = []
-        for msg in self.port.iter_pending():
-            if(hasattr(msg, 'type') and (msg.type == "pitchwheel") and msg.pitch):
-                self.notes.append(
-                    {"port": self.port_name, "type": msg.type, "pitch": msg.pitch})
-            if(hasattr(msg, 'type') and (msg.type == "control_change") and msg.value and msg.control):
-                self.notes.append(
-                    {"port": self.port_name, "type": msg.type, "value": msg.value, "control": msg.control})
-            if(hasattr(msg, 'note') and hasattr(msg, 'type') and (msg.type == "note_on" or msg.type == "note_off") and hasattr(msg, 'velocity')):
-                message_type = "note_on" if msg.velocity > 0 else "note_ff"
-                self.notes.append(
-                    {"port": self.port_name, "type": msg.type, "note": msg.note, "velocity": msg.velocity})
+        if(self.port.iter_pending()):
+            for msg in self.port.iter_pending():
+                if(hasattr(msg, 'data')):
+                    # SYSEX MESSAGES
+                    message = bytearray(msg.data).decode("utf-8").split(":")
+                    messageAction = message[0].strip()[1:]
+                    messageData = message[1].strip()
+                    self.notes.append(
+                        {"port": self.port_name, "type": "sysex", "action": messageAction, "data": messageData})
+                if(hasattr(msg, 'type') and (msg.type == "pitchwheel") and msg.pitch):
+                    self.notes.append(
+                        {"port": self.port_name, "type": msg.type, "pitch": msg.pitch})
+                if(hasattr(msg, 'type') and (msg.type == "control_change") and msg.value and msg.control):
+                    self.notes.append(
+                        {"port": self.port_name, "type": msg.type, "value": msg.value, "control": msg.control})
+                if(hasattr(msg, 'note') and hasattr(msg, 'type') and (msg.type == "note_on" or msg.type == "note_off") and hasattr(msg, 'velocity')):
+                    message_type = "note_on" if msg.velocity > 0 else "note_ff"
+                    self.notes.append(
+                        {"port": self.port_name, "type": msg.type, "note": msg.note, "velocity": msg.velocity})
         return self.notes
 
     def __del__(self):

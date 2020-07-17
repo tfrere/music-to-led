@@ -6,17 +6,24 @@ import { History } from 'history';
 import { Store } from '../types';
 import Routes from '../Routes';
 
-type Props = {
-  store: Store;
-  history: History;
-};
+class Root extends React.Component {
+  componentWillMount() {
+    this.unlisten = this.props.history.listen((location, action) => {
+      console.log('on route change');
+    });
+  }
+  componentWillUnmount() {
+    this.unlisten();
+  }
 
-const Root = ({ store, history }: Props) => (
-  <Provider store={store}>
-    <ConnectedRouter history={history}>
-      <Routes />
-    </ConnectedRouter>
-  </Provider>
-);
-
+  render() {
+    return (
+      <Provider store={this.props.store}>
+        <ConnectedRouter history={this.props.history}>
+          <Routes />
+        </ConnectedRouter>
+      </Provider>
+    );
+  }
+}
 export default hot(Root);

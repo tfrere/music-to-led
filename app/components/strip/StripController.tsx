@@ -2,11 +2,19 @@ import React from 'react';
 
 const NOTE_ON = 0x90;
 const NOTE_OFF = 0x80;
+const META_TEXT = 0xff;
 
 import convertRange from '../../utils/convertRange.js';
-import guessNoteNumber from '../../utils/guessNoteNumber.js';
-
 import Select from '../generic/Select';
+import Button from '../generic/Button';
+import ColorScheme from '../generic/ColorScheme';
+
+import MidiVisualizer from '../midi/MidiVisualizer';
+import StateController from '../strip/StateController';
+
+import AudioVisualizerCanvas from '../audio/AudioVisualizerCanvas';
+
+const types = ['audio', 'midi', 'time', 'generic'];
 
 const keyConfiguration = {
   effects: [
@@ -14,6 +22,8 @@ const keyConfiguration = {
       name: 'scroll',
       label: 'Scroll',
       note: 'C3',
+      note_int: 0,
+      is_first: true,
       type: 'audio',
       has_gap: false
     },
@@ -21,21 +31,37 @@ const keyConfiguration = {
       name: 'energy',
       label: 'Energy',
       note: 'C#3',
+      note_int: 1,
+      is_first: false,
       type: 'audio',
       has_gap: false
     },
     {
       name: 'channel_flash',
-      label: 'Chan. Flash',
+      label: 'Flash',
       note: 'D3',
+      note_int: 2,
+      is_first: false,
       type: 'audio',
       has_gap: false
     },
     {
       name: 'channel_intensity',
-      label: 'Chan. Intensity',
+      label: 'Intensity',
       note: 'D#3',
+      note_int: 3,
+      is_first: false,
       type: 'audio',
+      has_gap: false
+    },
+
+    {
+      name: 'spectrum',
+      label: 'Spectrum',
+      note: 'E3',
+      note_int: 4,
+      type: 'audio',
+      is_first: false,
       has_gap: true
     },
 
@@ -43,6 +69,8 @@ const keyConfiguration = {
       name: 'piano_scroll',
       label: 'Midi Scroll',
       note: 'F3',
+      note_int: 5,
+      is_first: true,
       type: 'midi',
       has_gap: false
     },
@@ -50,6 +78,9 @@ const keyConfiguration = {
       name: 'piano_note',
       label: 'Midi note',
       note: 'F#3',
+      note_int: 6,
+      is_first: false,
+
       type: 'midi',
       has_gap: false
     },
@@ -57,6 +88,8 @@ const keyConfiguration = {
       name: 'pitchwheel_flash',
       label: 'Pitch. Flash',
       note: 'G3',
+      note_int: 7,
+      is_first: false,
       type: 'midi',
       has_gap: true
     },
@@ -64,6 +97,9 @@ const keyConfiguration = {
       name: 'alternate_color_chunks',
       label: 'Alt. Chunks',
       note: 'G#3',
+      note_int: 8,
+      is_first: true,
+
       type: 'time',
       has_gap: false
     },
@@ -72,6 +108,8 @@ const keyConfiguration = {
       name: 'alternate_color_shapes',
       label: 'Alt. Shapes',
       note: 'A3',
+      note_int: 9,
+      is_first: false,
       type: 'time',
       has_gap: false
     },
@@ -79,6 +117,8 @@ const keyConfiguration = {
       name: 'transition_color_shapes',
       label: 'Fade colors',
       note: 'A#3',
+      note_int: 10,
+      is_first: false,
       type: 'time',
       has_gap: true
     },
@@ -86,6 +126,8 @@ const keyConfiguration = {
       name: 'draw_line',
       label: 'Draw',
       note: 'B3',
+      note_int: 11,
+      is_first: true,
       type: 'generic',
       has_gap: false
     },
@@ -94,6 +136,8 @@ const keyConfiguration = {
       name: 'full_color',
       label: 'Full',
       note: 'B#3',
+      note_int: 12,
+      is_first: false,
       type: 'generic',
       has_gap: false
     },
@@ -101,6 +145,9 @@ const keyConfiguration = {
       name: 'fade_out',
       label: 'Fade to black',
       note: 'C#4',
+      note_int: 13,
+      is_first: false,
+
       type: 'generic',
       has_gap: false
     },
@@ -108,6 +155,9 @@ const keyConfiguration = {
       name: 'clear_frame',
       label: 'Clear',
       note: 'D4',
+      note_int: 14,
+      is_first: false,
+
       type: 'generic',
       has_gap: false
     },
@@ -115,74 +165,11 @@ const keyConfiguration = {
       name: 'fire',
       label: 'Fire',
       note: 'D#4',
+      note_int: 15,
+      is_first: false,
+
       type: 'generic',
       has_gap: false
-    }
-  ],
-  modifiers: [
-    {
-      name: 'reverse',
-      label: 'Reverse',
-      note: 'E4',
-      type: 'generic'
-    },
-    {
-      name: 'mirror',
-      label: 'Mirror',
-      note: 'E#4',
-      type: 'generic'
-    },
-    {
-      name: 'shape',
-      label: 'Shape',
-      note: 'F#4',
-      type: 'generic'
-    },
-    {
-      name: 'color',
-      label: 'Color',
-      note: 'G4',
-      type: 'generic'
-    },
-    {
-      name: 'audio_channel',
-      label: 'Audio Chan.',
-      note: 'G#4',
-      type: 'generic'
-    }
-  ],
-  parameters: [
-    {
-      name: 'time',
-      label: 'Time',
-      note: 'A4',
-      min: 1,
-      max: 127,
-      initialValue: 6
-    },
-    {
-      name: 'brightness',
-      label: 'Brightness',
-      note: 'A#4',
-      min: 1,
-      max: 127,
-      initialValue: 6
-    },
-    {
-      name: 'chunk_size',
-      label: 'Chunk size',
-      note: 'B4',
-      min: 1,
-      max: 127,
-      initialValue: 6
-    },
-    {
-      name: 'blur_value',
-      label: 'Blur value',
-      note: 'B#4',
-      min: 1,
-      max: 127,
-      initialValue: 6
     }
   ]
 };
@@ -193,32 +180,65 @@ class StripController extends React.Component {
     let that = this;
 
     this.state = {
-      midiOutput: null
+      midiOutput: null,
+      midiOutputs: [],
+      isMidiAlreadyInitialized: false,
+      isStatePristine: true
     };
   }
 
   componentDidMount() {
     let that = this;
+    that.changeMidiChannel(that.props.name);
+  }
 
-    navigator.requestMIDIAccess().then(midiAccess => {
-      const outputs = midiAccess.outputs.values();
-      for (const output of outputs) {
-        if (output.name == this.props.name) {
-          that.setState({
-            midiOutput: output
-          });
-        }
+  componentWillUpdate(oldProps) {
+    let that = this;
+
+    // console.log(oldProps);
+    if (this.props.name != oldProps.name) {
+      window.setTimeout(() => {
+        that.changeMidiChannel(that.props.name);
+      });
+    }
+  }
+
+  changeMidiChannel = name => {
+    let that = this;
+    for (const output of window.outputs) {
+      if (output.name === name) {
+        that.setState({
+          midiOutput: output
+        });
+      }
+    }
+  };
+
+  sendNote = (note, velocity = 127) => {
+    let CHANGE_STATE = 26;
+    if (note != CHANGE_STATE && this.state.isStatePristine) {
+      this.setState({ isStatePristine: false });
+    } else if (note == CHANGE_STATE && !this.state.isStatePristine) {
+      this.setState({ isStatePristine: true });
+    }
+    this.state.midiOutput.send(NOTE_ON, [note, velocity]);
+    this.state.midiOutput.send(NOTE_OFF, [note, velocity]);
+  };
+
+  sendText = text => {
+    var buf = Buffer.from(text).toJSON().data;
+    this.state.midiOutput.sendSysex(0x00, buf);
+    this.setState({ isStatePristine: true });
+  };
+
+  isAlreadyTakenStateName(name) {
+    let response = false;
+    this.props.config.states.map(elem => {
+      if (name == elem.name) {
+        response = true;
       }
     });
-  }
-
-  handleChange(note, velocity = 127) {
-    this.state.midiOutput.send([NOTE_ON, guessNoteNumber(note), velocity]);
-    this.state.midiOutput.send([NOTE_OFF, guessNoteNumber(note), velocity]);
-  }
-
-  handleEffectChange(event) {
-    this.setState({ value: event.target.value });
+    return response;
   }
 
   render() {
@@ -226,7 +246,12 @@ class StripController extends React.Component {
       active_audio_channel_name,
       active_states,
       active_state,
-      strip
+      strip,
+      is_strip_online,
+      framerate,
+      config,
+      audios,
+      strip_index
     } = this.props;
 
     let active_shape = strip.shapes[active_state.division_value].shape;
@@ -236,208 +261,323 @@ class StripController extends React.Component {
     let is_mirror = active_state.is_mirror.toString();
     let time_interval = active_state.time_interval;
     let max_brightness = active_state.max_brightness;
+    let audio_samples_filter_min = active_state.audio_samples_filter_min;
+    let audio_samples_filter_max = active_state.audio_samples_filter_max;
+    let audio_gain = active_state.audio_gain;
+    let audio_decay = active_state.audio_decay;
     let chunk_size = active_state.chunk_size;
     let blur_value = active_state.blur_value;
     let division_value = active_state.division_value;
 
+    let buttonHolder = types.map(e => {
+      let buttonGroup = keyConfiguration.effects
+        .filter(elem => {
+          return elem.type == e;
+        })
+        .map(elem => {
+          let isActiveClass = 'strip-controller__button ';
+          isActiveClass +=
+            active_state.active_visualizer_effect === elem.name
+              ? ' button--reverse'
+              : ' ';
+
+          isActiveClass += ' ' + elem.type;
+
+          return (
+            <>
+              <Button
+                alt={elem.note}
+                key={elem.name}
+                className={isActiveClass + ' button--has-type'}
+                onClick={() => {
+                  this.sendNote(elem.note_int);
+                }}
+              >
+                <span className="button__type">{elem.note}</span>
+                {elem.label}
+              </Button>
+            </>
+          );
+        });
+      return (
+        <div className="button-group button-group--stretched">
+          {buttonGroup}
+        </div>
+      );
+    });
+
     return (
       <div className="strip-controller">
-        {this.state.midiOutput ? (
-          <div>
+        {this.state.midiOutputs ? (
+          <>
+            <StateController
+              isStatePristine={this.state.isStatePristine}
+              sendText={this.sendText}
+              sendNote={this.sendNote}
+              config={config}
+              active_state={active_state}
+            />
+            <hr />
             <div className="strip-controller-group">
-              <Select
-                options={this.props.config.audio_ports.map(elem => {
-                  return { name: elem.name };
-                })}
-                defaultValue={active_audio_channel_name}
-                setValue={value => {
-                  let stateIndex = -1;
-                  this.props.config.audio_ports.map((elem, index) => {
-                    if (elem.name === value) {
-                      stateIndex = index;
-                    }
-                  });
-
-                  this.handleChange('G#4', stateIndex);
-                }}
-              />
-
-              <Select
-                options={this.props.config.states.map(elem => {
-                  return { name: elem.name };
-                })}
-                defaultValue={this.props.strip.active_state.name}
-                setValue={value => {
-                  let stateIndex = -1;
-                  this.props.config.states.map((elem, index) => {
-                    if (elem.name === value) {
-                      stateIndex = index;
-                    }
-                  });
-
-                  this.handleChange('D5', stateIndex);
-                }}
-              />
-
-              <Select
-                options={active_state.color_schemes.map((elem, index) => {
-                  return {
-                    name: index,
-                    scheme: active_state.color_schemes[index]
-                  };
-                })}
-                defaultValue={active_state.active_color_scheme_index}
-                setValue={value => {
-                  let stateIndex = -1;
-                  active_state.color_schemes.map((elem, index) => {
-                    if (index == value) {
-                      stateIndex = index;
-                    }
-                  });
-                  this.handleChange('G4', stateIndex);
-                }}
-              />
-            </div>
-            <h5 className="strip-controller__title">Effects</h5>
-            <div className="strip-controller-group">
-              {keyConfiguration.effects.map(elem => {
-                let isActiveClass = 'strip-controller__button ';
-                let hasGapClass = elem.has_gap
-                  ? ' strip-controller__button--with-gap'
-                  : '';
-                isActiveClass +=
-                  active_state.active_visualizer_effect === elem.name
-                    ? 'active'
-                    : ' ';
-
-                isActiveClass += hasGapClass;
-
-                isActiveClass += ' ' + elem.type;
-
-                return (
-                  <button
-                    key={elem.name}
-                    className={isActiveClass}
+              <div className="strip-controller-group__item strip-controller-group__item--effect">
+                {buttonHolder}
+              </div>
+              <div className="strip-controller-group__item">
+                <div className="button-group button-group--stretched">
+                  <Button
+                    className="button"
                     onClick={() => {
-                      this.handleChange(elem.note);
+                      this.sendNote(19);
                     }}
                   >
-                    <span className="strip-controller__button__type">
-                      {elem.type[0]}
-                    </span>
-                    {elem.label}
-                  </button>
-                );
-              })}
-            </div>
-            <h5 className="strip-controller__title">Modifiers</h5>
-            <div className="strip-controller-group">
-              <button
-                className="button"
-                style={{
-                  background: active_state.is_reverse ? 'white' : 'transparent',
-                  color: active_state.is_reverse ? 'black' : 'white'
-                }}
-                onClick={() => {
-                  this.handleChange('E4');
-                }}
-              >
-                Reverse
-              </button>
-              <button
-                className="button"
-                style={{
-                  background: active_state.is_mirror ? 'white' : 'transparent',
-                  color: active_state.is_mirror ? 'black' : 'white'
-                }}
-                onClick={() => {
-                  this.handleChange('E#4');
-                }}
-              >
-                Mirror
-              </button>
+                    <>
+                      Color <ColorScheme scheme={active_color_scheme} />
+                    </>
+                  </Button>
+                  <Button
+                    className={active_state.is_reverse ? 'button--reverse' : ''}
+                    onClick={() => {
+                      this.sendNote(16);
+                    }}
+                  >
+                    Reverse
+                  </Button>
 
-              <button
-                className="button"
-                onClick={() => {
-                  this.handleChange('F#4');
-                }}
-              >
-                Divide {division_value}
-              </button>
-            </div>
-            <h5 className="strip-controller__title">Parameters</h5>
-            <div className="strip-controller-group">
-              <div>
-                <div className="slider-holder">
-                  <label htmlFor="time">
-                    Time <span>{time_interval}</span>
-                  </label>
-                  <input
-                    className="input"
-                    onChange={e => {
-                      this.handleChange('A4', e.target.value);
+                  <Button
+                    className={active_state.is_mirror ? 'button--reverse' : ''}
+                    onClick={() => {
+                      this.sendNote(17);
                     }}
-                    type="range"
-                    name="time"
-                    min="1"
-                    max="127"
-                    value={time_interval}
-                  />
+                  >
+                    Mirror
+                  </Button>
+
+                  <Button
+                    className="button"
+                    onClick={() => {
+                      this.sendNote(25);
+                    }}
+                  >
+                    Divide {division_value}
+                  </Button>
                 </div>
-                <div className="slider-holder">
-                  <label htmlFor="brightness">
-                    Brightness <span>{max_brightness}</span>
-                  </label>
-                  <input
-                    className="input"
-                    onChange={e => {
-                      this.handleChange('A#4', e.target.value);
-                    }}
-                    type="range"
-                    name="brightness"
-                    min="1"
-                    max="127"
-                    value={max_brightness}
-                  />
-                </div>
-                <div className="slider-holder">
-                  <label htmlFor="chunk_size">
-                    Chunk Size <span>{chunk_size}</span>
-                  </label>
-                  <input
-                    className="input"
-                    onChange={e => {
-                      this.handleChange('B4', e.target.value);
-                    }}
-                    type="range"
-                    name="chunk_size"
-                    min="1"
-                    max="127"
-                    value={chunk_size}
-                  />
-                </div>
-                <div className="slider-holder">
-                  <label htmlFor="blur_value">
-                    Blur value <span>{blur_value}</span>
-                  </label>
-                  <input
-                    className="input"
-                    onChange={e => {
-                      this.handleChange('B#4', e.target.value);
-                    }}
-                    type="range"
-                    name="blur_value"
-                    min="1"
-                    max="127"
-                    value={blur_value}
-                  />
+                <div className="strip-controller-group__item">
+                  <h5 className="strip-controller__title">Parameters</h5>
+                  <div className="card strip-controller__audio">
+                    <div className="slider-holder">
+                      <label htmlFor="time">
+                        Time <span>{time_interval}</span>
+                      </label>
+                      <input
+                        className="input"
+                        onChange={e => {
+                          this.sendNote(
+                            21,
+                            convertRange(e.target.value, [0, 500], [1, 127])
+                          );
+                        }}
+                        type="range"
+                        name="time"
+                        min="0"
+                        max="500"
+                        value={time_interval}
+                      />
+                    </div>
+                    <div className="slider-holder">
+                      <label htmlFor="brightness">
+                        Brightness <span>{max_brightness}</span>
+                      </label>
+                      <input
+                        className="input"
+                        onChange={e => {
+                          this.sendNote(
+                            22,
+                            convertRange(e.target.value, [0, 255], [1, 127])
+                          );
+                        }}
+                        type="range"
+                        name="brightness"
+                        min="0"
+                        max="255"
+                        value={max_brightness}
+                      />
+                    </div>
+                    <div className="slider-holder">
+                      <label htmlFor="chunk_size">
+                        Chunk Size <span>{chunk_size}</span>
+                      </label>
+                      <input
+                        className="input"
+                        onChange={e => {
+                          this.sendNote(
+                            23,
+                            convertRange(e.target.value, [0, 50], [1, 127])
+                          );
+                        }}
+                        type="range"
+                        name="chunk_size"
+                        min="0"
+                        max="50"
+                        value={chunk_size}
+                      />
+                    </div>
+                    <div className="slider-holder">
+                      <label htmlFor="blur_value">
+                        Blur value <span>{blur_value}</span>
+                      </label>
+                      <input
+                        className="input"
+                        onChange={e => {
+                          this.sendNote(
+                            24,
+                            convertRange(
+                              e.target.value,
+                              [0.1, 8],
+                              [1, 127],
+                              (rouded = True)
+                            )
+                          );
+                        }}
+                        type="range"
+                        name="blur_value"
+                        min="0"
+                        max="8"
+                        step="0.1"
+                        value={blur_value}
+                      />
+                    </div>
+                  </div>
+                  {/* audio filters */}
+                  <h5 className="strip-controller__title">Audio</h5>
+                  <div className="card strip-controller__audio">
+                    <Select
+                      options={this.props.config.audio_ports.map(elem => {
+                        return { name: elem.name };
+                      })}
+                      defaultValue={active_audio_channel_name}
+                      setValue={value => {
+                        let stateIndex = -1;
+                        this.props.config.audio_ports.map((elem, index) => {
+                          if (elem.name === value) {
+                            stateIndex = index;
+                          }
+                        });
+
+                        this.sendNote(20, stateIndex);
+                      }}
+                    />
+
+                    <AudioVisualizerCanvas
+                      name={
+                        config.audio_ports[
+                          active_state.active_audio_channel_index
+                        ].name
+                      }
+                      audio={audios[active_state.active_audio_channel_index]}
+                      audio_samples_filter_min={
+                        active_state.audio_samples_filter_min
+                      }
+                      audio_samples_filter_max={
+                        active_state.audio_samples_filter_max
+                      }
+                      audio_gain={active_state.audio_gain}
+                      width={75}
+                      height={30}
+                    />
+                    <div className="slider-holder">
+                      <label htmlFor="audio_samples_filter_min">
+                        min <span>{audio_samples_filter_min}</span>
+                      </label>
+                      <input
+                        className="input"
+                        onChange={e => {
+                          this.sendNote(
+                            27,
+                            convertRange(e.target.value, [0, 24], [1, 25])
+                          );
+                        }}
+                        type="range"
+                        name="audio_samples_filter_min"
+                        min="0"
+                        max="24"
+                        value={audio_samples_filter_min}
+                      />
+                    </div>
+
+                    <div className="slider-holder">
+                      <label htmlFor="audio_samples_filter_max">
+                        max <span>{audio_samples_filter_max}</span>
+                      </label>
+                      <input
+                        className="input"
+                        onChange={e => {
+                          this.sendNote(
+                            28,
+                            convertRange(e.target.value, [0, 24], [1, 25])
+                          );
+                        }}
+                        type="range"
+                        name="audio_samples_filter_max"
+                        min="0"
+                        max="24"
+                        value={audio_samples_filter_max}
+                      />
+                    </div>
+
+                    <div className="slider-holder">
+                      <label htmlFor="audio_gain">
+                        gain <span>{audio_gain}</span>
+                      </label>
+                      <input
+                        className="input"
+                        onChange={e => {
+                          this.sendNote(
+                            29,
+                            convertRange(e.target.value, [0.0, 1.0], [1, 127])
+                          );
+                        }}
+                        type="range"
+                        name="audio_gain"
+                        min="0"
+                        max="1"
+                        step="0.1"
+                        value={audio_gain}
+                      />
+                    </div>
+                  </div>
+                  {/* <div className="slider-holder">
+                        <label htmlFor="audio_decay">
+                          audio decay <span>{audio_decay}</span>
+                        </label>
+                        <input
+                          className="input"
+                          onChange={e => {
+                            this.sendNote(
+                              30,
+                              convertRange(e.target.value, [0.00001, 0.1], [1, 127])
+                            );
+                          }}
+                          type="range"
+                          name="audio_decay"
+                          min="0"
+                          max="1"
+                          step="0.1"
+                          value={audio_decay}
+                        />
+                      </div> */}
                 </div>
               </div>
             </div>
-          </div>
+            <hr />
+            <MidiVisualizer
+              midi_datas={strip.midi_logs}
+              channels={strip.midi_ports_for_changing_mode}
+            />
+          </>
         ) : (
-          'No midi channel associated'
+          <div className="screen-size flex-center-wrapper">
+            <span className="loading"></span>
+          </div>
         )}
       </div>
     );

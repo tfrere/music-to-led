@@ -1,0 +1,253 @@
+--- # document start
+
+################
+# CONFIG FILE  #
+################
+
+desirated_framerate: 60
+display_shell_interface: False
+is_zmq_api_enabled: True
+
+audio_ports:
+  - name: Loopback Audio
+    min_frequency: 200
+    max_frequency: 12000
+  - name: Built-in Microphone
+    min_frequency: 200
+    max_frequency: 12000
+
+state_groups:
+  - [1, 2]
+
+strips:
+  # - name: Angles
+  #   serial_port_name: /dev/tty.usbserial-A50285BI
+
+  #   midi_ports_for_visualization:
+  #     - 'Audio2Led Synth'
+  #     # - 'LPK25'
+  #   midi_ports_for_changing_mode:
+  #     - 'Audio2Led ChangeMod Center'
+
+  #   active_state_index: 0
+
+  #   physical_shape:
+  #     - 40
+  #     - 30
+  #     - 20
+
+  #   scene:
+  #     size:
+  #       width: 300
+  #       height: 200
+  #       scale: 1
+
+  #     shapes:
+  #       - svg_string: 'M0,0 0,100 T75,175'
+  #         pixel_range: [0, 40]
+  #         offset: [0, 0]
+  #       - svg_string: 'M50,0 50,75 T100,125'
+  #         pixel_range: [40, 70]
+  #         offset: [0, 0]
+  #       - svg_string: 'M100,0 100,50 T125,75'
+  #         pixel_range: [70, 90]
+  #         offset: [0, 0]
+  #       - svg_string: 'M300,0 300,100 T225,175'
+  #         pixel_range: [0, 40]
+  #         offset: [0, 0]
+  #       - svg_string: 'M250,0 250,75 T200,125'
+  #         pixel_range: [40, 70]
+  #         offset: [0, 0]
+  #       - svg_string: 'M200,0 200,50 T175,75'
+  #         pixel_range: [70, 90]
+  #         offset: [0, 0]
+
+  - name: Bar
+    serial_port_name: /dev/tty.usbserial-A50285BI2
+    midi_ports_for_visualization:
+      - 'Audio2Led Synth'
+      # - 'LPK25'
+    midi_ports_for_changing_mode:
+      - 'Audio2Led ChangeMod Side'
+    active_state_index: 0
+    original_physical_shape:
+      - 80
+
+    scene:
+      size:
+        width: 100
+        height: 100
+        scale: 1
+
+      shapes:
+        # - svg_string: 'M50, 50m -75, 0a 75,75 0 1,0 150,0a 75,75 0 1,0 -150,0'
+        #   pixel_range: [0, 80]
+        #   offset: [0, 0]
+
+        - svg_string: 'M0, -100 150, 150'
+          pixel_range: [0, 80]
+          offset: [50, -15]
+        - svg_string: 'M150, 150 -150, 150'
+          pixel_range: [0, 80]
+          offset: [50, -15]
+        - svg_string: 'M-150, 150 0,-100'
+          pixel_range: [0, 80]
+          offset: [50, -15]
+
+        - svg_string: 'M0, 0 0,100'
+          pixel_range: [0, 80]
+          offset: [0, 0]
+
+        - svg_string: 'M0, 100 100,100'
+          pixel_range: [0, 80]
+          offset: [0, 0]
+
+        - svg_string: 'M100, 100 100,0'
+          pixel_range: [0, 80]
+          offset: [0, 0]
+
+        - svg_string: 'M100, 0 0,0'
+          pixel_range: [0, 80]
+          offset: [0, 0]
+
+  # - name: Flowers
+  #   serial_port_name: /dev/tty.usbserial-A50285BI3
+  #   midi_ports_for_visualization:
+  #     - 'Audio2Led Synth'
+  #     # - 'LPK25'
+  #   midi_ports_for_changing_mode:
+  #     - 'Audio2Led ChangeMod Side 2'
+  #   active_state_index: 2
+  #   physical_shape:
+  #     - 80
+  #   scene:
+  #     size:
+  #       width: 70
+  #       height: 70
+  #       scale: 1
+  #     shapes:
+  #       - svg_string: 'M0,0 q53.03,-17.68 70.71,-70.71 q-53.03,17.68 -70.71,70.71 q-53.03,17.68 -70.71,70.71 q53.03,-17.68 70.71,-70.71'
+  #         pixel_range: [0, 80]
+  #         offset: [-300, 0]
+  #       - svg_string: 'M0,0 q25,-50 0,-100 q-25,50 0,100 q-25,50 0,100 q25,-50 0,-100'
+  #         pixel_range: [0, 80]
+  #         offset: [-300, 0]
+  #       - svg_string: 'M0,0 q-17.68,-53.03 -70.71,-70.71 q17.68,53.03 70.71,70.71 q17.68,53.03 70.71,70.71 q-17.68,-53.03 -70.71,-70.71'
+  #         pixel_range: [0, 80]
+  #         offset: [-300, 0]
+  #       - svg_string: 'M0,0 q53.03,-17.68 70.71,-70.71 q-53.03,17.68 -70.71,70.71 q-53.03,17.68 -70.71,70.71 q53.03,-17.68 70.71,-70.71'
+  #         pixel_range: [0, 80]
+  #         offset: [370, 0]
+  #       - svg_string: 'M0,0 q25,-50 0,-100 q-25,50 0,100 q-25,50 0,100 q25,-50 0,-100'
+  #         pixel_range: [0, 80]
+  #         offset: [370, 0]
+  #       - svg_string: 'M0,0 q-17.68,-53.03 -70.71,-70.71 q17.68,53.03 70.71,70.71 q17.68,53.03 70.71,70.71 q-17.68,-53.03 -70.71,-70.71'
+  #         pixel_range: [0, 80]
+  #         offset: [370, 0]
+  # - name: Default strip 3
+  #   serial_port_name: /dev/tty.usbserial-A50285BI3
+  #   midi_ports_for_visualization:
+  #     - 'Audio2Led Synth'
+  #   midi_ports_for_changing_mode:
+  #     - 'Audio2Led ChangeMod Side'
+  #   active_state_index: 0
+  #   physical_shape:
+  #     - 80
+  #     - 80
+  # - name: Default strip 4
+  #   serial_port_name: /dev/tty.usbserial-A50285BI4
+  #   midi_ports_for_visualization:
+  #     - 'Audio2Led Synth'
+  #   midi_ports_for_changing_mode:
+  #     - 'Audio2Led ChangeMod Side'
+  #   active_state_index: 0
+  #   physical_shape:
+  #     - 80
+  #     - 80
+  # - name: Default strip 5
+  #   serial_port_name: /dev/tty.usbserial-A50285BI5
+  #   midi_ports_for_visualization:
+  #     - 'Audio2Led Synth'
+  #   midi_ports_for_changing_mode:
+  #     - 'Audio2Led ChangeMod Side'
+  #   active_state_index: 0
+  #   physical_shape:
+  #     - 80
+  #     - 80
+states:
+  - name: 'Classic energy'
+    active_visualizer_effect: energy
+    active_propagation_curve: ease_in
+
+    active_audio_channel_index: 0
+    audio_samples_filter_min: 0
+    audio_samples_filter_max: 12
+    audio_decay: 0.1
+    audio_gain: 1
+    active_color_scheme_index: 0
+    color_schemes:
+      - - red
+        - green
+        - blue
+      - - red
+        - green
+      - - blue
+
+    is_reverse: False
+    is_mirror: False
+    division_value: 0
+    time_interval: 10
+    chunk_size: 50
+    blur_value: 1.0
+    max_brightness: 100
+
+  - name: 'Classic scroll'
+    active_visualizer_effect: scroll
+    active_propagation_curve: ease_in
+
+    active_audio_channel_index: 1
+    audio_samples_filter_min: 0
+    audio_samples_filter_max: 24
+    audio_decay: 0.1
+    audio_gain: 1
+
+    active_color_scheme_index: 0
+    color_schemes:
+      - - red
+        - blue
+      - - red
+        - green
+        - blue
+    is_reverse: False
+    is_mirror: True
+    division_value: 0
+    time_interval: 10
+    chunk_size: 50
+    blur_value: 0.1
+    max_brightness: 100
+
+  - name: 'Piano note'
+    active_visualizer_effect: piano_scroll
+    active_propagation_curve: ease_in
+
+    active_audio_channel_index: 0
+    audio_samples_filter_min: 0
+    audio_decay: 0.1
+    audio_gain: 1
+    audio_samples_filter_max: 24
+
+    active_color_scheme_index: 0
+    color_schemes:
+      - - red
+        - blue
+      - - red
+        - green
+        - blue
+    is_reverse: False
+    is_mirror: False
+    division_value: 0
+    time_interval: 10
+    chunk_size: 50
+    blur_value: 1.1
+    max_brightness: 100
+... # document end

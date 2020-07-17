@@ -1,35 +1,38 @@
 import React, { ReactNode } from 'react';
 import { NavLink } from 'react-router-dom';
 import routes from '../constants/routes.json';
+import Select from './generic/Select';
 
 class Nav extends React.Component {
   constructor(props) {
     super(props);
+    this.state = {
+      configFiles: [],
+      activeConfigFile: null
+    };
   }
 
-  launchPythonProcessApiCall = () => {
-    fetch('http://localhost:8080/launchPython').then(res => {
-      console.log(res);
+  componentDidMount() {
+    this.getConfigFilesFromNode();
+  }
+
+  getConfigFilesFromNode = () => {
+    fetch('http://localhost:8080/listConfigFiles').then(res => {
+      const toto = res.json().then(data => {
+        console.log(data);
+        this.setState({
+          activeConfigFile: data.files[0],
+          configFiles: data.files.map(file => {
+            return { name: file, prefix: '' };
+          })
+        });
+      });
       return res;
     });
   };
 
-  killPythonProcessApiCall = () => {
-    fetch('http://localhost:8080/killPython').then(res => {
-      console.log(res);
-      return res;
-    });
-  };
-
-  updateConfigFile = () => {
-    fetch('http://localhost:8080/updateConfigFile').then(res => {
-      console.log(res);
-      return res;
-    });
-  };
-
-  listPortsAvailable = () => {
-    fetch('http://localhost:8080/listPortsAvailable').then(res => {
+  apiCall = route => {
+    fetch('http://localhost:8080/' + route).then(res => {
       console.log(res);
       return res;
     });
@@ -38,29 +41,45 @@ class Nav extends React.Component {
   render() {
     return (
       <nav className="nav">
-        <NavLink activeClassName="active" to={routes.INIT}>
+        <NavLink disabled activeClassName="active" to={routes.INIT}>
           <i className="la la-cog" /> INIT
         </NavLink>
         <NavLink activeClassName="active" to={routes.BUILDER}>
           <i className="la la-pencil-ruler" /> BUILD
         </NavLink>
         <NavLink activeClassName="active" to={routes.SHOW}>
-          <i className="las la-satellite"></i> SHOW
+          <i className="la la-satellite"></i> SHOW
         </NavLink>
         <div className="nav__right">
+          <Select
+            options={this.state.configFiles}
+            defaultValue={this.state.configFiles[0]}
+            setValue={value => {
+              this.state.configFiles.map((elem, index) => {
+                if (elem.name === value) {
+                  console.log(elem);
+                  this.setState({ activeConfigFile: elem.name });
+                  this.apiCall('spawnKill?file=' + elem.name);
+                }
+              });
+            }}
+          />
           <button
+            className="button button--danger"
             onClick={() => {
-              this.killPythonProcessApiCall();
+              this.apiCall('kill');
             }}
           >
-            Kill python
+            KILL
           </button>
           <button
+            className="button button--danger"
             onClick={() => {
-              this.launchPythonProcessApiCall();
+              this.apiCall('spawnKill?file=' + this.state.activeConfigFile);
             }}
           >
-            Relaunch python
+            START
+            {/* <i className="la la-power-off" /> */}
           </button>
         </div>
       </nav>

@@ -2,6 +2,8 @@ import React from 'react';
 import { SizeMe } from 'react-sizeme';
 import isShallowEqual from 'shallowequal';
 
+const height = 10;
+
 class SizedPixelVisualizerCanvas extends React.Component {
   constructor(props) {
     super(props);
@@ -38,11 +40,10 @@ class SizedPixelVisualizerCanvas extends React.Component {
   };
 
   initVisualizer = () => {
-    console.log('initviz', this.props.width);
     const shape_offsets = this.props.physical_shape.offsets;
     const number_of_chunks = this.props.physical_shape.offsets.length - 1;
     const number_of_pixels = this.props.pixels[0].length;
-    const gap_size = 5;
+    const gap_size = 20;
     const pixel_width =
       (this.props.width - number_of_chunks * gap_size) / number_of_pixels;
 
@@ -56,11 +57,10 @@ class SizedPixelVisualizerCanvas extends React.Component {
   };
 
   updateVisualizer = () => {
-    console.log('updateviz');
     const shape_offsets = this.props.physical_shape.offsets;
     const number_of_chunks = this.props.physical_shape.offsets.length - 1;
     const number_of_pixels = this.props.pixels[0].length;
-    const gap_size = 5;
+    const gap_size = 20;
     const pixel_width =
       (this.props.width - number_of_chunks * gap_size) / number_of_pixels;
 
@@ -81,7 +81,7 @@ class SizedPixelVisualizerCanvas extends React.Component {
 
   updateCanvas = () => {
     const ctx = this.refs.canvas.getContext('2d');
-    ctx.clearRect(0, 0, 150, 100);
+    ctx.clearRect(0, 0, this.props.width, height);
 
     let gapIndex = 0;
 
@@ -100,12 +100,26 @@ class SizedPixelVisualizerCanvas extends React.Component {
         ',' +
         this.props.pixels[2][pixel_index] +
         ')';
-      ctx.fillRect(
-        pixel_index * this.state.pixel_width + gapIndex * this.state.gap_size,
+
+      // ctx.fillRect(
+      //   pixel_index * this.state.pixel_width + gapIndex * this.state.gap_size,
+      //   0,
+      //   this.state.pixel_width,
+      //   height
+      // );
+
+      ctx.beginPath();
+      ctx.arc(
+        4 +
+          pixel_index * this.state.pixel_width +
+          gapIndex * this.state.gap_size,
+        4,
+        3,
         0,
-        this.state.pixel_width,
-        30
+        2 * Math.PI,
+        false
       );
+      ctx.fill();
     });
   };
 
@@ -116,7 +130,7 @@ class SizedPixelVisualizerCanvas extends React.Component {
           className="pixel-visualizer__canvas"
           ref="canvas"
           width={this.props.width}
-          height={50}
+          height={height}
         />
       </div>
     );

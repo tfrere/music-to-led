@@ -1,11 +1,19 @@
 .audio-visualizer {
   display: inline-block;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  border-radius: 3px;
+  margin-right: 10px;
+  width: 25%;
+  canvas {
+    margin: 0 5px;
+    margin-bottom: -4px;
+  }
 }
 
 .audio-visualizer__wrapper {
-  border-radius: 3px;
-  height: 85px;
-  width: 150px;
   display: flex;
   flex-wrap: wrap-reverse;
+}
+
+.audio-visualizer__title {
 }
