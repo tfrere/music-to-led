@@ -10,9 +10,9 @@ class MidiVisualizer extends React.Component {
     let toRender = null;
     if (this.props.midi_datas && this.props.channels) {
       notes = this.props.midi_datas.map((note, index) => {
-        if (note.type != 'note_off' && index < 1) {
+        if (index == this.props.midi_datas.length - 1) {
           return (
-            <div ref={note + index}>
+            <div key={note + index} ref={note + index}>
               {note.port} -> {note.type} : {note.note} at velocity{' '}
               {note.velocity}
             </div>
@@ -31,7 +31,7 @@ class MidiVisualizer extends React.Component {
         toRender = (
           <div className="midi-logs">
             {/* <h3>{this.props.channels}</h3> */}
-            {notes}
+            {notes || <div> </div>}
           </div>
         );
       }

@@ -34,6 +34,7 @@ class Button extends React.Component {
     buttonClassName += this.props.disabled ? 'button--disabled' : '';
     return (
       <button
+        {...this.props}
         title={this.props.alt || ''}
         className={buttonClassName}
         disabled={this.props.disabled}
@@ -42,8 +43,11 @@ class Button extends React.Component {
           this.handleClick(e);
         }}
       >
-        {this.props.children}
-        {this.state.rippleElements}
+        <span className="button__content">
+          {this.props.children}
+          {this.state.rippleElements}
+        </span>
+        <span className="button__loading"></span>
       </button>
     );
   }

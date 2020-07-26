@@ -1,6 +1,9 @@
 from inputs.audio import Audio
 
 
+from config.helpers import autoKill
+
+
 class AudioConfig():
 
     def __init__(
@@ -12,7 +15,8 @@ class AudioConfig():
         number_of_audio_samples=24,
         min_volume_threshold=1e-7,
         n_rolling_history=4,
-        debug=False
+        debug=False,
+        verbose=False
     ):
 
         self.name = name
@@ -25,6 +29,8 @@ class AudioConfig():
 
         if(debug):
             Audio.tryPort(name)
+        if(verbose):
+            self.print()
 
     def print(self):
         print("--")

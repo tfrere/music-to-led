@@ -1,0 +1,38 @@
+.state-controller__states {
+  display: flex;
+  justify-content: stretch;
+  flex-wrap: wrap;
+  .button-group {
+    width: 100%;
+    height: 42px;
+    margin-bottom: 5px;
+    display: flex;
+    .button {
+    }
+  }
+  input,
+  .button:not(.button--square) {
+    width: calc(100% - 80px);
+    text-align: left !important;
+    display: inline;
+  }
+
+  .button--square {
+    width: 42px;
+  }
+  .button:first-child:last-child {
+    width: calc(100%);
+  }
+
+  .button--square:not(:first-child) {
+    border-left: 1px solid rgba(0, 0, 0, 0.1);
+  }
+}
+
+.state-controller__title {
+  margin-bottom: 10px;
+  text-transform: uppercase;
+  letter-spacing: 0.05rem;
+  font-size: 10px;
+  color: rgba(255, 255, 255, 0.1);
+}

@@ -36,7 +36,7 @@ class SplashScreen extends React.Component {
     let classes = is_finished ? 'splash-screen--invisible' : 'splash-screen';
 
     return (
-      <div className={classes}>
+      <div id="splashscreen" className={classes}>
         <div>
           <img className="splash-screen__logo" src={logoSrc} />
           <h1>AUDIO 2 LED</h1>

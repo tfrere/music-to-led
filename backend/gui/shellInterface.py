@@ -161,7 +161,7 @@ class ShellInterface():
 
         # add STATES nb
         self.absolutePrint(y + 2, space, "Strips: " + str(len(self.config.strips)) + " | audio source: " +
-                           str(self.config.number_of_audio_ports) + " | states : " + str(self.config.number_of_states))
+                           str(self.config.number_of_audio_ports))
         self.absolutePrint(y + 4, space, "Shell dimensions: " +
                            str(self.width) + "x" + str(self.height))
         self.absolutePrint(y + 5, space, "Memory consumed: " +

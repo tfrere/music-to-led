@@ -12,7 +12,12 @@ export default function Routes() {
     <React.Fragment>
       <div className="draggable-bar">
         <small className="software-version">
-          music-to-led v{process.env.npm_package_version}
+          {'music-to-led '}
+          {process.env.npm_package_version ? (
+            <span>v{process.env.npm_package_version}</span>
+          ) : (
+            ''
+          )}
         </small>
       </div>
       {process.env.NODE_ENV !== 'development' ? <SplashScreen /> : ''}

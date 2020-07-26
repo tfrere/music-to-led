@@ -1,0 +1,27 @@
+.circular-slider {
+  width: 5rem;
+  padding-top: 10px;
+}
+.circular-slider__svg {
+  display: block;
+  width: 5rem;
+  height: 5rem;
+  cursor: ns-resize;
+}
+.circular-slider__svg__circle,
+.circular-slider__svg__bar {
+  fill: transparent;
+}
+.circular-slider__svg__circle {
+  stroke: rgba(0, 0, 0, 0.4);
+}
+.circular-slider__svg__bar {
+  stroke: rgba(255, 255, 255, 1);
+  stroke-dashoffset: 0;
+  stroke-dasharray: 0;
+}
+
+.circular-slider__value {
+  text-align: center;
+  font-size: 10px;
+}

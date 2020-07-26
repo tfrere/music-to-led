@@ -12,11 +12,12 @@ class ScenoVisualizerCanvas extends React.Component {
     });
 
     this.state = {
-      isScaled: false,
       ctx: null,
       scenes: scenes,
       hasDarkMode: this.props.hasDarkMode || false,
-      hasGrid: this.props.hasGrid || false
+      hasGrid: this.props.hasGrid || false,
+      hasActiveBoundingBoxVisible:
+        this.props.hasActiveBoundingBoxVisible || false
     };
 
     this.initVisualizer();
@@ -66,6 +67,25 @@ class ScenoVisualizerCanvas extends React.Component {
 
     scenes.map((scene, index) => {
       scene.shapes.map(elem => {
+        ctx.strokeWidth = '2';
+        ctx.strokeStyle = 'rgba(255,255,255, 0.03)';
+
+        if (
+          this.props.hasActiveBoundingBoxVisible &&
+          this.state.hasGrid &&
+          index == this.props.activeStripIndex
+        ) {
+          ctx.setLineDash([3, 12]);
+          ctx.strokeRect(
+            this.props.width / 2 - this.state.scenes[index].size.width / 2 - 10,
+            this.props.height / 2 -
+              this.state.scenes[index].size.height / 2 -
+              10,
+            this.state.scenes[index].size.width + 20,
+            this.state.scenes[index].size.height + 20
+          );
+        }
+
         this.printShape(
           ctx,
           elem.svg_string,
@@ -91,9 +111,9 @@ class ScenoVisualizerCanvas extends React.Component {
   printShape = (ctx, path, size, offset, r, g, b) => {
     const properties = new svgPathProperties(path);
 
-    const XCenterOffset = (this.props.width / 2 - size.width / 2) * size.scale;
+    const XCenterOffset = this.props.width / 2 - (size.width * size.scale) / 2;
     const YCenterOffset =
-      (this.props.height / 2 - size.height / 2) * size.scale;
+      this.props.height / 2 - (size.height * size.scale) / 2;
     const length = properties.getTotalLength();
     const pixels_length = r.length;
     const gap = length / pixels_length;
@@ -102,15 +122,14 @@ class ScenoVisualizerCanvas extends React.Component {
 
     while (i < pixels_length) {
       const coords = properties.getPointAtLength(gap * i);
-      ctx.fillStyle = 'rgb(' + r[i] + ',' + g[i] + ',' + b[i] + ')';
 
-      // ctx.fillRect(coords.x + centerOffset, coords.y, 5, 5);
+      ctx.fillStyle = 'rgb(' + r[i] + ',' + g[i] + ',' + b[i] + ')';
 
       ctx.beginPath();
       ctx.arc(
-        coords.x * size.scale + XCenterOffset + offset[0],
-        coords.y * size.scale + YCenterOffset + offset[1],
-        2 * size.scale,
+        size.scale * coords.x + XCenterOffset + offset[0],
+        size.scale * coords.y + YCenterOffset + offset[1],
+        2,
         0,
         2 * Math.PI,
         false

@@ -1,4 +1,4 @@
-name: audio-2-led
+name: music-2-led
 channels:
   - conda-forge
 dependencies:
@@ -14,6 +14,6 @@ dependencies:
   - zerorpc=0.6.3
   - pip=20.0.2
   - pip:
-    - python-rtmidi
-    - mido
-    - blessed 
+      - python-rtmidi
+      - mido
+      - blessed

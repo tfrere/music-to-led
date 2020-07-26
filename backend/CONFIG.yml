@@ -1,389 +1,508 @@
 audio_ports:
-- max_frequency: 12000
-  min_frequency: 200
-  min_volume_threshold: 1.0e-07
-  n_rolling_history: 4
-  name: Loopback Audio
-  number_of_audio_samples: 24
-  sampling_rate: 44000
-- max_frequency: 12000
-  min_frequency: 200
-  min_volume_threshold: 1.0e-07
-  n_rolling_history: 4
-  name: Built-in Microphone
-  number_of_audio_samples: 24
-  sampling_rate: 44000
+  - max_frequency: 12000
+    min_frequency: 200
+    min_volume_threshold: 1.0e-07
+    n_rolling_history: 4
+    name: Loopback Audio
+    number_of_audio_samples: 24
+    sampling_rate: 44000
+  - max_frequency: 12000
+    min_frequency: 200
+    min_volume_threshold: 1.0e-07
+    n_rolling_history: 4
+    name: Built-in Microphone
+    number_of_audio_samples: 24
+    sampling_rate: 44000
 delay_between_frames: 0.016666666666666666
 desirated_framerate: 60
 display_shell_interface: false
-file_name: ./backend/CONFIG.yml
+file_name: /Users/thibaudfrere/Documents/music-2-led/backend/CONFIG.yml
 is_zmq_api_enabled: true
 number_of_audio_ports: 2
-number_of_states: 2
-number_of_strips: 2
-states:
-- active_audio_channel_index: 0
-  active_color_scheme_index: 0
-  active_visualizer_effect: scroll
-  audio_decay: 0.1
-  audio_gain: 1
-  audio_samples_filter_max: 24
-  audio_samples_filter_min: 0
-  blur_value: 1.0
-  chunk_size: 50
-  color_schemes: &id003
-  - - red
-    - green
-    - blue
-  - - red
-    - green
-  - - blue
-  division_value: 0
-  formatted_color_schemes:
-  - - - 255
-      - 0
-      - 0
-    - - 0
-      - 128
-      - 0
-    - - 0
-      - 0
-      - 255
-  - - - 255
-      - 0
-      - 0
-    - - 0
-      - 128
-      - 0
-  - - - 0
-      - 0
-      - 255
-  is_mirror: false
-  is_reverse: false
-  max_brightness: 100
-  name: Classic energy
-  number_of_color_schemes: 3
-  time_interval: 10
-- &id001
-  active_audio_channel_index: 0
-  active_color_scheme_index: 0
-  active_visualizer_effect: scroll
-  audio_decay: 0.1
-  audio_gain: 1
-  audio_samples_filter_max: 24
-  audio_samples_filter_min: 0
-  blur_value: 1.0
-  chunk_size: 50
-  color_schemes:
-  - - red
-    - green
-    - blue
-  - - red
-    - green
-  - - blue
-  division_value: 0
-  formatted_color_schemes:
-  - - - 255
-      - 0
-      - 0
-    - - 0
-      - 128
-      - 0
-    - - 0
-      - 0
-      - 255
-  - - - 255
-      - 0
-      - 0
-    - - 0
-      - 128
-      - 0
-  - - - 0
-      - 0
-      - 255
-  is_mirror: false
-  is_reverse: false
-  max_brightness: 100
-  name: Classic energy 2
-  number_of_color_schemes: 3
-  time_interval: 10
+number_of_strips: 1
 strips:
-- active_state: *id001
-  active_state_index: 1
-  is_online: false
-  midi_logs:
-  - note: 1
-    port: Audio2Led ChangeMod Side
-    type: note_on
-    velocity: 127
-  - note: 0
-    port: Audio2Led ChangeMod Side
-    type: note_on
-    velocity: 127
-  - note: 26
-    port: Audio2Led ChangeMod Side
-    type: note_on
-    velocity: 1
-  - note: 0
-    port: Audio2Led ChangeMod Side
-    type: note_on
-    velocity: 127
-  - action: updatestate
-    data: Classic energy 2
-    port: Audio2Led ChangeMod Side
-    type: sysex
-  midi_ports_for_changing_mode:
-  - Audio2Led ChangeMod Side
-  midi_ports_for_visualization:
-  - Audio2Led Synth
-  name: Bar
-  original_physical_shape: &id002
-  - 80
-  physical_shape:
-    number_of_pixels: 80
-    number_of_substrip: 1
-    offsets:
-    - 80
-    shape: *id002
-  scene:
+  - active_state:
+      active_audio_channel_index: 0
+      active_color_scheme_index: 0
+      active_visualizer_effect: clear_frame
+      audio_decay: 0.1
+      audio_gain: 1
+      audio_samples_filter_max: 24
+      audio_samples_filter_min: 0
+      blur_value: 4.0
+      chunk_size: 5
+      color_schemes:
+        - - red
+          - green
+          - blue
+        - - '#2a04ff'
+          - '#ff9604'
+        - - '#02e6ff'
+          - '#ff4a02'
+        - - '#2bff01'
+          - '#ff0127'
+        - - '#fff700'
+          - '#f700ff'
+        - - red
+        - - green
+        - - blue
+        - - yellow
+        - - pink
+      division_value: 0
+      formatted_color_schemes:
+        - - - 255
+            - 0
+            - 0
+          - - 0
+            - 128
+            - 0
+          - - 0
+            - 0
+            - 255
+        - - - 42
+            - 4
+            - 255
+          - - 255
+            - 150
+            - 4
+        - - - 2
+            - 230
+            - 255
+          - - 255
+            - 74
+            - 2
+        - - - 43
+            - 255
+            - 1
+          - - 255
+            - 1
+            - 39
+        - - - 255
+            - 247
+            - 0
+          - - 247
+            - 0
+            - 255
+        - - - 255
+            - 0
+            - 0
+        - - - 0
+            - 128
+            - 0
+        - - - 0
+            - 0
+            - 255
+        - - - 255
+            - 255
+            - 0
+        - - - 255
+            - 192
+            - 203
+      is_mirror: false
+      is_reverse: false
+      max_brightness: 120
+      name: piano note
+      number_of_color_schemes: 10
+      time_interval: 120
+    active_state_index: 3
+    is_online: false
+    midi_logs:
+      - note: 27
+        port: Audio2Led ChangeMod Center
+        type: note_on
+        velocity: 20
+      - note: 27
+        port: Audio2Led ChangeMod Center
+        type: note_on
+        velocity: 20
+      - note: 27
+        port: Audio2Led ChangeMod Center
+        type: note_on
+        velocity: 19
+      - note: 27
+        port: Audio2Led ChangeMod Center
+        type: note_on
+        velocity: 19
+      - action: newstate
+        data: piano note
+        port: Audio2Led ChangeMod Center
+        type: sysex
+    midi_ports_for_changing_mode:
+      - Audio2Led ChangeMod Center
+    midi_ports_for_visualization:
+      - Audio2Led Synth
+      - LPK25
+    name: Angles
+    number_of_states: 4
+    original_physical_shape: &id001
+      - 40
+      - 30
+      - 20
+    physical_shape:
+      number_of_pixels: 90
+      number_of_substrip: 3
+      offsets:
+        - 40
+        - 70
+        - 90
+      shape: *id001
+    scene:
+      shapes:
+        - offset:
+            - 0
+            - 0
+          pixel_range:
+            - 0
+            - 40
+          svg_string: M0,0 0,100 T75,175
+        - offset:
+            - 0
+            - 0
+          pixel_range:
+            - 40
+            - 70
+          svg_string: M50,0 50,75 T100,125
+        - offset:
+            - 0
+            - 0
+          pixel_range:
+            - 70
+            - 90
+          svg_string: M100,0 100,50 T125,75
+        - offset:
+            - 0
+            - 0
+          pixel_range:
+            - 0
+            - 40
+          svg_string: M300,0 300,100 T225,175
+        - offset:
+            - 0
+            - 0
+          pixel_range:
+            - 40
+            - 70
+          svg_string: M250,0 250,75 T200,125
+        - offset:
+            - 0
+            - 0
+          pixel_range:
+            - 70
+            - 90
+          svg_string: M200,0 200,50 T175,75
+      size:
+        height: 200
+        scale: 1
+        width: 300
+    serial_port_name: /dev/tty.usbserial-A50285BI
     shapes:
-    - offset:
-      - 0
-      - 0
-      pixel_range:
-      - 0
-      - 80
-      svg_string: M28.636 35.17H.142L20.207.415 40.272 35.17h-3.03
-    - offset:
-      - 0
-      - 0
-      pixel_range:
-      - 0
-      - 80
-      svg_string: M75.842 34.245H54.309V.925h33.319v33.32h-3.19
-    - offset:
-      - 0
-      - 0
-      pixel_range:
-      - 0
-      - 80
-      svg_string: M174.813 35.09l-10.728.055-7.112-21.525L175.243.205l18.404 13.235-6.896
-        21.59-3.445.015
-    - offset:
-      - 0
-      - 0
-      pixel_range:
-      - 0
-      - 80
-      svg_string: M122.79 34.845l-8.325.055-10.119-17.26L114.237.245l20.009-.13 10.118
-        17.26-9.891 17.395-3.114.02
-    size:
-      height: 270
-      scale: 3
-      width: 750
-  serial_port_name: /dev/tty.usbserial-A50285BI
-  shapes:
-  - number_of_pixels: 80
-    number_of_substrip: 1
-    offsets:
-    - 80
-    shape:
-    - 80
-  - number_of_pixels: 80
-    number_of_substrip: 2
-    offsets:
-    - 40
-    - 80
-    shape:
-    - 40
-    - 40
-  - number_of_pixels: 80
-    number_of_substrip: 4
-    offsets:
-    - 20
-    - 40
-    - 60
-    - 80
-    shape:
-    - 20
-    - 20
-    - 20
-    - 20
-  - number_of_pixels: 80
-    number_of_substrip: 8
-    offsets:
-    - 10
-    - 20
-    - 30
-    - 40
-    - 50
-    - 60
-    - 70
-    - 80
-    shape:
-    - 10
-    - 10
-    - 10
-    - 10
-    - 10
-    - 10
-    - 10
-    - 10
-- active_state:
-    active_audio_channel_index: 0
-    active_color_scheme_index: 0
-    active_visualizer_effect: scroll
-    audio_decay: 0.1
-    audio_gain: 1
-    audio_samples_filter_max: 24
-    audio_samples_filter_min: 0
-    blur_value: 1.0
-    chunk_size: 50
-    color_schemes: *id003
-    division_value: 0
-    formatted_color_schemes:
-    - - - 255
-        - 0
-        - 0
-      - - 0
-        - 128
-        - 0
-      - - 0
-        - 0
-        - 255
-    - - - 255
-        - 0
-        - 0
-      - - 0
-        - 128
-        - 0
-    - - - 0
-        - 0
-        - 255
-    is_mirror: false
-    is_reverse: false
-    max_brightness: 100
-    name: Classic energy
-    number_of_color_schemes: 3
-    time_interval: 10
-  active_state_index: 0
-  is_online: false
-  midi_ports_for_changing_mode:
-  - Audio2Led ChangeMod Center
-  midi_ports_for_visualization:
-  - Audio2Led Synth
-  name: Bar2
-  original_physical_shape: &id004
-  - 80
-  physical_shape:
-    number_of_pixels: 80
-    number_of_substrip: 1
-    offsets:
-    - 80
-    shape: *id004
-  scene:
-    shapes:
-    - offset:
-      - 50
-      - -15
-      pixel_range:
-      - 0
-      - 80
-      svg_string: M0, -100 150, 150
-    - offset:
-      - 50
-      - -15
-      pixel_range:
-      - 0
-      - 80
-      svg_string: M150, 150 -150, 150
-    - offset:
-      - 50
-      - -15
-      pixel_range:
-      - 0
-      - 80
-      svg_string: M-150, 150 0,-100
-    - offset:
-      - 0
-      - 0
-      pixel_range:
-      - 0
-      - 80
-      svg_string: M0, 0 0,100
-    - offset:
-      - 0
-      - 0
-      pixel_range:
-      - 0
-      - 80
-      svg_string: M0, 100 100,100
-    - offset:
-      - 0
-      - 0
-      pixel_range:
-      - 0
-      - 80
-      svg_string: M100, 100 100,0
-    - offset:
-      - 0
-      - 0
-      pixel_range:
-      - 0
-      - 80
-      svg_string: M100, 0 0,0
-    size:
-      height: 100
-      scale: 1
-      width: 100
-  serial_port_name: /dev/tty.usbserial-A50285BI2
-  shapes:
-  - number_of_pixels: 80
-    number_of_substrip: 1
-    offsets:
-    - 80
-    shape:
-    - 80
-  - number_of_pixels: 80
-    number_of_substrip: 2
-    offsets:
-    - 40
-    - 80
-    shape:
-    - 40
-    - 40
-  - number_of_pixels: 80
-    number_of_substrip: 4
-    offsets:
-    - 20
-    - 40
-    - 60
-    - 80
-    shape:
-    - 20
-    - 20
-    - 20
-    - 20
-  - number_of_pixels: 80
-    number_of_substrip: 8
-    offsets:
-    - 10
-    - 20
-    - 30
-    - 40
-    - 50
-    - 60
-    - 70
-    - 80
-    shape:
-    - 10
-    - 10
-    - 10
-    - 10
-    - 10
-    - 10
-    - 10
-    - 10
+      - number_of_pixels: 90
+        number_of_substrip: 3
+        offsets:
+          - 40
+          - 70
+          - 90
+        shape:
+          - 40
+          - 30
+          - 20
+      - number_of_pixels: 90
+        number_of_substrip: 6
+        offsets:
+          - 20
+          - 40
+          - 55
+          - 70
+          - 80
+          - 90
+        shape:
+          - 20
+          - 20
+          - 15
+          - 15
+          - 10
+          - 10
+      - number_of_pixels: 88
+        number_of_substrip: 12
+        offsets:
+          - 10
+          - 20
+          - 30
+          - 40
+          - 47
+          - 54
+          - 61
+          - 68
+          - 73
+          - 78
+          - 83
+          - 88
+        shape:
+          - 10
+          - 10
+          - 10
+          - 10
+          - 7
+          - 7
+          - 7
+          - 7
+          - 5
+          - 5
+          - 5
+          - 5
+      - number_of_pixels: 80
+        number_of_substrip: 24
+        offsets:
+          - 5
+          - 10
+          - 15
+          - 20
+          - 25
+          - 30
+          - 35
+          - 40
+          - 43
+          - 46
+          - 49
+          - 52
+          - 55
+          - 58
+          - 61
+          - 64
+          - 66
+          - 68
+          - 70
+          - 72
+          - 74
+          - 76
+          - 78
+          - 80
+        shape:
+          - 5
+          - 5
+          - 5
+          - 5
+          - 5
+          - 5
+          - 5
+          - 5
+          - 3
+          - 3
+          - 3
+          - 3
+          - 3
+          - 3
+          - 3
+          - 3
+          - 2
+          - 2
+          - 2
+          - 2
+          - 2
+          - 2
+          - 2
+          - 2
+    states:
+      - active_audio_channel_index: 0
+        active_color_scheme_index: 0
+        active_visualizer_effect: piano_scroll
+        audio_decay: 0.1
+        audio_gain: 1
+        audio_samples_filter_max: 12
+        audio_samples_filter_min: 0
+        blur_value: 1.0
+        chunk_size: 50
+        color_schemes:
+          - - red
+            - green
+            - blue
+          - - red
+            - green
+          - - blue
+        division_value: 0
+        formatted_color_schemes:
+          - - - 255
+              - 0
+              - 0
+            - - 0
+              - 128
+              - 0
+            - - 0
+              - 0
+              - 255
+          - - - 255
+              - 0
+              - 0
+            - - 0
+              - 128
+              - 0
+          - - - 0
+              - 0
+              - 255
+        is_mirror: false
+        is_reverse: false
+        max_brightness: 100
+        name: Classic energy
+        number_of_color_schemes: 3
+        time_interval: 10
+      - active_audio_channel_index: 0
+        active_color_scheme_index: 0
+        active_visualizer_effect: scroll
+        audio_decay: 0.1
+        audio_gain: 1
+        audio_samples_filter_max: 24
+        audio_samples_filter_min: 0
+        blur_value: 0.1
+        chunk_size: 50
+        color_schemes:
+          - - red
+            - blue
+          - - red
+            - green
+            - blue
+        division_value: 0
+        formatted_color_schemes:
+          - - - 255
+              - 0
+              - 0
+            - - 0
+              - 0
+              - 255
+          - - - 255
+              - 0
+              - 0
+            - - 0
+              - 128
+              - 0
+            - - 0
+              - 0
+              - 255
+        is_mirror: true
+        is_reverse: false
+        max_brightness: 100
+        name: Classic scroll
+        number_of_color_schemes: 2
+        time_interval: 10
+      - active_audio_channel_index: 0
+        active_color_scheme_index: 0
+        active_visualizer_effect: piano_scroll
+        audio_decay: 0.1
+        audio_gain: 1
+        audio_samples_filter_max: 24
+        audio_samples_filter_min: 0
+        blur_value: 1.1
+        chunk_size: 50
+        color_schemes:
+          - - red
+            - blue
+          - - red
+            - green
+            - blue
+        division_value: 0
+        formatted_color_schemes:
+          - - - 255
+              - 0
+              - 0
+            - - 0
+              - 0
+              - 255
+          - - - 255
+              - 0
+              - 0
+            - - 0
+              - 128
+              - 0
+            - - 0
+              - 0
+              - 255
+        is_mirror: false
+        is_reverse: false
+        max_brightness: 100
+        name: Piano note
+        number_of_color_schemes: 2
+        time_interval: 10
+      - active_audio_channel_index: 0
+        active_color_scheme_index: 0
+        active_visualizer_effect: clear_frame
+        audio_decay: 0.1
+        audio_gain: 1
+        audio_samples_filter_max: 24
+        audio_samples_filter_min: 0
+        blur_value: 4.0
+        chunk_size: 5
+        color_schemes:
+          - - red
+            - green
+            - blue
+          - - '#2a04ff'
+            - '#ff9604'
+          - - '#02e6ff'
+            - '#ff4a02'
+          - - '#2bff01'
+            - '#ff0127'
+          - - '#fff700'
+            - '#f700ff'
+          - - red
+          - - green
+          - - blue
+          - - yellow
+          - - pink
+        division_value: 0
+        formatted_color_schemes:
+          - - - 255
+              - 0
+              - 0
+            - - 0
+              - 128
+              - 0
+            - - 0
+              - 0
+              - 255
+          - - - 42
+              - 4
+              - 255
+            - - 255
+              - 150
+              - 4
+          - - - 2
+              - 230
+              - 255
+            - - 255
+              - 74
+              - 2
+          - - - 43
+              - 255
+              - 1
+            - - 255
+              - 1
+              - 39
+          - - - 255
+              - 247
+              - 0
+            - - 247
+              - 0
+              - 255
+          - - - 255
+              - 0
+              - 0
+          - - - 0
+              - 128
+              - 0
+          - - - 0
+              - 0
+              - 255
+          - - - 255
+              - 255
+              - 0
+          - - - 255
+              - 192
+              - 203
+        is_mirror: false
+        is_reverse: false
+        max_brightness: 120
+        name: piano note
+        number_of_color_schemes: 10
+        time_interval: 120
 timeSinceStart:
-  end: 1594965795.255635
-  start: 1594965795.255635
+  end: 1595698700.578073
+  start: 1595698700.578072

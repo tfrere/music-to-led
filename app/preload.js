@@ -20,10 +20,12 @@
 //     };
 //   });
 
-let os = require('os');
-let WebMidi = require('webmidi');
+// let WebMidi = require('webmidi');
 
-window.os = os;
-WebMidi.enable(function(err) {
-  window.outputs = WebMidi.outputs;
-}, true);
+// console.log(WebMidi);
+
+// WebMidi.enable(function(err) {
+//   console.log('midi is enabled !');
+
+//   window.outputs = WebMidi.outputs;
+// }, true);

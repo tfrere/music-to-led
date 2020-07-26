@@ -2,7 +2,8 @@ class ShapeConfig():
 
     def __init__(
         self,
-        shape=[74, 74, 125, 125]
+        shape=[74, 74, 125, 125],
+        verbose=False
     ):
 
         self.shape = shape
@@ -17,6 +18,9 @@ class ShapeConfig():
                 self.offsets.append(bock_size + self.offsets[i - 1])
             else:
                 self.offsets.append(bock_size)
+
+        if(verbose):
+            self.print()
 
     def print(self):
         print("--")

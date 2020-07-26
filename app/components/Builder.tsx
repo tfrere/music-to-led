@@ -7,9 +7,7 @@ import { promiseTimeout, zeromqMessages } from '../utils/zeromq';
 import Strip from './strip/Strip';
 import StripController from './strip/StripController';
 import ScenoVisualizerCanvas from './sceno/ScenoVisualizerCanvas';
-import hapticjs from 'hapticjs';
-
-hapticjs.vibrate();
+import AudioVisualizerCanvas from './audio/AudioVisualizerCanvas';
 
 let client_time = new Date().getTime();
 let server_time = 0;
@@ -36,6 +34,7 @@ async function getZMQData() {
       .replace(re, '"')
       .replace(re2, '1')
       .replace(re3, '0');
+    console.log('connected');
     object = JSON.parse(json_string);
     const current_server_timestamp = Math.round(object.time * 1000);
 
@@ -49,9 +48,8 @@ class Builder extends React.Component {
     super(props);
     this.state = {
       config: null,
-      strips: [],
+      pixels: [],
       audios: [],
-      midi: [],
       active_states: [],
       are_strips_online: [],
       active_strip_index: 0,
@@ -71,6 +69,7 @@ class Builder extends React.Component {
         config: object.config,
         audios: object.audios,
         pixels: object.pixels,
+        strips: object.strips,
         active_states: object.active_states,
         are_strips_online: object.are_strips_online,
         framerates: object.framerates,
@@ -85,7 +84,9 @@ class Builder extends React.Component {
   }
 
   componentWillUnmount() {
+    console.log(1);
     clearInterval(this._intervalId);
+    console.log(2);
   }
 
   render() {
@@ -96,25 +97,33 @@ class Builder extends React.Component {
       framerates,
       audios,
       pixels,
+      strips,
       isZMQConnected
     } = this.state;
 
     let stripsElem = [];
+    let audiosElem = [];
     let active_strip_data = null;
     let active_strip_index = this.state.active_strip_index;
 
-    if (
+    const isOkToLaunch =
       active_states &&
       active_states[0] &&
       are_strips_online &&
-      config &&
       framerates &&
+      framerates[0] != 0 &&
+      config &&
+      config.audio_ports &&
+      config.audio_ports.length >= 1 &&
+      strips &&
+      active_states.length === strips.length &&
       audios &&
       framerates &&
-      pixels
-    ) {
-      stripsElem = config.strips.map((strip, index) => {
-        console.log(active_strip_index);
+      pixels &&
+      pixels[0][2];
+
+    if (isOkToLaunch) {
+      stripsElem = strips.map((strip, index) => {
         const isActiveStrip = active_strip_index == index;
 
         const pixelsFrame = pixels[index];
@@ -144,36 +153,65 @@ class Builder extends React.Component {
           };
         }
         return (
-          <Strip
-            key={strip + index}
-            framerate={framerate}
-            physical_shape={strip.physical_shape}
-            active_shape={active_shape}
-            pixels={pixelsFrame}
-            name={strip.midi_ports_for_changing_mode[0]}
-            audios={audios}
-            strip={strip}
-            active_state={active_state}
-            config={config}
-            is_strip_online={is_strip_online}
-            active_audio_channel_name={
-              config.audio_ports[active_state.active_audio_channel_index].name
-            }
-            index={index}
-            className={isActiveStrip ? 'card--reverse' : ''}
-            onClick={() => {
-              this.setState({ active_strip_index: index });
-            }}
-          ></Strip>
+          <>
+            <Strip
+              key={strip + index}
+              framerate={framerate}
+              physical_shape={strip.physical_shape}
+              active_shape={active_shape}
+              pixels={pixelsFrame}
+              name={strip.midi_ports_for_changing_mode[0]}
+              audios={audios}
+              strip={strip}
+              active_state={active_state}
+              config={config}
+              is_strip_online={is_strip_online}
+              active_audio_channel_name={
+                config.audio_ports[active_state.active_audio_channel_index].name
+              }
+              index={index}
+              className={
+                isActiveStrip
+                  ? 'left-panel__list__item left-panel__list__item--active'
+                  : 'left-panel__list__item'
+              }
+              onClick={() => {
+                this.setState({ active_strip_index: index });
+              }}
+            ></Strip>
+          </>
+        );
+      });
+
+      audiosElem = audios.map((audio, index) => {
+        return (
+          <div className={'left-panel__list__item'}>
+            <AudioVisualizerCanvas audio={audio} width={120} height={60} />
+            <div>
+              <h4>{config.audio_ports[index].name}</h4>
+              <span>
+                {config.audio_ports[index].number_of_audio_samples} samples
+              </span>
+            </div>
+          </div>
         );
       });
     }
+
     return (
       <React.Fragment>
-        {isZMQConnected ? (
+        {isZMQConnected && isOkToLaunch ? (
           <>
-            <div className="builder-column-holder">
-              <div>
+            <div className="left-panel">
+              <div className="left-panel__list left-panel__list--audio">
+                <h4 className="title">
+                  <i className="la la-microphone la-2x" />
+                  <span>{audios.length}</span> Audio
+                  {audios.length > 1 ? 's' : ''}
+                </h4>
+                {audiosElem}
+              </div>
+              <div className="left-panel__list left-panel__list--strip">
                 <h4 className="title">
                   <i className="la la-lightbulb la-2x" />
                   <span>{stripsElem.length}</span> Strip
@@ -181,16 +219,18 @@ class Builder extends React.Component {
                 </h4>
                 {stripsElem}
               </div>
-              <div style={{ height: '330px' }}>
-                <ScenoVisualizerCanvas
-                  config={config}
-                  pixels={pixels}
-                  height={330}
-                  hasDarkMode={false}
-                  hasGrid={true}
-                />
-              </div>
             </div>
+            <div style={{ height: '330px' }}>
+              <ScenoVisualizerCanvas
+                config={config}
+                pixels={pixels}
+                height={300}
+                hasDarkMode={false}
+                hasGrid={false}
+                activeStripIndex={active_strip_data.strip_index}
+                hasActiveBoundingBoxVisible={true}
+              />
+            </div>{' '}
             {active_strip_data ? (
               <div>
                 <div className="card">
@@ -213,9 +253,16 @@ class Builder extends React.Component {
             ) : null}
           </>
         ) : (
-          <div className="screen-size flex-center-wrapper">
-            <span className="loading"></span>
-          </div>
+          <>
+            <div className="left-panel">
+              <div className="screen-size flex-center-wrapper">
+                <span className="loading"></span>
+              </div>
+            </div>
+            <div className="screen-size flex-center-wrapper">
+              <span className="loading"></span>
+            </div>
+          </>
         )}
       </React.Fragment>
     );

@@ -3,9 +3,8 @@ import numpy as np
 
 class PixelReshaper:
 
-    def __init__(self, config, index):
-        self.config = config
-        self.strip_config = self.config.strips[index]
+    def __init__(self, strip_config):
+        self.strip_config = strip_config
         self.initActiveShape()
 
     def initActiveShape(self):

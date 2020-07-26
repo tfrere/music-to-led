@@ -24,6 +24,7 @@ TEST_CONFIG.yml
 singleStripMain.py
 /bin/
 /build/
+/music2led/
 /dist/
 test
 /midi-test-files

@@ -6,6 +6,16 @@ import { History } from 'history';
 import { Store } from '../types';
 import Routes from '../Routes';
 
+let WebMidi = require('webmidi');
+
+console.log(WebMidi);
+
+WebMidi.enable(function(err) {
+  console.log('midi is enabled !');
+
+  window.midiOutputs = WebMidi.outputs;
+}, true);
+
 class Root extends React.Component {
   componentWillMount() {
     this.unlisten = this.props.history.listen((location, action) => {

@@ -8,14 +8,14 @@ class ColorScheme extends React.Component {
         return (
           <span
             key={'color' + index}
-            className="strip__color"
+            className="color-scheme__color"
             style={{ backgroundColor: color }}
           ></span>
         );
       });
     }
 
-    return <span>{colorSchemeElem}</span>;
+    return <span className="color-scheme">{colorSchemeElem}</span>;
   }
 }
 

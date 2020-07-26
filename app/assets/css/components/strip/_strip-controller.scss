@@ -1,0 +1,137 @@
+.strip-controller {
+  width: 100%;
+  position: relative;
+  & > hr {
+    margin-left: -15px;
+    margin-right: -15px;
+    width: calc(100% + 30px);
+  }
+  .select {
+    margin-bottom: 5px;
+  }
+  label,
+  legend {
+    margin-bottom: 0.8rem;
+  }
+}
+
+.strip-block {
+  display: block;
+  /* Card margin * 2 */
+  padding-bottom: 0;
+  position: relative;
+}
+
+.strip-block h6 {
+  display: block;
+  width: 100%;
+}
+
+.strip:last-child {
+  margin-bottom: 0;
+}
+
+.strip__label {
+  opacity: 0.4;
+}
+
+.strip__label:not(:first-child) {
+  margin-left: 20px;
+}
+
+.strip-controller-group {
+  display: flex;
+  flex-direction: column;
+}
+
+.strip-controller-group__item--effect {
+  width: 100%;
+  display: flex;
+  padding-right: 0px;
+  margin-right: 0px;
+  margin-bottom: 20px;
+  flex-wrap: wrap;
+  .strip-controller__button {
+    flex-grow: 1;
+    height: 45px;
+    margin-bottom: 10px;
+  }
+  .strip-controller__title {
+    margin-right: 20px;
+    line-height: 45px;
+  }
+}
+
+@media (min-width: 1000px) {
+  .strip-controller-group {
+    display: flex;
+    flex-direction: row;
+  }
+
+  .strip-controller-group__item--effect {
+    width: 50%;
+    padding-right: 0px;
+    margin-right: 20px;
+    margin-bottom: 0px;
+    flex-wrap: wrap;
+    .strip-controller__button {
+      flex-grow: 1;
+    }
+    .strip-controller__title {
+    }
+  }
+}
+
+.strip-controller-group__item--modifiers {
+  width: 100%;
+}
+
+.strip-controller-group__item--sub-group {
+  .button,
+  .select {
+    flex-grow: 1;
+    height: 45px;
+  }
+}
+
+.strip-controller__name {
+  margin-bottom: 10px;
+}
+
+.strip-controller__title {
+  margin-top: 10px;
+  margin-bottom: 10px;
+  text-transform: uppercase;
+  letter-spacing: 0.05rem;
+  font-size: 10px;
+  color: rgba(255, 255, 255, 0.1);
+}
+
+.button.midi {
+}
+
+.button.audio {
+}
+
+.button.time {
+}
+
+.button.generic {
+}
+
+.slider-holder {
+  border-radius: 3px;
+  padding: 3px 5px;
+  margin-right: 5px;
+}
+
+.slider-holder label {
+  font-size: 10px;
+}
+
+.strip-controller__audio-block {
+  display: flex;
+  .slider-holder {
+    width: calc(33% - 5px);
+  }
+}

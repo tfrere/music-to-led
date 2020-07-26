@@ -21,7 +21,7 @@ class ModSwitcher:
         self.strip_index = index
         self.strip_config = config.strips[index]
         self.active_state = self.strip_config.active_state
-        self.hasStatesChanged = False
+        self.has_states_changed = False
 
         self.visualizer = visualizer
         self.verbose = verbose
@@ -55,20 +55,21 @@ class ModSwitcher:
 
                             currentState = deepcopy(StateConfig())
                             currentState.name = midi_data["data"]
-                            self.config.states.append(currentState)
-                            self.config.number_of_states = len(
-                                self.config.states)
+                            self.strip_config.states.append(currentState)
+                            self.strip_config.number_of_states = len(
+                                self.strip_config.states)
 
-                            newActiveStateIndex = len(self.config.states) - 1
+                            newActiveStateIndex = len(
+                                self.strip_config.states) - 1
                             self.strip_config.active_state_index = newActiveStateIndex
                             self.strip_config.active_state = deepcopy(
-                                self.config.states[newActiveStateIndex])
+                                self.strip_config.states[newActiveStateIndex])
                             self.active_state = self.strip_config.active_state
                             self.config.strips[self.strip_index].active_state_index = newActiveStateIndex
 
                             self.config.saveToYmlFile()
 
-                            self.hasStatesChanged = True
+                            self.has_states_changed = True
 
                             self.visualizer.initVizualiser()
 
@@ -83,20 +84,12 @@ class ModSwitcher:
 
                             name = midi_data["data"]
 
-                            print(name)
-                            print(
-                                self.config.states[0].active_visualizer_effect)
-                            print(
-                                self.strip_config.active_state.active_visualizer_effect)
-                            print(
-                                self.config.strips[0].active_state.active_visualizer_effect)
-
-                            self.config.states[self.strip_config.active_state_index] = (
+                            self.strip_config.states[self.strip_config.active_state_index] = (
                                 self.active_state)
 
                             self.strip_config.active_state.name = name
                             self.config.saveToYmlFile()
-                            self.hasStatesChanged = True
+                            self.has_states_changed = True
                             self.logger(self.strip_config.name,
                                         "is updating state named " + name)
                         except:
@@ -106,26 +99,32 @@ class ModSwitcher:
                         try:
                             name = midi_data["data"]
 
-                            if(len(self.config.states) > 1):
+                            if(len(self.strip_config.states) > 1):
 
-                                for i, state in enumerate(self.config.states):
+                                for i, state in enumerate(self.strip_config.states):
                                     print(i, state.name, name)
 
                                     if(state.name == name):
-                                        print("removing", self.config.states)
-                                        del self.config.states[i]
+                                        print("removing",
+                                              self.strip_config.states)
+                                        del self.strip_config.states[i]
 
                                         newActiveStateIndex = len(
-                                            self.config.states) - 1
+                                            self.strip_config.states) - 1
                                         print(newActiveStateIndex)
                                         self.strip_config.active_state_index = newActiveStateIndex
+                                        self.strip_config.number_of_states = len(
+                                            self.strip_config.states)
                                         self.strip_config.active_state = deepcopy(
-                                            self.config.states[newActiveStateIndex])
+                                            self.strip_config.states[newActiveStateIndex])
+
                                         self.active_state = self.strip_config.active_state
                                         self.config.strips[self.strip_index].active_state_index = newActiveStateIndex
 
+                                        self.config.strips[self.strip_index]
+
                                         self.config.saveToYmlFile()
-                                        self.hasStatesChanged = True
+                                        self.has_states_changed = True
                                         self.logger(self.strip_config.name,
                                                     "is deleting state named " + name)
                             else:
@@ -157,6 +156,7 @@ class ModSwitcher:
 
                         # MIDI BASED
                         elif(mode == base_note_increment + 5):
+                            self.visualizer.initPianoScroll()
                             self.visualizer.resetFrame()
                             self.active_state.active_visualizer_effect = "piano_scroll"
                         elif(mode == base_note_increment + 6):
@@ -280,9 +280,11 @@ class ModSwitcher:
                                 self.strip_config.name, "is changing blur value to " + str(self.active_state.blur_value))
 
                         elif(mode == base_note_increment + 25):
-                            print(velocity)
+                            # print(velocity)
                             self.active_state.division_value = convertRange(
                                 velocity, [1, 127], [0, 3], rounded=True)
+                            self.visualizer.resetFrame()
+                            self.visualizer.initVizualiser()
                             self.logger(
                                 self.strip_config.name, "is changing division value to " + str(self.active_state.division_value))
 
@@ -291,18 +293,18 @@ class ModSwitcher:
                             self.strip_config.active_state_index = self.valueUpdater(
                                 self.strip_config.active_state_index,
                                 velocity,
-                                len(self.config.states),
+                                len(self.strip_config.states),
                                 1
                             )
 
                             self.strip_config.active_state = deepcopy(
-                                self.config.states[self.strip_config.active_state_index])
+                                self.strip_config.states[self.strip_config.active_state_index])
                             self.active_state = self.strip_config.active_state
-
                             self.visualizer.initVizualiser()
+                            self.visualizer.resetFrame()
 
                             self.logger(self.strip_config.name, "is changing state for " +
-                                        self.config.states[self.strip_config.active_state_index].name)
+                                        self.strip_config.states[self.strip_config.active_state_index].name)
 
                         elif(mode == base_note_increment + 27):
                             self.active_state.audio_samples_filter_min = convertRange(

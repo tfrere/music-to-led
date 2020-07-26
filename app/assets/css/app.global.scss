@@ -1,10 +1,14 @@
 $primary-color: #061b28;
-$primary-color-darken-1: #04131d;
+$primary-color-darken-1: darken($primary-color, 5%);
 $primary-color-lighten-1: lighten($primary-color, 15%);
 
-$backgroundColor: lighten(#04131d, 4%);
+$backgroundColor: lighten($primary-color-darken-1, 4%);
 $textColor: rgba(255, 255, 255, 0.7);
-$cardBackgroundColor: #061b28;
+$cardBackgroundColor: lighten($primary-color, 4%);
+
+$topBarHeight: 25px;
+$bottomBarHeight: 80px;
+$leftPanelWidth: 300px;
 
 @import 'const/_font.scss';
 @import 'const/_normalize.scss';
@@ -12,6 +16,7 @@ $cardBackgroundColor: #061b28;
 
 * {
   box-sizing: border-box;
+  text-rendering: geometricPrecision;
 }
 
 /* Let's get this party started */
@@ -48,8 +53,8 @@ body,
   padding: 0;
   width: 100%;
   height: 100%;
-  background-color: $backgroundColor;
   color: white;
+  background: $backgroundColor;
   user-select: none;
   cursor: default;
   position: absolute;
@@ -58,43 +63,14 @@ body,
   overflow: hidden;
 }
 
-.page {
-  position: absolute;
-  top: 25px;
-  height: calc(100% - 105px);
-  width: 100%;
-  overflow-y: scroll;
-  overflow-x: hidden;
-  & > div {
-    padding: 20px;
-    padding-bottom: 0;
-    & > .card {
-      &.card {
-        margin-left: 0;
-        margin-right: 0;
-      }
-    }
-  }
-  animation: appear 0.5s linear;
-}
-@keyframes appear {
-  from {
-    opacity: 0;
-  }
-  to {
-    opacity: 1;
-  }
-}
-
 .flex-center-wrapper {
   display: flex;
   align-items: center;
   justify-content: center;
-  min-height: 300px;
 }
 
 .slider-holder {
-  width: calc(25%);
+  width: calc(25% - 5px);
   display: inline-block;
   &:not(:last-child) {
     padding-right: 10px;
@@ -151,7 +127,7 @@ h5,
 h6 {
   background-color: rgba(0, 0, 0, 0);
   margin: 0;
-  font-family: 'Roboto Condensed';
+  // font-family: 'Roboto Condensed';
   font-weight: 900;
   color: rgba(255, 255, 255, 0.5);
 }
@@ -198,20 +174,33 @@ hr {
   }
 }
 
-@import 'components/_nav.scss';
-@import 'components/_input.scss';
-@import 'components/_midi-logs.scss';
-@import 'components/_draggable-bar.scss';
-@import 'components/_card.scss';
-@import 'components/_strip.scss';
-@import 'components/_strip-visualizer.scss';
-@import 'components/_loading.scss';
-@import 'components/_splash-screen.scss';
-@import 'components/_range.scss';
-@import 'components/_button.scss';
-@import 'components/_select.scss';
-@import 'components/_online-notifier.scss';
-@import 'components/_strip-controller.scss';
-@import 'components/_audio-visualizer.scss';
-@import 'components/_sceno-visualizer.scss';
-@import 'components/_state-controller.scss';
+@import 'components/generic/input-range/_input-range.scss';
+@import 'components/generic/_input-file.scss';
+@import 'components/generic/_pop-over.scss';
+@import 'components/generic/_input.scss';
+@import 'components/generic/_color-picker.scss';
+@import 'components/generic/_color-scheme.scss';
+@import 'components/generic/_circular-slider.scss';
+@import 'components/generic/_card.scss';
+@import 'components/generic/_range.scss';
+@import 'components/generic/_button.scss';
+@import 'components/generic/_select.scss';
+@import 'components/generic/_loading.scss';
+@import 'components/generic/_splash-screen.scss';
+
+@import 'components/strip/_midi-logs.scss';
+@import 'components/strip/_strip.scss';
+@import 'components/strip/_strip-visualizer.scss';
+@import 'components/strip/_online-notifier.scss';
+@import 'components/strip/_strip-controller.scss';
+@import 'components/strip/_state-controller.scss';
+
+@import 'components/scene/_sceno-visualizer.scss';
+
+@import 'components/audio/_audio-visualizer.scss';
+
+@import 'components/layout/_nav.scss';
+@import 'components/layout/_left-panel.scss';
+@import 'components/layout/_draggable-bar.scss';
+@import 'components/layout/_page.scss';
+@import 'components/layout/_config-loader.scss';

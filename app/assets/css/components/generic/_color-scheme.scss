@@ -1,0 +1,15 @@
+.color-scheme {
+  display: inline-flex;
+  line-height: 30px;
+}
+
+.color-scheme__color {
+  display: inline-block;
+  width: 15px;
+  height: 15px;
+  background-color: #000;
+  border-radius: 2px;
+  &:not(:last-child) {
+    margin-right: 5px;
+  }
+}

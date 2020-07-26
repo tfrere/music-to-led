@@ -46,32 +46,46 @@ class AudioVisualizerCanvas extends React.Component {
       const ctx = this.refs.canvas.getContext('2d');
       ctx.clearRect(0, 0, 150, this.props.height);
 
-      this.props.audio.map((audio_atom, index) => {
-        const opacity = Math.round(audio_atom * 10) / 10 + 0.4;
-        const audio_channel = audio_atom * this.props.audio_gain;
-        if (
-          index < this.props.audio_samples_filter_min ||
-          index > this.props.audio_samples_filter_max
-        ) {
-          ctx.fillStyle = 'rgba(255,0,0,' + opacity + ')';
-        } else {
-          ctx.fillStyle = 'rgba(255,255,255,' + opacity + ')';
-        }
-        ctx.fillRect(
-          index * this.state.channel_size,
-          this.props.height - audio_channel * this.props.height,
-          this.state.channel_size - this.state.gap,
-          audio_channel * this.props.height
-        );
-      });
+      if (!this.props.hasModifiers) {
+        this.draw(1, 0.8);
+      } else {
+        this.draw(this.props.audio_gain, 0.8);
+        this.draw(1, 0.1);
+      }
     }
   };
 
-  render() {
-    let audioElems = [];
+  draw(gain, opacity_offset) {
+    const ctx = this.refs.canvas.getContext('2d');
+    this.props.audio.map((audio_atom, index) => {
+      const opacity = opacity_offset;
+      const audio_channel = audio_atom * gain;
+      if (
+        index < this.props.audio_samples_filter_min ||
+        index > this.props.audio_samples_filter_max
+      ) {
+        ctx.fillStyle = 'rgba(255,0,0,' + opacity + ')';
+      } else {
+        ctx.fillStyle = 'rgba(255,255,255,' + opacity + ')';
+      }
+      ctx.fillRect(
+        index * this.state.channel_size,
+        this.props.height - audio_channel * this.props.height,
+        this.state.channel_size - this.state.gap,
+        audio_channel * this.props.height
+      );
+    });
+  }
 
+  render() {
     return (
-      <div className="audio-visualizer">
+      <div
+        className={
+          this.props.className
+            ? this.props.className + ' audio-visualizer'
+            : 'audio-visualizer'
+        }
+      >
         <canvas
           className="audio-visualizer__canvas"
           ref="canvas"

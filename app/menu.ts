@@ -58,7 +58,7 @@ export default class MenuBuilder {
       label: 'Electron',
       submenu: [
         {
-          label: 'About Audio 2 Led',
+          label: 'About Music 2 Led',
           selector: 'orderFrontStandardAboutPanel:'
         },
         { type: 'separator' },

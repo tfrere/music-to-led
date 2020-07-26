@@ -1,0 +1,52 @@
+.popover {
+  position: relative;
+  width: 100%;
+  & > .button {
+    margin: 0;
+    width: 100%;
+  }
+}
+
+.popover-content {
+  width: 200px;
+  background-color: darken($backgroundColor, 5%);
+  border: 1px solid darken($backgroundColor, 12%);
+  margin-top: 10px;
+  -webkit-background-clip: padding-box;
+  -moz-background-clip: padding-box;
+  background-clip: padding-box;
+  position: absolute;
+  border-radius: 3px;
+  outline: 0;
+  z-index: 999;
+  padding: 10px;
+}
+/*
+.popover-content.-arrow {
+  margin-top: 10px;
+}
+
+.popover-content.-arrow::before,
+.popover-content::after {
+  content: '';
+  position: absolute;
+  width: 0;
+  height: 0;
+  left: 10px;
+}
+
+.popover-content.-arrow::before {
+  top: -10px;
+  border-left: 9px solid transparent;
+  border-right: 9px solid transparent;
+  border-bottom: 10px solid rgba(0, 0, 0, 0.15);
+}
+
+.popover-content.-arrow::after {
+  top: -8px;
+  margin-left: 1px;
+  border-left: 8px solid transparent;
+  border-right: 8px solid transparent;
+  border-bottom: 8px solid $backgroundColor;
+}
+*/

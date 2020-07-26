@@ -3,8 +3,10 @@ import time
 
 from scipy.ndimage.filters import gaussian_filter1d
 
+
 def getValueFromPercentage(value, percentage):
     return value / 100 * percentage
+
 
 def shiftArray(arr, num, decrease_amount):
     value = arr[0] - decrease_amount
@@ -17,13 +19,18 @@ def shiftArray(arr, num, decrease_amount):
         arr[:num] = value
     return arr
 
+
 def applyGradientDecrease(pixels):
     pixels_length = len(pixels[0])
     for i in range(pixels_length):
-        if(pixels[0][i] > 0): pixels[0][i] = pixels[0][i] - i / pixels_length * 2
-        if(pixels[1][i] > 0): pixels[1][i] = pixels[1][i] - i / pixels_length * 2
-        if(pixels[2][i] > 0): pixels[2][i] = pixels[2][i] - i / pixels_length * 2
+        if(pixels[0][i] > 0):
+            pixels[0][i] = pixels[0][i] - i / pixels_length * 2
+        if(pixels[1][i] > 0):
+            pixels[1][i] = pixels[1][i] - i / pixels_length * 2
+        if(pixels[2][i] > 0):
+            pixels[2][i] = pixels[2][i] - i / pixels_length * 2
     # print(pixels)
+
 
 def shiftPixels(pixels):
     pixels[0] = np.roll(pixels[0], 1)
@@ -32,6 +39,7 @@ def shiftPixels(pixels):
     pixels[0][0] = pixels[0][1]
     pixels[1][0] = pixels[1][1]
     pixels[2][0] = pixels[1][1]
+
 
 def shiftPixelsSmoothly(pixels):
     pixels[0] = shiftArray(pixels[0], 1, 5)
@@ -45,6 +53,7 @@ def putPixel(strip, ledIndex, r, g, b, velocity):
         strip[1][ledIndex] = g / 127 * (velocity + 1)
         strip[2][ledIndex] = b / 127 * (velocity + 1)
 
+
 class PianoScroll():
 
     def initPianoScroll(self):
@@ -55,7 +64,8 @@ class PianoScroll():
     def visualizePianoScroll(self):
         """Piano midi visualizer"""
 
-        color_scheme = self.active_state.formatted_color_schemes[self.active_state.active_color_scheme_index]
+        color_scheme = self.active_state.formatted_color_schemes[
+            self.active_state.active_color_scheme_index]
 
         for midi_note in self.midi_datas:
             if(midi_note["type"] == "note_on" and midi_note["velocity"] > 0):
@@ -85,11 +95,11 @@ class PianoScroll():
             value = self.clampToNewRange(self.pitch, -8191, 8191, 0, 127)
 
             for i in range(roll_value):
-                putPixel(self.pixels, i, r, g, b, self.notes_on[len(self.notes_on) - 1]["velocity"] / 2 + value )
+                putPixel(self.pixels, i, r, g, b, self.notes_on[len(
+                    self.notes_on) - 1]["velocity"] / 2 + value)
         else:
             for i in range(roll_value):
                 putPixel(self.pixels, i, 0, 0, 0, 100)
-
 
         # applyGradientDecrease(self.pixels)
 

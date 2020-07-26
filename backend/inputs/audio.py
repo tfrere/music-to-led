@@ -22,7 +22,6 @@ class Audio:
         self.prev_overflow_time = time.time()
         self.frames_per_buffer = int(self.sampling_rate / self.framerate)
         self.port_index = Audio.getPortIndexFromName(port_name)
-        self.tryPort(port_name)
         self.stream = self.audio.open(
             format=pyaudio.paInt16,
             channels=1,
@@ -36,7 +35,7 @@ class Audio:
     def tryPort(port_name):
         if(Audio.getPortIndexFromName(port_name) == -1):
             print(
-                "Audio port not found or not acceptable, please check your config file -> ", port_name)
+                "Audio port not found or not acceptable -> ", port_name)
             list = []
             for item in Audio.listAvailablePortsInfos():
                 if(item["maxInputChannels"] >= 2):

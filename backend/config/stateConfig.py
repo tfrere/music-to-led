@@ -21,8 +21,9 @@ class StateConfig():
         is_mirror=False,
         active_color_scheme_index=0,
         color_schemes=[["red", "green", "blue"],
-                       ["red", ], ["green"], ["blue"]],
-        debug=False
+                       ["#2a04ff", "#ff9604"], ["#02e6ff", "#ff4a02"], ["#2bff01", "#ff0127"], ["#fff700", "#f700ff"], ["red"], ["green"], ["blue"], ["yellow"], ["pink"]],
+        debug=False,
+        verbose=False
     ):
 
         self.name = name
@@ -52,6 +53,9 @@ class StateConfig():
         for scheme in self.color_schemes:
             self.formatted_color_schemes.append(
                 colorSchemeFormatter.render(scheme))
+
+        if(verbose):
+            self.print()
 
     def copy(self):
         return StateConfig(

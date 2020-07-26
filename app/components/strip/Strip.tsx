@@ -1,7 +1,6 @@
 import React from 'react';
 import StripController from './StripController';
 import PixelVisualizerCanvas from './PixelVisualizerCanvas';
-import { Collapse } from 'react-collapse';
 
 class Strip extends React.Component {
   constructor(props) {
@@ -28,27 +27,25 @@ class Strip extends React.Component {
       ? ' online-notifier--online'
       : ' online-notifier--offline';
 
-    const isReverse = className.includes('card--reverse');
-    let cardClassNames = isReverse ? 'card--without-border' : '';
-    cardClassNames += 'card--without-border';
+    const isReverse =
+      (className && className.includes('left-panel__list__item--active')) ||
+      false;
+    let cardClassNames = isReverse ? 'left-panel__list__item--active ' : '';
 
     return (
       <div
-        key={'strip' + index}
-        className={cardClassNames + ' strip card'}
-        style={{ height: '68px' }}
+        key={'left-panel__list__item' + index}
+        className={cardClassNames + ' left-panel__list__item'}
         onClick={() => {
           if (this.props.onClick) {
             this.props.onClick();
           }
         }}
       >
-        <div className="strip__header">
-          <label className="strip__header__title">
+        <div className="left-panel__list__item__header">
+          <h4 className="left-panel__list__item__header__title">
             {strip.name}
-            <span> on </span>
-            {active_state.name}
-          </label>
+          </h4>
           <div className={'online-notifier' + onlineClassNames}>
             {is_strip_online ? (
               <label className="online-notifier__label">
@@ -60,14 +57,14 @@ class Strip extends React.Component {
             <div className="online-notifier__circle"></div>
           </div>
         </div>
-        <hr />
-        <div className="strip__live-view">
+        <div className="strip-item__live-view">
           <PixelVisualizerCanvas
             physical_shape={strip.physical_shape}
             active_shape={active_shape}
             pixels={pixels}
           />
         </div>
+        <div id={strip.name} />
       </div>
     );
   }

@@ -22,63 +22,71 @@ class ZmqServer():
         # 1     : Audio datas
         # 2...n : [pixels, strip_config, active_state, framerateCalculator.getFps()]
         # 2 + config.number_of_strips + ...n : isOnline for each strip
-        try:
-            audios_json = ""
-            pixels_json = ""
+        audios_json = ""
+        pixels_json = ""
+        strips_json = ""
 
-            config = shared_list[0]
-            audios = []
-            pixels = []
-            number_of_strips = shared_list[0].number_of_strips
-            are_strips_online = []
-            framerates = []
-            active_states = "["
+        config = shared_list[0]
+        audios = []
+        pixels = []
+        strips = "["
+        number_of_strips = shared_list[0].number_of_strips
+        are_strips_online = []
+        framerates = []
+        active_states = "["
 
-            for i in range(len(shared_list[1])):
-                audios.append(shared_list[1][i].tolist())
+        for i in range(len(shared_list[1])):
+            audios.append(shared_list[1][i].tolist())
 
-            for i in range(number_of_strips):
-                pixelsFrame = shared_list[2 + i][0]
-                active_state = shared_list[2 + i][2]
-                config.strips[i].midi_logs = shared_list[2 + i][1].midi_logs
-                pixels.append(pixelsFrame.tolist())
-                are_strips_online.append(shared_list[2 + number_of_strips + i])
-                framerates.append(shared_list[2 + i][3])
+        for i in range(number_of_strips):
+            pixelsFrame = shared_list[2 + i][0]
+            strip = shared_list[2 + i][1]
+            active_state = shared_list[2 + i][2]
+            pixels.append(pixelsFrame.tolist())
+            are_strips_online.append(shared_list[2 + number_of_strips + i])
+            framerates.append(shared_list[2 + i][3])
 
-                if(i != number_of_strips - 1):
-                    active_states += " " + \
-                        json.dumps(
-                            active_state, default=lambda o: o.__dict__) + ","
-                else:
-                    active_states += " " + \
-                        json.dumps(active_state, default=lambda o: o.__dict__)
+            if(i != number_of_strips - 1):
+                strips += " " + \
+                    json.dumps(
+                        strip, default=lambda o: o.__dict__) + ","
+                active_states += " " + \
+                    json.dumps(
+                        active_state, default=lambda o: o.__dict__) + ","
+            else:
+                strips += " " + \
+                    json.dumps(
+                        strip, default=lambda o: o.__dict__)
+                active_states += " " + \
+                    json.dumps(active_state, default=lambda o: o.__dict__)
 
-            config_json = json.dumps(
-                config, default=lambda o: o.__dict__)
+        config_json = json.dumps(
+            config, default=lambda o: o.__dict__)
 
-            audios_json = json.dumps(audios)
-            pixels_json = json.dumps(pixels)
-            active_states_json = active_states + "]"
-            framerates_json = json.dumps(framerates)
-            are_strips_online_json = json.dumps(are_strips_online)
+        audios_json = json.dumps(audios)
+        pixels_json = json.dumps(pixels)
+        active_states_json = active_states + "]"
+        strips_json = strips + "]"
+        framerates_json = json.dumps(framerates)
+        are_strips_online_json = json.dumps(are_strips_online)
 
-            infos = "{ \"config\": "
-            infos += config_json
-            infos += ", \"active_states\": "
-            infos += str(active_states_json)
-            infos += ", \"audios\": "
-            infos += str(audios)
-            infos += ", \"pixels\": "
-            infos += str(pixels_json)
-            infos += ", \"framerates\": "
-            infos += str(framerates_json)
-            infos += ", \"are_strips_online\": "
-            infos += str(are_strips_online_json)
-            infos += ", \"time\": "
-            infos += str(datetime.datetime.timestamp(datetime.datetime.now()))
-            infos += "}"
-        except:
-            return "error"
+        infos = "{ \"config\": "
+        infos += config_json
+        infos += ", \"active_states\": "
+        infos += str(active_states_json)
+        infos += ", \"audios\": "
+        infos += str(audios)
+        infos += ", \"strips\": "
+        infos += str(strips_json)
+        infos += ", \"pixels\": "
+        infos += str(pixels_json)
+        infos += ", \"framerates\": "
+        infos += str(framerates_json)
+        infos += ", \"are_strips_online\": "
+        infos += str(are_strips_online_json)
+        infos += ", \"time\": "
+        infos += str(datetime.datetime.timestamp(datetime.datetime.now()))
+        infos += "}"
 
         message = json.loads(
             bytes(infos, encoding="utf-8"))

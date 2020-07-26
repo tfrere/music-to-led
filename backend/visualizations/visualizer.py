@@ -37,7 +37,7 @@ class Visualizer(Spectrum, FullColor, FadeOut, Clear, AlternateColors, Transitio
 
         self.config = config
         self.strip_config = config.strips[index]
-        self.pixelReshaper = PixelReshaper(self.config, index)
+        self.pixelReshaper = PixelReshaper(self.strip_config)
 
         self.hasBegun = False
         self.audio_datas = []
@@ -48,7 +48,6 @@ class Visualizer(Spectrum, FullColor, FadeOut, Clear, AlternateColors, Transitio
         self.initVizualiser()
 
     def initVizualiser(self):
-
         # self.active_state = deepcopy(self.strip_config.active_state)
         self.active_state = self.strip_config.active_state
         self.number_of_pixels = self.strip_config.shapes[
@@ -84,6 +83,7 @@ class Visualizer(Spectrum, FullColor, FadeOut, Clear, AlternateColors, Transitio
         self.resetFrame()
 
         self.pixelReshaper.initActiveShape()
+        self.drawAlternateColorChunks()
 
     def smoothDecay(self, audio_data, decay_value):
 

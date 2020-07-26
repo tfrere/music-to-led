@@ -1,0 +1,47 @@
+.online-notifier {
+  display: flex;
+  margin-left: auto;
+  cursor: pointer;
+}
+.online-notifier__label {
+  text-transform: uppercase;
+  font-size: 10px;
+  line-height: 10px;
+  transition: all 250ms ease;
+}
+.online-notifier__circle {
+  width: 10px;
+  height: 10px;
+  background: red;
+  border-radius: 100%;
+  margin-left: 5px;
+  transition: all 250ms ease;
+}
+
+.online-notifier.online-notifier--online {
+  color: red;
+}
+
+.online-notifier.online-notifier--offline {
+  color: rgba(255, 255, 255, 0.5);
+}
+
+.online-notifier.online-notifier--online .online-notifier__circle {
+  background-color: red;
+  animation: blink .7s alternate infinite;
+}
+
+.online-notifier.online-notifier--offline .online-notifier__circle {
+  background-color: rgba(255, 255, 255, 0.5);
+  border-radius: 0%;
+}
+
+
+@keyframes blink {
+  0% {
+    opacity: 0.1;
+  }
+  100% {
+    opacity: 1;
+  }
+}

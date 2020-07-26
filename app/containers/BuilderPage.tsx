@@ -3,7 +3,7 @@ import Builder from '../components/Builder';
 
 export default function BuilderPage() {
   return (
-    <div className="page page--builder">
+    <div className="page page--builder page--with-left-panel">
       <Builder />
     </div>
   );

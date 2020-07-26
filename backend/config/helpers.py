@@ -1,3 +1,7 @@
+import psutil
+import os
+
+
 def isAnEvenArray(arr):
     for item in arr:
         if(item % 2 == 1):
@@ -16,3 +20,8 @@ def subdivideShape(shape, subdivision_level=1):
             newShape.append(int(newValue))
 
     return newShape
+
+
+def autoKill():
+    parent = psutil.Process(os.getpid())
+    parent.kill()

@@ -1,5 +1,5 @@
 {
-  "execName": "music-2-led",
+  "execName": "music2led",
   "connString": "tcp://127.0.0.1:8000",
   "devUsePackaged": false
 }

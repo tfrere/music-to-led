@@ -1,8 +1,12 @@
 import { Subscriber } from 'zeromq';
 import React from 'react';
+import { Link } from 'react-router-dom';
+import routes from '../constants/routes.json';
+import { promiseTimeout, zeromqMessages } from '../utils/zeromq';
 
-import ScenoVisualizerCanvas from './sceno/ScenoVisualizerCanvas';
 import Strip from './strip/Strip';
+import StripController from './strip/StripController';
+import ScenoVisualizerCanvas from './sceno/ScenoVisualizerCanvas';
 
 let client_time = new Date().getTime();
 let server_time = 0;
@@ -42,9 +46,8 @@ class Show extends React.Component {
     super(props);
     this.state = {
       config: null,
-      strips: [],
+      pixels: [],
       audios: [],
-      midi: [],
       active_states: [],
       are_strips_online: [],
       isZMQConnected: false
@@ -63,6 +66,7 @@ class Show extends React.Component {
         config: object.config,
         audios: object.audios,
         pixels: object.pixels,
+        strips: object.strips,
         active_states: object.active_states,
         are_strips_online: object.are_strips_online,
         framerates: object.framerates,
@@ -88,39 +92,37 @@ class Show extends React.Component {
       framerates,
       audios,
       pixels,
+      strips,
       isZMQConnected
     } = this.state;
 
     let stripsElem = [];
+    let active_strip_data = null;
 
     if (
       active_states &&
       active_states[0] &&
       are_strips_online &&
       config &&
+      strips &&
       framerates &&
       audios &&
       framerates &&
-      pixels
+      pixels &&
+      pixels[0][2]
     ) {
-      stripsElem = config.strips.map((strip, index) => {
+      stripsElem = strips.map((strip, index) => {
         const pixelsFrame = pixels[index];
         const is_strip_online = are_strips_online[index];
-        const active_state = active_states[strip.active_state_index];
+        const active_state = active_states[index];
+        // console.log('strip', strip);
+        // console.log('active_states', active_states);
+        // console.log('active_state', active_state);
         const active_shape = strip.shapes[active_state.division_value];
         const framerate = framerates[index];
         const onlineClassNames = is_strip_online
           ? ' online-notifier--online'
           : ' online-notifier--offline';
-
-        // console.log('isonline', is_strip_online);
-        // console.log('strip', strip);
-        // console.log('active_state', active_state);
-        // console.log('active_shape', active_shape);
-        // console.log('framerate', framerate);
-        // console.log('audio', audio);
-        // console.log('pixels', pixels);
-        // console.log('config', config);
 
         return (
           <Strip
@@ -145,36 +147,25 @@ class Show extends React.Component {
     }
     return (
       <React.Fragment>
-        {isZMQConnected &&
-        active_states &&
-        active_states[0] &&
-        are_strips_online &&
-        config &&
-        framerates &&
-        audios &&
-        framerates &&
-        pixels ? (
-          <div>
-            <div>
-              <h4 className="title">
-                <i className="la la-lightbulb la-2x" />
-                Scene
-              </h4>
+        {isZMQConnected ? (
+          <div className="screen-size flex-center-wrapper">
+            <div style={{ width: '100%', height: '500px' }}>
+              <ScenoVisualizerCanvas
+                config={config}
+                pixels={pixels}
+                height={490}
+                hasDarkMode={true}
+                hasGrid={false}
+              />
             </div>
-            <ScenoVisualizerCanvas
-              key={'toto'}
-              config={config}
-              pixels={pixels}
-              height={500}
-            />
-            <div>
+            {/* <div>
               <h4 className="title">
                 <i className="la la-lightbulb la-2x" />
                 <span>{stripsElem.length}</span> Strip
                 {stripsElem.length > 1 ? 's' : ''}
               </h4>
               {stripsElem}
-            </div>
+            </div> */}
           </div>
         ) : (
           <div className="screen-size flex-center-wrapper">

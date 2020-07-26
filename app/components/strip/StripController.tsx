@@ -1,13 +1,16 @@
 import React from 'react';
+import ReactDOM from 'react-dom';
 
 const NOTE_ON = 0x90;
 const NOTE_OFF = 0x80;
 const META_TEXT = 0xff;
 
 import convertRange from '../../utils/convertRange.js';
+import guessNoteFromNumber from '../../utils/guessNoteFromNumber.js';
 import Select from '../generic/Select';
 import Button from '../generic/Button';
 import ColorScheme from '../generic/ColorScheme';
+import ColorPicker from '../generic/ColorPicker';
 
 import MidiVisualizer from '../midi/MidiVisualizer';
 import StateController from '../strip/StateController';
@@ -21,7 +24,7 @@ const keyConfiguration = {
     {
       name: 'scroll',
       label: 'Scroll',
-      note: 'C3',
+      note: 'C2',
       note_int: 0,
       is_first: true,
       type: 'audio',
@@ -30,7 +33,7 @@ const keyConfiguration = {
     {
       name: 'energy',
       label: 'Energy',
-      note: 'C#3',
+      note: 'C#2',
       note_int: 1,
       is_first: false,
       type: 'audio',
@@ -39,7 +42,7 @@ const keyConfiguration = {
     {
       name: 'channel_flash',
       label: 'Flash',
-      note: 'D3',
+      note: 'D2',
       note_int: 2,
       is_first: false,
       type: 'audio',
@@ -48,7 +51,7 @@ const keyConfiguration = {
     {
       name: 'channel_intensity',
       label: 'Intensity',
-      note: 'D#3',
+      note: 'D#2',
       note_int: 3,
       is_first: false,
       type: 'audio',
@@ -58,7 +61,7 @@ const keyConfiguration = {
     {
       name: 'spectrum',
       label: 'Spectrum',
-      note: 'E3',
+      note: 'E2',
       note_int: 4,
       type: 'audio',
       is_first: false,
@@ -68,7 +71,7 @@ const keyConfiguration = {
     {
       name: 'piano_scroll',
       label: 'Midi Scroll',
-      note: 'F3',
+      note: 'F2',
       note_int: 5,
       is_first: true,
       type: 'midi',
@@ -77,7 +80,7 @@ const keyConfiguration = {
     {
       name: 'piano_note',
       label: 'Midi note',
-      note: 'F#3',
+      note: 'F#2',
       note_int: 6,
       is_first: false,
 
@@ -87,7 +90,7 @@ const keyConfiguration = {
     {
       name: 'pitchwheel_flash',
       label: 'Pitch. Flash',
-      note: 'G3',
+      note: 'G2',
       note_int: 7,
       is_first: false,
       type: 'midi',
@@ -96,7 +99,7 @@ const keyConfiguration = {
     {
       name: 'alternate_color_chunks',
       label: 'Alt. Chunks',
-      note: 'G#3',
+      note: 'G#2',
       note_int: 8,
       is_first: true,
 
@@ -107,7 +110,7 @@ const keyConfiguration = {
     {
       name: 'alternate_color_shapes',
       label: 'Alt. Shapes',
-      note: 'A3',
+      note: 'A2',
       note_int: 9,
       is_first: false,
       type: 'time',
@@ -116,7 +119,7 @@ const keyConfiguration = {
     {
       name: 'transition_color_shapes',
       label: 'Fade colors',
-      note: 'A#3',
+      note: 'A#2',
       note_int: 10,
       is_first: false,
       type: 'time',
@@ -125,7 +128,7 @@ const keyConfiguration = {
     {
       name: 'draw_line',
       label: 'Draw',
-      note: 'B3',
+      note: 'B2',
       note_int: 11,
       is_first: true,
       type: 'generic',
@@ -135,7 +138,7 @@ const keyConfiguration = {
     {
       name: 'full_color',
       label: 'Full',
-      note: 'B#3',
+      note: 'C1',
       note_int: 12,
       is_first: false,
       type: 'generic',
@@ -144,7 +147,7 @@ const keyConfiguration = {
     {
       name: 'fade_out',
       label: 'Fade to black',
-      note: 'C#4',
+      note: 'C#1',
       note_int: 13,
       is_first: false,
 
@@ -154,7 +157,7 @@ const keyConfiguration = {
     {
       name: 'clear_frame',
       label: 'Clear',
-      note: 'D4',
+      note: 'D1',
       note_int: 14,
       is_first: false,
 
@@ -164,7 +167,7 @@ const keyConfiguration = {
     {
       name: 'fire',
       label: 'Fire',
-      note: 'D#4',
+      note: 'D#1',
       note_int: 15,
       is_first: false,
 
@@ -194,9 +197,10 @@ class StripController extends React.Component {
 
   componentWillUpdate(oldProps) {
     let that = this;
-
-    // console.log(oldProps);
-    if (this.props.name != oldProps.name) {
+    if (
+      this.props.name != oldProps.name ||
+      window.midiOutputs != this.state.midiOutputs
+    ) {
       window.setTimeout(() => {
         that.changeMidiChannel(that.props.name);
       });
@@ -205,17 +209,21 @@ class StripController extends React.Component {
 
   changeMidiChannel = name => {
     let that = this;
-    for (const output of window.outputs) {
-      if (output.name === name) {
-        that.setState({
-          midiOutput: output
-        });
+    if (window.midiOutputs) {
+      for (const output of window.midiOutputs) {
+        if (output.name === name) {
+          that.setState({
+            midiOutput: output,
+            midiOutputs: window.midiOutputs
+          });
+          console.log(output);
+        }
       }
     }
   };
 
   sendNote = (note, velocity = 127) => {
-    let CHANGE_STATE = 26;
+    const CHANGE_STATE = 26;
     if (note != CHANGE_STATE && this.state.isStatePristine) {
       this.setState({ isStatePristine: false });
     } else if (note == CHANGE_STATE && !this.state.isStatePristine) {
@@ -226,14 +234,14 @@ class StripController extends React.Component {
   };
 
   sendText = text => {
-    var buf = Buffer.from(text).toJSON().data;
+    let buf = Buffer.from(text).toJSON().data;
     this.state.midiOutput.sendSysex(0x00, buf);
     this.setState({ isStatePristine: true });
   };
 
   isAlreadyTakenStateName(name) {
     let response = false;
-    this.props.config.states.map(elem => {
+    this.props.strip.states.map(elem => {
       if (name == elem.name) {
         response = true;
       }
@@ -305,68 +313,92 @@ class StripController extends React.Component {
         </div>
       );
     });
-
+    const portalElem = document.getElementById(strip.name);
     return (
       <div className="strip-controller">
-        {this.state.midiOutputs ? (
+        {portalElem
+          ? ReactDOM.createPortal(
+              <StateController
+                isStatePristine={this.state.isStatePristine}
+                sendText={this.sendText}
+                strip={strip}
+                sendNote={this.sendNote}
+                config={config}
+                active_state={active_state}
+              />,
+              portalElem
+            )
+          : null}
+        {this.state.midiOutput ? (
           <>
-            <StateController
-              isStatePristine={this.state.isStatePristine}
-              sendText={this.sendText}
-              sendNote={this.sendNote}
-              config={config}
-              active_state={active_state}
-            />
-            <hr />
             <div className="strip-controller-group">
               <div className="strip-controller-group__item strip-controller-group__item--effect">
                 {buttonHolder}
               </div>
-              <div className="strip-controller-group__item">
-                <div className="button-group button-group--stretched">
-                  <Button
-                    className="button"
-                    onClick={() => {
-                      this.sendNote(19);
-                    }}
-                  >
-                    <>
-                      Color <ColorScheme scheme={active_color_scheme} />
-                    </>
-                  </Button>
-                  <Button
-                    className={active_state.is_reverse ? 'button--reverse' : ''}
-                    onClick={() => {
-                      this.sendNote(16);
-                    }}
-                  >
-                    Reverse
-                  </Button>
-
-                  <Button
-                    className={active_state.is_mirror ? 'button--reverse' : ''}
-                    onClick={() => {
-                      this.sendNote(17);
-                    }}
-                  >
-                    Mirror
-                  </Button>
-
-                  <Button
-                    className="button"
-                    onClick={() => {
-                      this.sendNote(25);
-                    }}
-                  >
-                    Divide {division_value}
-                  </Button>
+              <div className="strip-controller-group__item strip-controller-group__item--modifiers ">
+                <div style={{ display: 'flex' }}>
+                  <div style={{ width: '25%' }}>
+                    <ColorPicker
+                      onChange={index => {
+                        this.sendNote(19, index);
+                      }}
+                      activeSchemeIndex={active_state.active_color_scheme_index}
+                      schemes={active_state.color_schemes}
+                    />
+                  </div>
+                  <div style={{ width: '25%' }}>
+                    <Select
+                      options={[
+                        { name: 1, prefix: 'C#-0 divide ' },
+                        { name: 2, prefix: 'C#-0 divide ' },
+                        { name: 3, prefix: 'C#-0 divide ' }
+                      ]}
+                      defaultValue={division_value + 1}
+                      setValue={value => {
+                        this.sendNote(
+                          25,
+                          convertRange(value, [1, 4], [1, 127])
+                        );
+                      }}
+                    />
+                  </div>
+                  <div style={{ width: '50%' }}>
+                    <div className="button-group button-group--stretched">
+                      <Button
+                        className={
+                          active_state.is_reverse
+                            ? 'button--reverse button--has-type'
+                            : 'button--has-type'
+                        }
+                        onClick={() => {
+                          this.sendNote(16);
+                        }}
+                      >
+                        <span className="button__type">{'E-1'}</span>
+                        Reverse
+                      </Button>
+                      <Button
+                        className={
+                          active_state.is_mirror
+                            ? 'button--reverse button--has-type'
+                            : 'button--has-type'
+                        }
+                        onClick={() => {
+                          this.sendNote(17);
+                        }}
+                      >
+                        <span className="button__type">{'F-1'}</span>
+                        Mirror
+                      </Button>
+                    </div>
+                  </div>
                 </div>
                 <div className="strip-controller-group__item">
                   <h5 className="strip-controller__title">Parameters</h5>
-                  <div className="card strip-controller__audio">
+                  <div className="strip-controller__sub-card">
                     <div className="slider-holder">
                       <label htmlFor="time">
-                        Time <span>{time_interval}</span>
+                        Speed <span>{time_interval}</span> A-1
                       </label>
                       <input
                         className="input"
@@ -385,7 +417,7 @@ class StripController extends React.Component {
                     </div>
                     <div className="slider-holder">
                       <label htmlFor="brightness">
-                        Brightness <span>{max_brightness}</span>
+                        Brightness <span>{max_brightness}</span> A#-1
                       </label>
                       <input
                         className="input"
@@ -404,7 +436,7 @@ class StripController extends React.Component {
                     </div>
                     <div className="slider-holder">
                       <label htmlFor="chunk_size">
-                        Chunk Size <span>{chunk_size}</span>
+                        Chunk Size <span>{chunk_size}</span> B-1
                       </label>
                       <input
                         className="input"
@@ -423,7 +455,7 @@ class StripController extends React.Component {
                     </div>
                     <div className="slider-holder">
                       <label htmlFor="blur_value">
-                        Blur value <span>{blur_value}</span>
+                        Blur value <span>{blur_value}</span> C-0
                       </label>
                       <input
                         className="input"
@@ -434,7 +466,7 @@ class StripController extends React.Component {
                               e.target.value,
                               [0.1, 8],
                               [1, 127],
-                              (rouded = True)
+                              true
                             )
                           );
                         }}
@@ -449,100 +481,108 @@ class StripController extends React.Component {
                   </div>
                   {/* audio filters */}
                   <h5 className="strip-controller__title">Audio</h5>
-                  <div className="card strip-controller__audio">
-                    <Select
-                      options={this.props.config.audio_ports.map(elem => {
-                        return { name: elem.name };
-                      })}
-                      defaultValue={active_audio_channel_name}
-                      setValue={value => {
-                        let stateIndex = -1;
-                        this.props.config.audio_ports.map((elem, index) => {
-                          if (elem.name === value) {
-                            stateIndex = index;
-                          }
-                        });
-
-                        this.sendNote(20, stateIndex);
-                      }}
-                    />
-
-                    <AudioVisualizerCanvas
-                      name={
-                        config.audio_ports[
-                          active_state.active_audio_channel_index
-                        ].name
-                      }
-                      audio={audios[active_state.active_audio_channel_index]}
-                      audio_samples_filter_min={
-                        active_state.audio_samples_filter_min
-                      }
-                      audio_samples_filter_max={
-                        active_state.audio_samples_filter_max
-                      }
-                      audio_gain={active_state.audio_gain}
-                      width={75}
-                      height={30}
-                    />
-                    <div className="slider-holder">
-                      <label htmlFor="audio_samples_filter_min">
-                        min <span>{audio_samples_filter_min}</span>
-                      </label>
-                      <input
-                        className="input"
-                        onChange={e => {
-                          this.sendNote(
-                            27,
-                            convertRange(e.target.value, [0, 24], [1, 25])
-                          );
-                        }}
-                        type="range"
-                        name="audio_samples_filter_min"
-                        min="0"
-                        max="24"
-                        value={audio_samples_filter_min}
+                  <div className="strip-controller__audio-block strip-controller__sub-card">
+                    <div>
+                      <AudioVisualizerCanvas
+                        name={
+                          config.audio_ports[
+                            active_state.active_audio_channel_index
+                          ].name
+                        }
+                        hasModifiers={true}
+                        audio={audios[active_state.active_audio_channel_index]}
+                        gain={active_state.audio_gain}
+                        audio_samples_filter_min={
+                          active_state.audio_samples_filter_min
+                        }
+                        audio_samples_filter_max={
+                          active_state.audio_samples_filter_max
+                        }
+                        audio_gain={active_state.audio_gain}
+                        width={120}
+                        height={60}
                       />
                     </div>
+                    <div>
+                      <div>
+                        <span>G#-1</span>
+                        <Select
+                          options={this.props.config.audio_ports.map(elem => {
+                            return { name: elem.name };
+                          })}
+                          defaultValue={active_audio_channel_name}
+                          setValue={value => {
+                            let stateIndex = -1;
+                            this.props.config.audio_ports.map((elem, index) => {
+                              if (elem.name === value) {
+                                stateIndex = index;
+                              }
+                            });
 
-                    <div className="slider-holder">
-                      <label htmlFor="audio_samples_filter_max">
-                        max <span>{audio_samples_filter_max}</span>
-                      </label>
-                      <input
-                        className="input"
-                        onChange={e => {
-                          this.sendNote(
-                            28,
-                            convertRange(e.target.value, [0, 24], [1, 25])
-                          );
-                        }}
-                        type="range"
-                        name="audio_samples_filter_max"
-                        min="0"
-                        max="24"
-                        value={audio_samples_filter_max}
-                      />
-                    </div>
+                            this.sendNote(20, stateIndex);
+                          }}
+                        />
+                      </div>
+                      <div className="slider-holder">
+                        <label htmlFor="audio_samples_filter_min">
+                          min <span>{audio_samples_filter_min}</span> D#-0
+                        </label>
+                        <input
+                          className="input"
+                          onChange={e => {
+                            this.sendNote(
+                              27,
+                              convertRange(e.target.value, [0, 24], [1, 25])
+                            );
+                          }}
+                          type="range"
+                          name="audio_samples_filter_min"
+                          min="0"
+                          max="24"
+                          value={audio_samples_filter_min}
+                        />
+                      </div>
 
-                    <div className="slider-holder">
-                      <label htmlFor="audio_gain">
-                        gain <span>{audio_gain}</span>
-                      </label>
-                      <input
-                        className="input"
-                        onChange={e => {
-                          this.sendNote(
-                            29,
-                            convertRange(e.target.value, [0.0, 1.0], [1, 127])
-                          );
-                        }}
-                        type="range"
-                        name="audio_gain"
-                        min="0"
-                        max="1"
-                        step="0.1"
-                        value={audio_gain}
-                      />
+                      <div className="slider-holder">
+                        <label htmlFor="audio_samples_filter_max">
+                          max <span>{audio_samples_filter_max}</span> E-0
+                        </label>
+                        <input
+                          className="input"
+                          onChange={e => {
+                            this.sendNote(
+                              28,
+                              convertRange(e.target.value, [0, 24], [1, 25])
+                            );
+                          }}
+                          type="range"
+                          name="audio_samples_filter_max"
+                          min="0"
+                          max="24"
+                          value={audio_samples_filter_max}
+                        />
+                      </div>
+
+                      <div className="slider-holder">
+                        <label htmlFor="audio_gain">
+                          gain <span>{audio_gain}</span> F-0
+                        </label>
+                        <input
+                          className="input"
+                          onChange={e => {
+                            this.sendNote(
+                              29,
+                              convertRange(e.target.value, [0.0, 1.0], [1, 127])
+                            );
+                          }}
+                          type="range"
+                          name="audio_gain"
+                          min="0"
+                          max="1"
+                          step="0.1"
+                          value={audio_gain}
+                        />
+                      </div>
                     </div>
                   </div>
                   {/* <div className="slider-holder">

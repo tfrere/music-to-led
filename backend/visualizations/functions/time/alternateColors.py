@@ -27,7 +27,6 @@ class AlternateColors():
             self.pixels[0][i] = color_scheme[which_color][0]
             self.pixels[1][i] = color_scheme[which_color][1]
             self.pixels[2][i] = color_scheme[which_color][2]
-        print(self.hasBegun)
         if(not self.hasBegun):
             self.pixels = self.blurFrame(
                 self.pixels, self.active_state.blur_value)

@@ -1,0 +1,232 @@
+/* Buttons
+  –––––––––––––––––––––––––––––––––––––––––––––––––– */
+.button-group {
+  display: inline-flex;
+
+  .button,
+  input,
+  .select {
+    border-radius: 0;
+    margin: 0;
+    height: 100%;
+  }
+  .button:first-child,
+  input:first-child,
+  .select:first-child {
+    border-top-left-radius: 4px;
+    border-bottom-left-radius: 4px;
+  }
+  .button:last-child,
+  input:last-child,
+  .select:last-child {
+    border-top-right-radius: 4px;
+    border-bottom-right-radius: 4px;
+  }
+
+  &--reverse .button {
+    background: rgba(255, 255, 255, 1);
+    color: black;
+    .button__type {
+      border-right: 1px solid black;
+      border-bottom: 1px solid black;
+      color: black;
+    }
+    &:hover {
+      background: rgba(255, 255, 255, 1);
+      color: black;
+    }
+    i {
+      color: black;
+    }
+  }
+}
+
+.button-group--stretched {
+  width: 100%;
+  .button {
+    flex-grow: 1;
+  }
+}
+
+.button,
+button,
+input[type='submit'],
+input[type='reset'],
+input[type='button'] {
+  i {
+    font-size: 18px;
+    line-height: 18px;
+    height: auto;
+  }
+  justify-content: center;
+  display: inline-flex;
+  height: 28px;
+  padding: 0 10px;
+  color: rgba(255, 255, 255, 0.6);
+  text-align: center;
+  font-size: 10px;
+  font-weight: 600;
+  line-height: 28px;
+  letter-spacing: 0.1rem;
+  text-transform: uppercase;
+  text-decoration: none;
+  white-space: nowrap;
+  background: rgba(255, 255, 255, 0.05);
+  border-radius: 4px;
+  border: 1px solid rgba(255, 255, 255, 0.3);
+  cursor: pointer;
+  box-sizing: border-box;
+  position: relative;
+  overflow: hidden;
+  transition: background-color 100ms ease;
+  transition: border 100ms ease;
+  &:hover {
+    background: rgba(255, 255, 255, 0.1);
+    color: white;
+  }
+  &:hover.button--reverse {
+    background: rgba(240, 240, 240, 1);
+    color: black;
+  }
+}
+
+.button--stretched {
+  width: 100%;
+  display: flex;
+}
+
+.button--danger {
+  background: red;
+  color: white;
+}
+
+.button--disabled {
+  opacity: 0.5;
+  cursor: default;
+  &.button--danger {
+    background: rgba(255, 255, 255, 0.05);
+    color: rgba(255, 255, 255, 0.6);
+  }
+  &:hover {
+    background: rgba(255, 255, 255, 0.05);
+    color: rgba(255, 255, 255, 0.6);
+  }
+  &:hover.button--reverse {
+    background: rgba(255, 255, 255, 0.05);
+    color: white;
+  }
+}
+
+.button__loading {
+  display: none;
+  width: 20px;
+  height: 20px;
+  border: 2px solid transparent;
+  background: 0;
+  border-radius: 999px;
+  border-top-color: white;
+  border-left-color: white;
+  animation: spin 0.7s infinite linear;
+}
+
+@keyframes spin {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+.button--loading {
+  .button__content {
+    display: none;
+  }
+  .button__loading {
+    display: inline-block;
+  }
+}
+
+.button--square {
+  padding: 5px;
+}
+
+.button--reverse {
+  background: rgba(255, 255, 255, 0.3);
+  color: white;
+}
+
+.button--large {
+  height: 40px;
+  line-height: 40px;
+}
+
+.button--left-aligned {
+  text-align: left;
+}
+
+.button--has-type {
+  padding: 0 15px;
+
+  &.button--reverse {
+    background: rgba(255, 255, 255, 0.8);
+    color: black;
+    .button__type {
+      border-right: 1px solid white;
+      border-bottom: 1px solid white;
+      color: black;
+    }
+  }
+}
+
+.button__type {
+  position: absolute;
+  top: 0;
+  left: 0;
+  border-right: 1px solid rgba(255, 255, 255, 0.2);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+  color: rgba(255, 255, 255, 0.2);
+  border-bottom-right-radius: 3px;
+  font-size: 6px;
+  line-height: 6px;
+  padding: 2px 4px;
+}
+
+.button:hover,
+button:hover,
+input[type='submit']:hover,
+input[type='reset']:hover,
+input[type='button']:hover,
+.button:focus,
+button:focus,
+input[type='submit']:focus,
+input[type='reset']:focus,
+input[type='button']:focus {
+  outline: 0;
+}
+
+.ripple {
+  position: absolute;
+  background: #fff;
+  border-radius: 50%;
+  width: 5px;
+  height: 5px;
+  animation: rippleEffect 0.88s 1;
+  opacity: 0;
+  cursor: pointer;
+}
+
+.button--reverse .ripple {
+  background: rgb(0, 0, 0);
+}
+
+@keyframes rippleEffect {
+  0% {
+    transform: scale(1);
+    opacity: 0.1;
+  }
+  100% {
+    transform: scale(100);
+    opacity: 0;
+  }
+}

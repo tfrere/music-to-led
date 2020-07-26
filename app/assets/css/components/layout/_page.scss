@@ -1,0 +1,31 @@
+.page {
+  position: absolute;
+  top: 25px;
+  height: calc(100% - 105px);
+  width: 100%;
+  left: 0;
+  &.page--with-left-panel {
+    width: calc(100% - #{$leftPanelWidth});
+    left: $leftPanelWidth;
+  }
+  overflow-x: hidden;
+  & > div {
+    padding: 20px;
+    padding-bottom: 0;
+    & > .card {
+      &.card {
+        margin-left: 0;
+        margin-right: 0;
+      }
+    }
+  }
+  animation: appear 0.5s linear;
+}
+@keyframes appear {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}

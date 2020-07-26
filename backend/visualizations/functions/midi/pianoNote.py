@@ -108,11 +108,11 @@
 #         return self.pixelReshaper.reshapeFromPixels(self.pixels)
 
 
-
 import numpy as np
 import time
 
 from scipy.ndimage.filters import gaussian_filter1d
+
 
 def putPixel(strip, ledIndex, r, g, b, velocity):
     if(ledIndex <= len(strip[0])):
@@ -120,14 +120,16 @@ def putPixel(strip, ledIndex, r, g, b, velocity):
         strip[1][ledIndex] = g / 127 * (velocity + 1)
         strip[2][ledIndex] = b / 127 * (velocity + 1)
 
+
 def fadeOutPixels(pixels, value):
-    tmp = [[],[],[]]
+    tmp = [[], [], []]
     for i in range(3):
         for y in range(len(pixels[0])):
             if(pixels[i][y] - value < 0):
                 pixels[i][y] = 0.0
             else:
                 pixels[i][y] -= value
+
 
 class PianoNote():
 
@@ -139,7 +141,8 @@ class PianoNote():
     def visualizePianoNote(self):
         """PianoNote midi visualizer"""
 
-        color_scheme = self.active_state.formatted_color_schemes[self.active_state.active_color_scheme_index]
+        color_scheme = self.active_state.formatted_color_schemes[
+            self.active_state.active_color_scheme_index]
 
         which_color = 0
         which_color = len(self.notes_on)
@@ -170,7 +173,8 @@ class PianoNote():
 
             putPixel(
                 self.pixels,
-                self.clampToNewRange(note["note"], 0,127, 0, len(self.pixels[0])),
+                self.clampToNewRange(
+                    note["note"], 0, 127, 0, len(self.pixels[0])),
                 color_scheme[note["color"]][0],
                 color_scheme[note["color"]][1],
                 color_scheme[note["color"]][2],
