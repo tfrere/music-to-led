@@ -9,17 +9,17 @@ class AlternateColors():
 
     def drawAlternateColorChunks(self):
 
-        color_scheme = self.active_state.formatted_color_schemes[
+        color_scheme = self.active_state._formatted_color_schemes[
             self.active_state.active_color_scheme_index]
 
-        self.alternateColorsInterval = self.timeSinceStart.getMsIntervalFromBpm(
+        self.alternateColorsInterval = self._timeSinceStart.getMsIntervalFromBpm(
             self.active_state.time_interval)
 
         if(self.active_state.chunk_size == 0):
             self.active_state.chunk_size = 1
 
         which_color = 0
-        for i in range(self.number_of_pixels):
+        for i in range(self._number_of_pixels):
             if(i % self.active_state.chunk_size == 0):
                 which_color += 1
                 if(which_color >= len(color_scheme)):
@@ -41,21 +41,21 @@ class AlternateColors():
 
     def visualizeAlternateColorShapes(self):
         """Effect that alternate two colors moving forward"""
-        color_scheme = self.active_state.formatted_color_schemes[
+        color_scheme = self.active_state._formatted_color_schemes[
             self.active_state.active_color_scheme_index]
 
-        interval = self.timeSinceStart.getMsIntervalFromBpm(
+        interval = self._timeSinceStart.getMsIntervalFromBpm(
             self.active_state.time_interval)
 
-        if(self.timeSinceStart.getMs() >= interval):
+        if(self._timeSinceStart.getMs() >= interval):
             self.alternate_colors_index += 1
-            self.timeSinceStart.restart()
+            self._timeSinceStart.restart()
 
         which_color = self.alternate_colors_index % len(color_scheme)
 
         self.pixelReshaper.initActiveShape()
 
-        for x, strip in enumerate(self.pixelReshaper.strips):
+        for x, strip in enumerate(self.pixelReshaper._strips):
             which_color += 1
             if(which_color >= len(color_scheme)):
                 which_color = 0
@@ -65,4 +65,4 @@ class AlternateColors():
                 strip[1][i] = color_scheme[which_color][1]
                 strip[2][i] = color_scheme[which_color][2]
 
-        return self.pixelReshaper.reshapeFromStrips(self.pixelReshaper.strips)
+        return self.pixelReshaper.reshapeFromStrips(self.pixelReshaper._strips)

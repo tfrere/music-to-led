@@ -9,22 +9,22 @@ class PixelReshaper:
 
     def initActiveShape(self):
         self.division_value = self.strip_config.active_state.division_value
-        self.number_of_pixels = self.strip_config.shapes[
-            self.division_value].number_of_pixels
-        self.number_of_strips = self.strip_config.shapes[
-            self.division_value].number_of_substrip
-        self.pixels = np.tile(.0, (3, self.number_of_pixels))
-        self.strip_shape = self.strip_config.shapes[self.division_value].shape
-        self.strips = []
+        self._number_of_pixels = self.strip_config._shapes[
+            self.division_value]._number_of_pixels
+        self._number_of_strips = self.strip_config._shapes[
+            self.division_value]._number_of_substrip
+        self.pixels = np.tile(.0, (3, self._number_of_pixels))
+        self.strip_shape = self.strip_config._shapes[self.division_value].shape
+        self._strips = []
         for i, strip_length in enumerate(self.strip_shape):
-            self.strips.append([])
-            self.strips[i] = np.tile(.0, (3, strip_length))
+            self._strips.append([])
+            self._strips[i] = np.tile(.0, (3, strip_length))
 
     def resetStrips(self):
-        self.strips = []
+        self._strips = []
         for i, strip_length in enumerate(self.strip_shape):
-            self.strips.append([])
-            self.strips[i] = np.tile(.0, (3, strip_length))
+            self._strips.append([])
+            self._strips[i] = np.tile(.0, (3, strip_length))
 
     def concatenatePixels(self, strips):
         """Concatenate the x strips into 1"""
@@ -41,9 +41,9 @@ class PixelReshaper:
         """Split pixels to respect the shape"""
         for i, strip_length in enumerate(self.strip_shape):
             if(self.strip_config.active_state.is_reverse and not self.strip_config.active_state.is_mirror):
-                strips[i] = pixels[:, self.number_of_pixels - strip_length:]
+                strips[i] = pixels[:, self._number_of_pixels - strip_length:]
             elif(self.strip_config.active_state.is_mirror and not self.strip_config.active_state.is_reverse):
-                center = self.number_of_pixels // 2
+                center = self._number_of_pixels // 2
                 center_of_strip = strip_length // 2
                 strips[i] = pixels[
                     :,
@@ -52,7 +52,7 @@ class PixelReshaper:
                 ]
             elif(self.strip_config.active_state.is_mirror and self.strip_config.active_state.is_reverse):
                 tmp = pixels[:, :strip_length // 2]
-                tmp2 = pixels[:, self.number_of_pixels - strip_length // 2:]
+                tmp2 = pixels[:, self._number_of_pixels - strip_length // 2:]
                 strips[i] = np.concatenate((tmp, tmp2), axis=1)
             else:
                 strips[i][0] = np.resize(pixels[0], strip_length)
@@ -95,9 +95,9 @@ class PixelReshaper:
         if(self.strip_config.active_state.is_reverse):
             tmp_p = self.reversePixels(tmp_p)
         if(self.strip_config.active_state.is_mirror):
-            tmp_p = self.mirrorPixels(tmp_p, self.number_of_pixels)
+            tmp_p = self.mirrorPixels(tmp_p, self._number_of_pixels)
 
-        return self.splitForStrips(self.strips, tmp_p)
+        return self.splitForStrips(self._strips, tmp_p)
 
 
 if __name__ == "__main__":

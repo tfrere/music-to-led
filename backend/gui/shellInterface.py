@@ -160,8 +160,8 @@ class ShellInterface():
         self.absolutePrint(y + 1, space, "Music To Led v0.1.1")
 
         # add STATES nb
-        self.absolutePrint(y + 2, space, "Strips: " + str(len(self.config.strips)) + " | audio source: " +
-                           str(self.config.number_of_audio_ports))
+        self.absolutePrint(y + 2, space, "Strips: " + str(len(self.config._strips)) + " | audio source: " +
+                           str(self.config._number_of_audio_ports))
         self.absolutePrint(y + 4, space, "Shell dimensions: " +
                            str(self.width) + "x" + str(self.height))
         self.absolutePrint(y + 5, space, "Memory consumed: " +
@@ -235,11 +235,11 @@ class ShellInterface():
         reverse_mode = self.textWithColor(
             255, 255, 255, 'reverse') if active_state.is_reverse else self.textWithColor(50, 50, 50, 'reverse')
         color_scheme = ""
-        for current_color in active_state.formatted_color_schemes[active_state.active_color_scheme_index]:
+        for current_color in active_state._formatted_color_schemes[active_state.active_color_scheme_index]:
             color_scheme += self.term.color(
                 int(rgbToAnsi256(current_color[0], current_color[1], current_color[2])))('█ ')
         shape = ""
-        for current_shape in strip_config.shapes[active_state.division_value].shape:
+        for current_shape in strip_config._shapes[active_state.division_value].shape:
             shape += "[" + str(current_shape) + "]"
 
         self.absolutePrint(y + 1, 2, strip_config.name
@@ -260,11 +260,11 @@ class ShellInterface():
                                                 100, ' with visualizer ')
                            + active_state.active_visualizer_effect)
 
-        if(strip_config.midi_logs and strip_config.midi_logs[0]["port"] and strip_config.midi_logs[0]["note"]):
-            midi_note_to_print = str(strip_config.midi_logs[0]["port"]) + self.textWithColor(
-                100, 100, 100, " note played : ") + str(strip_config.midi_logs[0]["note"])
+        if(strip_config._midi_logs and strip_config._midi_logs[0]["port"] and strip_config._midi_logs[0]["note"]):
+            midi_note_to_print = str(strip_config._midi_logs[0]["port"]) + self.textWithColor(
+                100, 100, 100, " note played : ") + str(strip_config._midi_logs[0]["note"])
             len_midi_note_to_print = len(str(
-                strip_config.midi_logs[0]["port"]) + " note played : " + str(strip_config.midi_logs[0]["note"]))
+                strip_config._midi_logs[0]["port"]) + " note played : " + str(strip_config._midi_logs[0]["note"]))
             self.absolutePrint(y + 3, self.width - len_midi_note_to_print - 2,
                                "                                             ")
             self.absolutePrint(y + 3, self.width -
@@ -277,7 +277,7 @@ class ShellInterface():
             y + 5, 2, self.textWithColor(100, 100, 100, 'audio channel'))
         self.absolutePrint(y + 6, 2, "                    ")
         self.absolutePrint(
-            y + 6, 2, self.config.audio_ports[active_state.active_audio_channel_index].name)
+            y + 6, 2, self.config._audio_ports[active_state.active_audio_channel_index].name)
 
         self.absolutePrint(
             y + 5, 24, self.textWithColor(100, 100, 100, 'color scheme'))
@@ -323,18 +323,18 @@ class ShellInterface():
         j = 0
         array = ""
 
-        chunk_length = strip_config.physical_shape.shape[chunk_index]
+        chunk_length = strip_config._physical_shape.shape[chunk_index]
         if(chunk_index == 0):
             chunk_offset = 0
         else:
-            chunk_offset = strip_config.physical_shape.offsets[chunk_index - 1]
+            chunk_offset = strip_config._physical_shape._offsets[chunk_index - 1]
 
         for i in range(chunk_offset, chunk_offset + chunk_length):
             if(i >= chunk_offset + chunk_length - 1):
                 array = array[:len(array)] + "|"
 
                 self.absolutePrint(y + total_number_of_lines, x, array)
-                if(i != strip_config.physical_shape.number_of_pixels):
+                if(i != strip_config._physical_shape._number_of_pixels):
                     total_number_of_lines += 1
                 return total_number_of_lines
             elif(j >= self.min_width - 4):
@@ -361,18 +361,18 @@ class ShellInterface():
 
         total_number_of_lines = 0
 
-        for k, chunk in enumerate(strip_config.physical_shape.shape):
+        for k, chunk in enumerate(strip_config._physical_shape.shape):
 
             j = 0
-            chunk_length = strip_config.physical_shape.shape[k]
+            chunk_length = strip_config._physical_shape.shape[k]
             if(k == 0):
                 chunk_offset = 0
             else:
-                chunk_offset = strip_config.physical_shape.offsets[k - 1]
+                chunk_offset = strip_config._physical_shape._offsets[k - 1]
 
             for i in range(chunk_offset, chunk_offset + chunk_length):
                 if(i >= chunk_offset + chunk_length - 1):
-                    if(i != strip_config.physical_shape.number_of_pixels):
+                    if(i != strip_config._physical_shape._number_of_pixels):
                         total_number_of_lines += 1
                     break
                 elif(j >= self.min_width - 4):
@@ -386,7 +386,7 @@ class ShellInterface():
     def printPixels(self, y, x, strip_config, pixels):
 
         total_number_of_lines = 0
-        for i, chunk in enumerate(strip_config.physical_shape.shape):
+        for i, chunk in enumerate(strip_config._physical_shape.shape):
             total_number_of_lines += self.printChunk(
                 y + total_number_of_lines, 2, strip_config, pixels, i)
 
@@ -413,22 +413,22 @@ class ShellInterface():
                                    2 - (len(minWidthSentence) // 2), minWidthSentence)
             else:
 
-                for index in range(config.number_of_audio_ports):
+                for index in range(config._number_of_audio_ports):
                     self.printAudio(
                         self.audio_offset,
                         (32 * index) + 1,
-                        config.audio_ports[index].name,
+                        config._audio_ports[index].name,
                         audio_datas[index]
                     )
 
                 total_number_of_lines = 0
-                for index in range(config.number_of_strips):
+                for index in range(config._number_of_strips):
                     pixels = shared_list[2 + index][0]
                     strip_config = shared_list[2 + index][1]
                     active_state = shared_list[2 + index][2]
                     fps = shared_list[2 + index][3]
                     is_online = shared_list[2 +
-                                            config.number_of_strips + index]
+                                            config._number_of_strips + index]
 
                     total_number_of_lines += self.printStrip(
                         self.strip_offset +

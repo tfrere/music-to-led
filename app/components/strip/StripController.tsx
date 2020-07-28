@@ -11,171 +11,15 @@ import Select from '../generic/Select';
 import Button from '../generic/Button';
 import ColorScheme from '../generic/ColorScheme';
 import ColorPicker from '../generic/ColorPicker';
+import CircularSlider from '../generic/CircularSlider';
 
 import MidiVisualizer from '../midi/MidiVisualizer';
 import StateController from '../strip/StateController';
 
 import AudioVisualizerCanvas from '../audio/AudioVisualizerCanvas';
 
-const types = ['audio', 'midi', 'time', 'generic'];
-
-const keyConfiguration = {
-  effects: [
-    {
-      name: 'scroll',
-      label: 'Scroll',
-      note: 'C2',
-      note_int: 0,
-      is_first: true,
-      type: 'audio',
-      has_gap: false
-    },
-    {
-      name: 'energy',
-      label: 'Energy',
-      note: 'C#2',
-      note_int: 1,
-      is_first: false,
-      type: 'audio',
-      has_gap: false
-    },
-    {
-      name: 'channel_flash',
-      label: 'Flash',
-      note: 'D2',
-      note_int: 2,
-      is_first: false,
-      type: 'audio',
-      has_gap: false
-    },
-    {
-      name: 'channel_intensity',
-      label: 'Intensity',
-      note: 'D#2',
-      note_int: 3,
-      is_first: false,
-      type: 'audio',
-      has_gap: false
-    },
-
-    {
-      name: 'spectrum',
-      label: 'Spectrum',
-      note: 'E2',
-      note_int: 4,
-      type: 'audio',
-      is_first: false,
-      has_gap: true
-    },
-
-    {
-      name: 'piano_scroll',
-      label: 'Midi Scroll',
-      note: 'F2',
-      note_int: 5,
-      is_first: true,
-      type: 'midi',
-      has_gap: false
-    },
-    {
-      name: 'piano_note',
-      label: 'Midi note',
-      note: 'F#2',
-      note_int: 6,
-      is_first: false,
-
-      type: 'midi',
-      has_gap: false
-    },
-    {
-      name: 'pitchwheel_flash',
-      label: 'Pitch. Flash',
-      note: 'G2',
-      note_int: 7,
-      is_first: false,
-      type: 'midi',
-      has_gap: true
-    },
-    {
-      name: 'alternate_color_chunks',
-      label: 'Alt. Chunks',
-      note: 'G#2',
-      note_int: 8,
-      is_first: true,
-
-      type: 'time',
-      has_gap: false
-    },
-
-    {
-      name: 'alternate_color_shapes',
-      label: 'Alt. Shapes',
-      note: 'A2',
-      note_int: 9,
-      is_first: false,
-      type: 'time',
-      has_gap: false
-    },
-    {
-      name: 'transition_color_shapes',
-      label: 'Fade colors',
-      note: 'A#2',
-      note_int: 10,
-      is_first: false,
-      type: 'time',
-      has_gap: true
-    },
-    {
-      name: 'draw_line',
-      label: 'Draw',
-      note: 'B2',
-      note_int: 11,
-      is_first: true,
-      type: 'generic',
-      has_gap: false
-    },
-
-    {
-      name: 'full_color',
-      label: 'Full',
-      note: 'C1',
-      note_int: 12,
-      is_first: false,
-      type: 'generic',
-      has_gap: false
-    },
-    {
-      name: 'fade_out',
-      label: 'Fade to black',
-      note: 'C#1',
-      note_int: 13,
-      is_first: false,
-
-      type: 'generic',
-      has_gap: false
-    },
-    {
-      name: 'clear_frame',
-      label: 'Clear',
-      note: 'D1',
-      note_int: 14,
-      is_first: false,
-
-      type: 'generic',
-      has_gap: false
-    },
-    {
-      name: 'fire',
-      label: 'Fire',
-      note: 'D#1',
-      note_int: 15,
-      is_first: false,
-
-      type: 'generic',
-      has_gap: false
-    }
-  ]
-};
+import { keyConfiguration } from '../../constants/controller_effects';
+import { types } from '../../constants/controller_effects_types';
 
 class StripController extends React.Component {
   constructor(props) {
@@ -262,7 +106,9 @@ class StripController extends React.Component {
       strip_index
     } = this.props;
 
-    let active_shape = strip.shapes[active_state.division_value].shape;
+    console.log('stripcontrollerrendered');
+
+    let active_shape = strip._shapes[active_state.division_value].shape;
     let active_color_scheme =
       active_state.color_schemes[active_state.active_color_scheme_index];
     let is_reverse = active_state.is_reverse.toString();
@@ -460,6 +306,14 @@ class StripController extends React.Component {
                       <input
                         className="input"
                         onChange={e => {
+                          console.log(
+                            convertRange(
+                              e.target.value,
+                              [0.1, 8],
+                              [1, 127],
+                              true
+                            )
+                          );
                           this.sendNote(
                             24,
                             convertRange(
@@ -478,6 +332,20 @@ class StripController extends React.Component {
                         value={blur_value}
                       />
                     </div>
+
+                    {/* <CircularSlider
+                      radius={140}
+                      border={30}
+                      value={blur_value}
+                      range={[0.0, 8.0]}
+                      round={1}
+                      onChange={value => {
+                        this.sendNote(
+                          24,
+                          convertRange(value, [1, 255], [1, 127], true)
+                        );
+                      }}
+                    /> */}
                   </div>
                   {/* audio filters */}
                   <h5 className="strip-controller__title">Audio</h5>
@@ -485,7 +353,7 @@ class StripController extends React.Component {
                     <div>
                       <AudioVisualizerCanvas
                         name={
-                          config.audio_ports[
+                          config._audio_ports[
                             active_state.active_audio_channel_index
                           ].name
                         }
@@ -507,17 +375,19 @@ class StripController extends React.Component {
                       <div>
                         <span>G#-1</span>
                         <Select
-                          options={this.props.config.audio_ports.map(elem => {
+                          options={this.props.config._audio_ports.map(elem => {
                             return { name: elem.name };
                           })}
                           defaultValue={active_audio_channel_name}
                           setValue={value => {
                             let stateIndex = -1;
-                            this.props.config.audio_ports.map((elem, index) => {
-                              if (elem.name === value) {
-                                stateIndex = index;
+                            this.props.config._audio_ports.map(
+                              (elem, index) => {
+                                if (elem.name === value) {
+                                  stateIndex = index;
+                                }
                               }
-                            });
+                            );
 
                             this.sendNote(20, stateIndex);
                           }}
@@ -585,32 +455,12 @@ class StripController extends React.Component {
                       </div>
                     </div>
                   </div>
-                  {/* <div className="slider-holder">
-                        <label htmlFor="audio_decay">
-                          audio decay <span>{audio_decay}</span>
-                        </label>
-                        <input
-                          className="input"
-                          onChange={e => {
-                            this.sendNote(
-                              30,
-                              convertRange(e.target.value, [0.00001, 0.1], [1, 127])
-                            );
-                          }}
-                          type="range"
-                          name="audio_decay"
-                          min="0"
-                          max="1"
-                          step="0.1"
-                          value={audio_decay}
-                        />
-                      </div> */}
                 </div>
               </div>
             </div>
             <hr />
             <MidiVisualizer
-              midi_datas={strip.midi_logs}
+              midi_datas={strip._midi_logs}
               channels={strip.midi_ports_for_changing_mode}
             />
           </>

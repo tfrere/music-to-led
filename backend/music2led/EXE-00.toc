@@ -46,7 +46,7 @@
  [],
  False,
  False,
- 1595698487,
+ 1595947267,
  [('run',
    '/Users/thibaudfrere/anaconda3/envs/audio-2-led/lib/python3.7/site-packages/PyInstaller/bootloader/Darwin-64bit/run',
    'EXECUTABLE')])

@@ -19,7 +19,7 @@ class ModSwitcher:
 
         self.config = config
         self.strip_index = index
-        self.strip_config = config.strips[index]
+        self.strip_config = config._strips[index]
         self.active_state = self.strip_config.active_state
         self.has_states_changed = False
 
@@ -56,7 +56,7 @@ class ModSwitcher:
                             currentState = deepcopy(StateConfig())
                             currentState.name = midi_data["data"]
                             self.strip_config.states.append(currentState)
-                            self.strip_config.number_of_states = len(
+                            self.strip_config._number_of_states = len(
                                 self.strip_config.states)
 
                             newActiveStateIndex = len(
@@ -65,7 +65,7 @@ class ModSwitcher:
                             self.strip_config.active_state = deepcopy(
                                 self.strip_config.states[newActiveStateIndex])
                             self.active_state = self.strip_config.active_state
-                            self.config.strips[self.strip_index].active_state_index = newActiveStateIndex
+                            self.config._strips[self.strip_index].active_state_index = newActiveStateIndex
 
                             self.config.saveToYmlFile()
 
@@ -113,15 +113,15 @@ class ModSwitcher:
                                             self.strip_config.states) - 1
                                         print(newActiveStateIndex)
                                         self.strip_config.active_state_index = newActiveStateIndex
-                                        self.strip_config.number_of_states = len(
+                                        self.strip_config._number_of_states = len(
                                             self.strip_config.states)
                                         self.strip_config.active_state = deepcopy(
                                             self.strip_config.states[newActiveStateIndex])
 
                                         self.active_state = self.strip_config.active_state
-                                        self.config.strips[self.strip_index].active_state_index = newActiveStateIndex
+                                        self.config._strips[self.strip_index].active_state_index = newActiveStateIndex
 
-                                        self.config.strips[self.strip_index]
+                                        self.config._strips[self.strip_index]
 
                                         self.config.saveToYmlFile()
                                         self.has_states_changed = True
@@ -223,14 +223,14 @@ class ModSwitcher:
 
                             message = "is changing shape to -> " + \
                                 str(
-                                    self.strip_config.shapes[self.active_state.division_value].shape)
+                                    self.strip_config._shapes[self.active_state.division_value].shape)
                             self.logger(self.strip_config.name, message)
 
                         elif(mode == base_note_increment + 19):
                             self.active_state.active_color_scheme_index = self.valueUpdater(
                                 self.active_state.active_color_scheme_index,
                                 velocity,
-                                self.active_state.number_of_color_schemes,
+                                self.active_state._number_of_color_schemes,
                                 1
                             )
                             message = "is changing color scheme to -> " + \
@@ -242,13 +242,13 @@ class ModSwitcher:
                             self.active_state.active_audio_channel_index = self.valueUpdater(
                                 self.active_state.active_audio_channel_index,
                                 velocity,
-                                self.config.number_of_audio_ports,
+                                self.config._number_of_audio_ports,
                                 1
                             )
 
                             message = "is changing audio port to -> " + \
                                 str(
-                                    self.config.audio_ports[self.active_state.active_audio_channel_index].name)
+                                    self.config._audio_ports[self.active_state.active_audio_channel_index].name)
                             self.logger(self.strip_config.name, message)
 
                         elif(mode == base_note_increment + 21):
@@ -292,7 +292,7 @@ class ModSwitcher:
                             self.visualizer.resetFrame()
                             self.strip_config.active_state_index = self.valueUpdater(
                                 self.strip_config.active_state_index,
-                                velocity,
+                                velocity - 1,
                                 len(self.strip_config.states),
                                 1
                             )

@@ -7,7 +7,7 @@ class ScenoVisualizerCanvas extends React.Component {
   constructor(props) {
     super(props);
 
-    const scenes = this.props.config.strips.map(strip => {
+    const scenes = this.props.config._strips.map(strip => {
       return strip.scene;
     });
 
@@ -62,7 +62,7 @@ class ScenoVisualizerCanvas extends React.Component {
 
   updateCanvas = () => {
     const { ctx, scenes } = this.state;
-    const strip = this.props.config.strips[0];
+    const strip = this.props.config._strips[0];
     ctx.clearRect(0, 0, this.props.width, this.props.height);
 
     scenes.map((scene, index) => {
@@ -123,7 +123,7 @@ class ScenoVisualizerCanvas extends React.Component {
     while (i < pixels_length) {
       const coords = properties.getPointAtLength(gap * i);
 
-      ctx.fillStyle = 'rgb(' + r[i] + ',' + g[i] + ',' + b[i] + ')';
+      ctx.fillStyle = 'rgb(' + r[i] * 2 + ',' + g[i] * 2 + ',' + b[i] * 2 + ')';
 
       ctx.beginPath();
       ctx.arc(

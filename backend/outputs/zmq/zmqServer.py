@@ -21,7 +21,7 @@ class ZmqServer():
         # 0     : Config
         # 1     : Audio datas
         # 2...n : [pixels, strip_config, active_state, framerateCalculator.getFps()]
-        # 2 + config.number_of_strips + ...n : isOnline for each strip
+        # 2 + config._number_of_strips + ...n : isOnline for each strip
         audios_json = ""
         pixels_json = ""
         strips_json = ""
@@ -30,7 +30,7 @@ class ZmqServer():
         audios = []
         pixels = []
         strips = "["
-        number_of_strips = shared_list[0].number_of_strips
+        number_of_strips = shared_list[0]._number_of_strips
         are_strips_online = []
         framerates = []
         active_states = "["

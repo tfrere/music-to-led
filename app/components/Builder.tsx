@@ -34,8 +34,8 @@ async function getZMQData() {
       .replace(re, '"')
       .replace(re2, '1')
       .replace(re3, '0');
-    console.log('connected');
     object = JSON.parse(json_string);
+    // console.log('connected');
     const current_server_timestamp = Math.round(object.time * 1000);
 
     server_time = timestamp;
@@ -84,9 +84,7 @@ class Builder extends React.Component {
   }
 
   componentWillUnmount() {
-    console.log(1);
     clearInterval(this._intervalId);
-    console.log(2);
   }
 
   render() {
@@ -113,8 +111,8 @@ class Builder extends React.Component {
       framerates &&
       framerates[0] != 0 &&
       config &&
-      config.audio_ports &&
-      config.audio_ports.length >= 1 &&
+      config._audio_ports &&
+      config._audio_ports.length >= 1 &&
       strips &&
       active_states.length === strips.length &&
       audios &&
@@ -132,7 +130,7 @@ class Builder extends React.Component {
         // console.log('strip', strip);
         // console.log('active_states', active_states);
         // console.log('active_state', active_state);
-        const active_shape = strip.shapes[active_state.division_value];
+        const active_shape = strip._shapes[active_state.division_value];
         const framerate = framerates[index];
         const onlineClassNames = is_strip_online
           ? ' online-notifier--online'
@@ -148,7 +146,7 @@ class Builder extends React.Component {
             active_state: active_state,
             config: config,
             active_audio_channel_name:
-              config.audio_ports[active_state.active_audio_channel_index].name,
+              config._audio_ports[active_state.active_audio_channel_index].name,
             strip_index: index
           };
         }
@@ -157,7 +155,7 @@ class Builder extends React.Component {
             <Strip
               key={strip + index}
               framerate={framerate}
-              physical_shape={strip.physical_shape}
+              physical_shape={strip._physical_shape}
               active_shape={active_shape}
               pixels={pixelsFrame}
               name={strip.midi_ports_for_changing_mode[0]}
@@ -167,7 +165,8 @@ class Builder extends React.Component {
               config={config}
               is_strip_online={is_strip_online}
               active_audio_channel_name={
-                config.audio_ports[active_state.active_audio_channel_index].name
+                config._audio_ports[active_state.active_audio_channel_index]
+                  .name
               }
               index={index}
               className={
@@ -188,9 +187,9 @@ class Builder extends React.Component {
           <div className={'left-panel__list__item'}>
             <AudioVisualizerCanvas audio={audio} width={120} height={60} />
             <div>
-              <h4>{config.audio_ports[index].name}</h4>
+              <h4>{config._audio_ports[index].name}</h4>
               <span>
-                {config.audio_ports[index].number_of_audio_samples} samples
+                {config._audio_ports[index].number_of_audio_samples} samples
               </span>
             </div>
           </div>
@@ -220,11 +219,11 @@ class Builder extends React.Component {
                 {stripsElem}
               </div>
             </div>
-            <div style={{ height: '330px' }}>
+            <div style={{ height: '310px' }}>
               <ScenoVisualizerCanvas
                 config={config}
                 pixels={pixels}
-                height={300}
+                height={280}
                 hasDarkMode={false}
                 hasGrid={false}
                 activeStripIndex={active_strip_data.strip_index}

@@ -22,12 +22,26 @@
 // 10
 // 120	121	122	123	124	125	126	127
 
-const data = ['C', 'C#', 'D', 'D#', 'E', 'F', 'F#', 'G', 'G#', 'A', 'A#', 'B'];
+const octaveReferences = [
+  'C',
+  'C#',
+  'D',
+  'D#',
+  'E',
+  'F',
+  'F#',
+  'G',
+  'G#',
+  'A',
+  'A#',
+  'B'
+];
 
 const guessNoteFromNumber = number => {
-  const octave = Math.floor(number / 12);
+  const octave = Math.trunc(number / 12);
   const noteIndex = number % 12;
-  let note = data[noteIndex];
+
+  let note = octaveReferences[noteIndex];
 
   note += '-' + octave;
 

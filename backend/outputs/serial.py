@@ -19,9 +19,9 @@ class Serial:
         self.show_command = b'\x00'
         self.send_number_of_pixel_command = b'\x02'
         self.send_data_command = b'\x01'
-        self.number_of_pixels = number_of_pixels
+        self._number_of_pixels = number_of_pixels
         self.number_of_pixel_command = (
-            self.number_of_pixels).to_bytes(2, byteorder="big")
+            self._number_of_pixels).to_bytes(2, byteorder="big")
         self.pixels = np.tile(.0, (3, number_of_pixels))
         self.raw_data = []
         self.baud_rate = baud_rate
@@ -154,19 +154,19 @@ class Serial:
          """
         self.raw_data = []
         array = np.clip(array, 0, 255).astype(int)
-        for i in range(self.number_of_pixels):
+        for i in range(self._number_of_pixels):
             self.raw_data += self.getVector(array, i)
 
     def update(self, pixels):
         """ Send frame to the arduino """
         self.pixels = np.tile(.0, (3, len(pixels[0])))
-        self.number_of_pixels = len(pixels[0])
+        self._number_of_pixels = len(pixels[0])
         self.pixels = pixels
         if(not self.trying_to_connect and self.serial_class):
             try:
                 self.serial_class.write(self.show_command)
                 self.serial_class.read(1)
-                number_of_pixel_command = self.number_of_pixels.to_bytes(
+                number_of_pixel_command = self._number_of_pixels.to_bytes(
                     2, byteorder="big")
                 self.getRawPixels(self.pixels)
                 message = self.send_data_command[:1] + \

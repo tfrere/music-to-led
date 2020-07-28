@@ -66,7 +66,7 @@ class Show extends React.Component {
         config: object.config,
         audios: object.audios,
         pixels: object.pixels,
-        strips: object.strips,
+        strips: object._strips,
         active_states: object.active_states,
         are_strips_online: object.are_strips_online,
         framerates: object.framerates,
@@ -118,7 +118,7 @@ class Show extends React.Component {
         // console.log('strip', strip);
         // console.log('active_states', active_states);
         // console.log('active_state', active_state);
-        const active_shape = strip.shapes[active_state.division_value];
+        const active_shape = strip._shapes[active_state.division_value];
         const framerate = framerates[index];
         const onlineClassNames = is_strip_online
           ? ' online-notifier--online'
@@ -128,7 +128,7 @@ class Show extends React.Component {
           <Strip
             key={strip + index}
             framerate={framerate}
-            physical_shape={strip.physical_shape}
+            physical_shape={strip._physical_shape}
             active_shape={active_shape}
             pixels={pixelsFrame}
             name={strip.midi_ports_for_changing_mode[0]}
@@ -138,7 +138,7 @@ class Show extends React.Component {
             config={config}
             is_strip_online={is_strip_online}
             active_audio_channel_name={
-              config.audio_ports[active_state.active_audio_channel_index].name
+              config._audio_ports[active_state.active_audio_channel_index].name
             }
             index={index}
           ></Strip>

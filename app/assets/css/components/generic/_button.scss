@@ -138,6 +138,10 @@ input[type='button'] {
   }
 }
 
+.button__content {
+  display: inline-flex;
+}
+
 .button--loading {
   .button__content {
     display: none;

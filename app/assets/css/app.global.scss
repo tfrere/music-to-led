@@ -6,7 +6,7 @@ $backgroundColor: lighten($primary-color-darken-1, 4%);
 $textColor: rgba(255, 255, 255, 0.7);
 $cardBackgroundColor: lighten($primary-color, 4%);
 
-$topBarHeight: 25px;
+$topBarHeight: 22px;
 $bottomBarHeight: 80px;
 $leftPanelWidth: 300px;
 
@@ -134,15 +134,6 @@ h6 {
 
 #strip-holder > div {
   display: block;
-}
-
-.software-version {
-  color: rgba(255, 255, 255, 0.15);
-  display: block;
-  position: absolute;
-  top: 5px;
-  right: 5px;
-  margin-left: auto;
 }
 
 .builder-column-holder {

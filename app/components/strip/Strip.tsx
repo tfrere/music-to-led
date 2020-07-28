@@ -59,7 +59,7 @@ class Strip extends React.Component {
         </div>
         <div className="strip-item__live-view">
           <PixelVisualizerCanvas
-            physical_shape={strip.physical_shape}
+            physical_shape={strip._physical_shape}
             active_shape={active_shape}
             pixels={pixels}
           />

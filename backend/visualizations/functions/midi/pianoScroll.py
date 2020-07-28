@@ -64,7 +64,7 @@ class PianoScroll():
     def visualizePianoScroll(self):
         """Piano midi visualizer"""
 
-        color_scheme = self.active_state.formatted_color_schemes[
+        color_scheme = self.active_state._formatted_color_schemes[
             self.active_state.active_color_scheme_index]
 
         for midi_note in self.midi_datas:

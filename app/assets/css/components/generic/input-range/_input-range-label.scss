@@ -10,6 +10,7 @@
 .input-range__label--max {
   bottom: $input-range-label-position-bottom;
   position: absolute;
+  display: none;
 }
 
 .input-range__label--min {
@@ -22,5 +23,7 @@
 
 .input-range__label--value {
   position: absolute;
-  top: $input-range-label-value-position-top;
+  bottom: $input-range-label-value-position-top;
+  font-size: 14px;
+  font-weight: bold;
 }

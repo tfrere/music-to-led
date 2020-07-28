@@ -1,7 +1,7 @@
-$input-range-font-family: 'Helvetica Neue', san-serif !default;
+$input-range-font-family: 'Roboto Condensed', sans-serif !default;
 $input-range-primary-color: white !default;
-$input-range-neutral-color: #aaaaaa !default;
-$input-range-neutral-light-color: darken($backgroundColor, 5%) !default;
+$input-range-neutral-color: white !default;
+$input-range-neutral-light-color: rgba(0, 0, 0, 0.5) !default;
 $input-range-disabled-color: #cccccc !default;
 
 // input-range-slider
@@ -25,7 +25,7 @@ $input-range-slider-disabled-border: 1px solid $input-range-disabled-color !defa
 $input-range-label-color: $input-range-neutral-color !default;
 $input-range-label-font-size: 0.8rem !default;
 $input-range-label-position-bottom: -1.4rem !default;
-$input-range-label-value-position-top: -1.8rem !default;
+$input-range-label-value-position-top: -1.3rem !default;
 
 // input-range-track
 $input-range-track-background: $input-range-neutral-light-color !default;

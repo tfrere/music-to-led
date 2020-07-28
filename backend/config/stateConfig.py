@@ -21,11 +21,10 @@ class StateConfig():
         is_mirror=False,
         active_color_scheme_index=0,
         color_schemes=[["red", "green", "blue"],
-                       ["#2a04ff", "#ff9604"], ["#02e6ff", "#ff4a02"], ["#2bff01", "#ff0127"], ["#fff700", "#f700ff"], ["red"], ["green"], ["blue"], ["yellow"], ["pink"]],
+                       ["#2a04ff", "#ff9604"], ["#02e6ff", "#ff4a02"], ["#2bff01", "#ff0127"], ["#fff700", "#f700ff"], ["red"], ["green"], ["blue"], ["yellow"], ["pink"], ['#ee00ac', 'blue'], ['#BE008A', 'green']],
         debug=False,
         verbose=False
     ):
-
         self.name = name
         self.active_audio_channel_index = active_audio_channel_index
         self.audio_samples_filter_min = audio_samples_filter_min
@@ -46,12 +45,12 @@ class StateConfig():
 
         self.active_color_scheme_index = active_color_scheme_index
         self.color_schemes = color_schemes
-        self.number_of_color_schemes = len(color_schemes)
+        self._number_of_color_schemes = len(color_schemes)
 
-        self.formatted_color_schemes = []
+        self._formatted_color_schemes = []
         colorSchemeFormatter = ColorSchemeFormatter()
         for scheme in self.color_schemes:
-            self.formatted_color_schemes.append(
+            self._formatted_color_schemes.append(
                 colorSchemeFormatter.render(scheme))
 
         if(verbose):
@@ -98,6 +97,6 @@ class StateConfig():
         print("is_mirror -> ", self.is_mirror)
         print("color_schemes -> ", self.color_schemes)
         print("active_color_scheme_index -> ", self.active_color_scheme_index)
-        print("formatted_color_schemes -> ", self.formatted_color_schemes)
+        print("_formatted_color_schemes -> ", self._formatted_color_schemes)
         print("----------------")
         print("--")

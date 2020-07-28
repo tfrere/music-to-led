@@ -6,7 +6,7 @@
   height: $input-range-track-height;
   position: relative;
   transition: $input-range-track-transition;
-  box-shadow: inset 1px 1px 0 1px lighten($backgroundColor, 40%);
+  box-shadow: inset -0.5px -0.5px 0 1px lighten($backgroundColor, 5%);
 
   .input-range--disabled & {
     background: $input-range-track-disabled-background;

@@ -21,16 +21,9 @@ from config.stripConfig import StripConfig
 
 from config.helpers import autoKill
 
-
-def my_yaml_dump(yaml_obj):
-    my_ob = deepcopy(yaml_obj)
-    for item in dir(my_ob):
-        if item.startswith("_") and not item.startswith("__"):
-            del my_ob.__dict__[item]
-    return yaml.dump(my_ob)
-
-
 # remove class tags from yml output
+
+
 def noop(self, *args, **kw):
     pass
 
@@ -42,7 +35,7 @@ class Config():
 
     def __init__(
         self,
-        file_name="SAMPLE_CONFIG.yml",
+        file_name="CONFIG.yml",
         desirated_framerate=60,
         display_shell_interface=True,
         is_zmq_api_enabled=True,
@@ -74,11 +67,12 @@ class Config():
         self.desirated_framerate = desirated_framerate
         self.display_shell_interface = display_shell_interface
         self.is_zmq_api_enabled = is_zmq_api_enabled
-        self.delay_between_frames = 1 / desirated_framerate
-        self.timeSinceStart = TimeSinceStart()
-        self.audio_ports = []
+        self._delay_between_frames = 1 / desirated_framerate
+        self._timeSinceStart = TimeSinceStart()
+        self._audio_ports = []
+        self.audio_ports = audio_ports
         for audio_port in audio_ports:
-            self.audio_ports.append(
+            self._audio_ports.append(
                 AudioConfig(
                     name=audio_port["name"],
                     min_frequency=audio_port["min_frequency"],
@@ -87,11 +81,12 @@ class Config():
                     verbose=verbose
                 )
             )
-        self.number_of_audio_ports = len(self.audio_ports)
+        self._number_of_audio_ports = len(self._audio_ports)
 
-        self.strips = []
+        self._strips = []
+        self.strips = strips
         for strip in strips:
-            self.strips.append(
+            self._strips.append(
                 StripConfig(
                     name=strip["name"],
                     serial_port_name=strip["serial_port_name"],
@@ -107,11 +102,20 @@ class Config():
                     verbose=verbose
                 )
             )
-        self.number_of_strips = len(self.strips)
+        self._number_of_strips = len(self._strips)
 
     def saveToYmlFile(self):
+        print(self.file_name)
         with open(self.file_name, "w") as fileDescriptor:
-            yaml.dump(self, fileDescriptor)
+            print("imaliiiive")
+            obj_to_save = deepcopy(self)
+            for item in dir(obj_to_save):
+                if item.startswith("_") and not item.startswith("__"):
+                    del obj_to_save.__dict__[item]
+                for sub in dir(item):
+                    if sub.startswith("_") and not sub.startswith("__"):
+                        del item.__dict__[sub]
+            return yaml.dump(obj_to_save, fileDescriptor, sort_keys=False)
 
     def print(self):
         print("--")
@@ -122,13 +126,13 @@ class Config():
         print("desirated_framerate -> ", self.desirated_framerate)
         print("display_shell_interface -> ", self.display_shell_interface)
         print("is_zmq_api_enabled -> ", self.is_zmq_api_enabled)
-        print("delay_between_frames -> ", self.delay_between_frames)
-        for audio_port in self.audio_ports:
+        print("delay_between_frames -> ", self._delay_between_frames)
+        for audio_port in self._audio_ports:
             audio_port.print()
-        print("number_of_audio_ports -> ", self.number_of_audio_ports)
-        for strip in self.strips:
+        print("number_of_audio_ports -> ", self._number_of_audio_ports)
+        for strip in self._strips:
             strip.print()
-        print("number_of_strips -> ", self.number_of_strips)
+        print("number_of_strips -> ", self._number_of_strips)
         print("----------------")
         print("--")
 
@@ -171,7 +175,7 @@ class ConfigLoader():
                 autoKill()
 
     def findStripIndexByStripName(self, name):
-        for i, strip in enumerate(self.data.strips):
+        for i, strip in enumerate(self.data._strips):
             if(name == strip.name):
                 return i
         return -1

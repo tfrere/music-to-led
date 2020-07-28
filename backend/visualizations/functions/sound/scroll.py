@@ -10,7 +10,7 @@ class Scroll():
         self.audio_data /= self.gain.value
         self.audio_data *= 255.0
 
-        active_color_scheme = self.active_state.formatted_color_schemes[
+        active_color_scheme = self.active_state._formatted_color_schemes[
             self.active_state.active_color_scheme_index]
         length_of_color_scheme = len(active_color_scheme)
         chunk_size = len(self.audio_data) // length_of_color_scheme
@@ -50,4 +50,3 @@ class Scroll():
 
         self.pixels = self.blurFrame(self.pixels, self.active_state.blur_value)
         return self.pixelReshaper.reshapeFromPixels(self.pixels)
-

@@ -36,7 +36,7 @@ class Visualizer(Spectrum, FullColor, FadeOut, Clear, AlternateColors, Transitio
         """ The main class that contain all viz functions """
 
         self.config = config
-        self.strip_config = config.strips[index]
+        self.strip_config = config._strips[index]
         self.pixelReshaper = PixelReshaper(self.strip_config)
 
         self.hasBegun = False
@@ -50,11 +50,11 @@ class Visualizer(Spectrum, FullColor, FadeOut, Clear, AlternateColors, Transitio
     def initVizualiser(self):
         # self.active_state = deepcopy(self.strip_config.active_state)
         self.active_state = self.strip_config.active_state
-        self.number_of_pixels = self.strip_config.shapes[
-            self.active_state.division_value].number_of_pixels
+        self._number_of_pixels = self.strip_config._shapes[
+            self.active_state.division_value]._number_of_pixels
 
-        self.timeSinceStart = self.config.timeSinceStart
-        self.number_of_audio_samples = self.config.audio_ports[
+        self._timeSinceStart = self.config._timeSinceStart
+        self.number_of_audio_samples = self.config._audio_ports[
             self.active_state.active_audio_channel_index].number_of_audio_samples
 
         self.old_audio_data = np.tile(0.0, self.number_of_audio_samples)
@@ -132,7 +132,7 @@ class Visualizer(Spectrum, FullColor, FadeOut, Clear, AlternateColors, Transitio
 
     def resetFrame(self):
         """ Reset current pixels """
-        self.pixels = np.tile(0., (3, self.number_of_pixels))
+        self.pixels = np.tile(0., (3, self._number_of_pixels))
 
     def blurFrame(self, pixels, value=1.0):
         pixels[0, :] = gaussian_filter1d(pixels[0, :], sigma=value)

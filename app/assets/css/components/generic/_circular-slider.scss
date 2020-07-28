@@ -1,12 +1,26 @@
 .circular-slider {
   width: 5rem;
-  padding-top: 10px;
+  margin-top: 10px;
+  position: relative;
 }
+
+.circular-slider__label {
+}
+
+.circular-slider__svg-wrapper {
+  width: 5rem;
+  position: relative;
+  z-index: 1;
+}
+
 .circular-slider__svg {
   display: block;
   width: 5rem;
   height: 5rem;
   cursor: ns-resize;
+  overflow: visible !important;
+  position: relative;
+  z-index: 9;
 }
 .circular-slider__svg__circle,
 .circular-slider__svg__bar {
@@ -21,7 +35,29 @@
   stroke-dasharray: 0;
 }
 
+.circular-slider__value-wrapper,
+.circular-slider__svg-triangle {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: absolute;
+  top: -2px;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 0;
+}
+
+.circular-slider__svg-triangle {
+  top: -5px;
+  left: -1px;
+}
+
 .circular-slider__value {
   text-align: center;
   font-size: 10px;
+  position: absolute;
+  margin: auto;
+  font-size: 14px;
+  font-weight: bold;
 }

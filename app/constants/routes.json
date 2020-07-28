@@ -1,6 +1,8 @@
 {
   "HOME": "/",
   "INIT": "/INIT",
+  "TEST": "/TEST",
   "BUILDER": "/BUILDER",
-  "SHOW": "/SHOW"
+  "SHOW": "/SHOW",
+  "CONFIG_LOADER": "/CONFIG_LOADER"
 }

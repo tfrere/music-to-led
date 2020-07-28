@@ -4,8 +4,85 @@
 @import 'input-range-label-container';
 @import 'input-range-track';
 
+$inputRangeStepsBackgroundColor: rgba(0, 0, 0, 0);
+$inputRangeStepsColor: rgba(2255, 2255, 2255, 0.2);
+
 .input-range {
   height: $input-range-slider-height;
   position: relative;
   width: 100%;
+  margin-bottom: 40px;
+  &:before {
+    content: '';
+    position: absolute;
+    width: 100%;
+    height: 7px;
+    top: 3px;
+    left: 0;
+    overflow: hidden;
+    background: linear-gradient(
+      to right,
+      $inputRangeStepsBackgroundColor 0px,
+      $inputRangeStepsBackgroundColor 11px,
+      $inputRangeStepsColor 14px,
+      $inputRangeStepsBackgroundColor 15px,
+      $inputRangeStepsBackgroundColor 26px,
+      $inputRangeStepsColor 29px,
+      $inputRangeStepsBackgroundColor 30px,
+      $inputRangeStepsBackgroundColor 41px,
+      $inputRangeStepsColor 44px,
+      $inputRangeStepsBackgroundColor 45px,
+      $inputRangeStepsBackgroundColor 56px,
+      $inputRangeStepsColor 59px,
+      $inputRangeStepsBackgroundColor 60px,
+      $inputRangeStepsBackgroundColor 71px,
+      $inputRangeStepsColor 74px,
+      $inputRangeStepsBackgroundColor 75px,
+      $inputRangeStepsBackgroundColor 86px,
+      $inputRangeStepsColor 89px,
+      $inputRangeStepsBackgroundColor 90px,
+      $inputRangeStepsBackgroundColor 101px,
+      $inputRangeStepsColor 104px,
+      $inputRangeStepsBackgroundColor 105px,
+      $inputRangeStepsBackgroundColor 116px,
+      $inputRangeStepsColor 119px,
+      $inputRangeStepsBackgroundColor 120px,
+      $inputRangeStepsBackgroundColor 131px,
+      $inputRangeStepsColor 134px,
+      $inputRangeStepsBackgroundColor 135px,
+      $inputRangeStepsBackgroundColor 146px,
+      $inputRangeStepsColor 149px,
+      $inputRangeStepsBackgroundColor 150px,
+      $inputRangeStepsBackgroundColor 161px,
+      $inputRangeStepsColor 164px,
+      $inputRangeStepsBackgroundColor 165px,
+      $inputRangeStepsBackgroundColor 176px,
+      $inputRangeStepsColor 179px,
+      $inputRangeStepsBackgroundColor 180px,
+      $inputRangeStepsBackgroundColor 191px,
+      $inputRangeStepsColor 194px,
+      $inputRangeStepsBackgroundColor 195px,
+      $inputRangeStepsBackgroundColor 206px,
+      $inputRangeStepsColor 209px,
+      $inputRangeStepsBackgroundColor 210px,
+      $inputRangeStepsBackgroundColor 221px,
+      $inputRangeStepsColor 224px,
+      $inputRangeStepsBackgroundColor 225px,
+      $inputRangeStepsBackgroundColor 236px,
+      $inputRangeStepsColor 237px,
+      $inputRangeStepsBackgroundColor 238px,
+      $inputRangeStepsBackgroundColor 249px,
+      $inputRangeStepsColor 252px,
+      $inputRangeStepsBackgroundColor 253px,
+      $inputRangeStepsBackgroundColor 264px,
+      $inputRangeStepsColor 267px,
+      $inputRangeStepsBackgroundColor 268px,
+      $inputRangeStepsBackgroundColor 275px,
+      $inputRangeStepsColor 278px,
+      $inputRangeStepsBackgroundColor 279px,
+      $inputRangeStepsBackgroundColor 290px,
+      $inputRangeStepsColor 293px,
+      $inputRangeStepsBackgroundColor 295px
+    );
+  }
 }

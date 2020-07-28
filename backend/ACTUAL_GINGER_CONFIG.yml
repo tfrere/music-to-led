@@ -1,0 +1,1055 @@
+_audio_ports:
+  - max_frequency: 12000
+    min_frequency: 200
+    min_volume_threshold: 1.0e-07
+    n_rolling_history: 4
+    name: Built-in Microphone
+    number_of_audio_samples: 24
+    sampling_rate: 44000
+_delay_between_frames: 0.016666666666666666
+_number_of_audio_ports: 1
+_number_of_strips: 1
+_strips:
+  - _number_of_states: 10
+    _physical_shape:
+      _number_of_pixels: 136
+      _number_of_substrip: 3
+      _offsets:
+        - 34
+        - 86
+        - 136
+      shape: &id001
+        - 34
+        - 52
+        - 50
+    _shapes:
+      - _number_of_pixels: 136
+        _number_of_substrip: 3
+        _offsets:
+          - 34
+          - 86
+          - 136
+        shape:
+          - 34
+          - 52
+          - 50
+      - _number_of_pixels: 136
+        _number_of_substrip: 6
+        _offsets:
+          - 17
+          - 34
+          - 60
+          - 86
+          - 111
+          - 136
+        shape:
+          - 17
+          - 17
+          - 26
+          - 26
+          - 25
+          - 25
+      - _number_of_pixels: 132
+        _number_of_substrip: 12
+        _offsets:
+          - 8
+          - 16
+          - 24
+          - 32
+          - 45
+          - 58
+          - 71
+          - 84
+          - 96
+          - 108
+          - 120
+          - 132
+        shape:
+          - 8
+          - 8
+          - 8
+          - 8
+          - 13
+          - 13
+          - 13
+          - 13
+          - 12
+          - 12
+          - 12
+          - 12
+      - _number_of_pixels: 128
+        _number_of_substrip: 24
+        _offsets:
+          - 4
+          - 8
+          - 12
+          - 16
+          - 20
+          - 24
+          - 28
+          - 32
+          - 38
+          - 44
+          - 50
+          - 56
+          - 62
+          - 68
+          - 74
+          - 80
+          - 86
+          - 92
+          - 98
+          - 104
+          - 110
+          - 116
+          - 122
+          - 128
+        shape:
+          - 4
+          - 4
+          - 4
+          - 4
+          - 4
+          - 4
+          - 4
+          - 4
+          - 6
+          - 6
+          - 6
+          - 6
+          - 6
+          - 6
+          - 6
+          - 6
+          - 6
+          - 6
+          - 6
+          - 6
+          - 6
+          - 6
+          - 6
+          - 6
+    active_state: &id002
+      _formatted_color_schemes:
+        - - - 255
+            - 0
+            - 0
+          - - 0
+            - 128
+            - 0
+          - - 0
+            - 0
+            - 255
+        - - - 42
+            - 4
+            - 255
+          - - 255
+            - 150
+            - 4
+        - - - 2
+            - 230
+            - 255
+          - - 255
+            - 74
+            - 2
+        - - - 43
+            - 255
+            - 1
+          - - 255
+            - 1
+            - 39
+        - - - 255
+            - 247
+            - 0
+          - - 247
+            - 0
+            - 255
+        - - - 255
+            - 0
+            - 0
+        - - - 0
+            - 128
+            - 0
+        - - - 0
+            - 0
+            - 255
+        - - - 255
+            - 255
+            - 0
+        - - - 255
+            - 192
+            - 203
+        - - - 238
+            - 0
+            - 172
+          - - 0
+            - 0
+            - 255
+      _number_of_color_schemes: 11
+      active_audio_channel_index: 0
+      active_color_scheme_index: 10
+      active_visualizer_effect: channel_intensity
+      audio_decay: 0.1
+      audio_gain: 1
+      audio_samples_filter_max: 24
+      audio_samples_filter_min: 0
+      blur_value: 0.6
+      chunk_size: 2
+      color_schemes:
+        - - red
+          - green
+          - blue
+        - - '#2a04ff'
+          - '#ff9604'
+        - - '#02e6ff'
+          - '#ff4a02'
+        - - '#2bff01'
+          - '#ff0127'
+        - - '#fff700'
+          - '#f700ff'
+        - - red
+        - - green
+        - - blue
+        - - yellow
+        - - pink
+        - - '#ee00ac'
+          - blue
+      division_value: 0
+      is_mirror: false
+      is_reverse: false
+      max_brightness: 120
+      name: Forevermore
+      time_interval: 496
+    active_state_index: 0
+    is_online: false
+    midi_logs:
+      - note: 26
+        port: Audio2Led ChangeMod Center
+        type: note_on
+        velocity: 6
+      - note: 26
+        port: Audio2Led ChangeMod Center
+        type: note_on
+        velocity: 3
+      - note: 26
+        port: Audio2Led ChangeMod Center
+        type: note_on
+        velocity: 1
+      - note: 40
+        port: Audio2Led ChangeMod Center
+        type: note_on
+        velocity: 127
+      - action: updatestate
+        data: Forevermore
+        port: Audio2Led ChangeMod Center
+        type: sysex
+    midi_ports_for_changing_mode:
+      - Audio2Led ChangeMod Center
+    midi_ports_for_visualization:
+      - Audio2Led Synth
+    name: Angles
+    original_physical_shape: *id001
+    scene:
+      shapes:
+        - offset:
+            - 0
+            - 0
+          pixel_range:
+            - 86
+            - 136
+          svg_string: M0,0 0,100 T75,175
+        - offset:
+            - 0
+            - 0
+          pixel_range:
+            - 34
+            - 86
+          svg_string: M50,0 50,75 T100,125
+        - offset:
+            - 0
+            - 0
+          pixel_range:
+            - 0
+            - 34
+          svg_string: M100,0 100,50 T125,75
+        - offset:
+            - 0
+            - 0
+          pixel_range:
+            - 86
+            - 136
+          svg_string: M300,0 300,100 T225,175
+        - offset:
+            - 0
+            - 0
+          pixel_range:
+            - 34
+            - 86
+          svg_string: M250,0 250,75 T200,125
+        - offset:
+            - 0
+            - 0
+          pixel_range:
+            - 0
+            - 34
+          svg_string: M200,0 200,50 T175,75
+      size:
+        height: 170
+        scale: 1.5
+        width: 300
+    serial_port_name: /dev/tty.usbserial-14120
+    states:
+      - *id002
+      - _formatted_color_schemes:
+          - - - 255
+              - 0
+              - 0
+            - - 0
+              - 128
+              - 0
+            - - 0
+              - 0
+              - 255
+          - - - 42
+              - 4
+              - 255
+            - - 255
+              - 150
+              - 4
+          - - - 2
+              - 230
+              - 255
+            - - 255
+              - 74
+              - 2
+          - - - 43
+              - 255
+              - 1
+            - - 255
+              - 1
+              - 39
+          - - - 255
+              - 247
+              - 0
+            - - 247
+              - 0
+              - 255
+          - - - 255
+              - 0
+              - 0
+          - - - 0
+              - 128
+              - 0
+          - - - 0
+              - 0
+              - 255
+          - - - 255
+              - 255
+              - 0
+          - - - 255
+              - 192
+              - 203
+          - - - 0
+              - 128
+              - 0
+            - - 190
+              - 0
+              - 138
+        _number_of_color_schemes: 11
+        active_audio_channel_index: 0
+        active_color_scheme_index: 10
+        active_visualizer_effect: channel_intensity
+        audio_decay: 0.1
+        audio_gain: 1
+        audio_samples_filter_max: 24
+        audio_samples_filter_min: 0
+        blur_value: 0.1
+        chunk_size: 2
+        color_schemes:
+          - - red
+            - green
+            - blue
+          - - '#2a04ff'
+            - '#ff9604'
+          - - '#02e6ff'
+            - '#ff4a02'
+          - - '#2bff01'
+            - '#ff0127'
+          - - '#fff700'
+            - '#f700ff'
+          - - red
+          - - green
+          - - blue
+          - - yellow
+          - - pink
+          - - green
+            - '#BE008A'
+        division_value: 0
+        is_mirror: false
+        is_reverse: true
+        max_brightness: 120
+        name: HYPERVOID
+        time_interval: 187
+      - _formatted_color_schemes:
+          - - - 255
+              - 0
+              - 0
+            - - 0
+              - 128
+              - 0
+            - - 0
+              - 0
+              - 255
+          - - - 42
+              - 4
+              - 255
+            - - 255
+              - 150
+              - 4
+          - - - 2
+              - 230
+              - 255
+            - - 255
+              - 74
+              - 2
+          - - - 43
+              - 255
+              - 1
+            - - 255
+              - 1
+              - 39
+          - - - 255
+              - 247
+              - 0
+            - - 247
+              - 0
+              - 255
+          - - - 255
+              - 0
+              - 0
+          - - - 0
+              - 128
+              - 0
+          - - - 0
+              - 0
+              - 255
+          - - - 255
+              - 255
+              - 0
+          - - - 255
+              - 192
+              - 203
+        _number_of_color_schemes: 10
+        active_audio_channel_index: 0
+        active_color_scheme_index: 5
+        active_visualizer_effect: piano_scroll
+        audio_decay: 0.1
+        audio_gain: 1
+        audio_samples_filter_max: 24
+        audio_samples_filter_min: 0
+        blur_value: 1.3
+        chunk_size: 5
+        color_schemes:
+          - - red
+            - green
+            - blue
+          - - '#2a04ff'
+            - '#ff9604'
+          - - '#02e6ff'
+            - '#ff4a02'
+          - - '#2bff01'
+            - '#ff0127'
+          - - '#fff700'
+            - '#f700ff'
+          - - red
+          - - green
+          - - blue
+          - - yellow
+          - - pink
+        division_value: 0
+        is_mirror: false
+        is_reverse: false
+        max_brightness: 120
+        name: PREDATOR
+        time_interval: 425
+      - _formatted_color_schemes:
+          - - - 255
+              - 0
+              - 0
+            - - 0
+              - 128
+              - 0
+            - - 0
+              - 0
+              - 255
+          - - - 42
+              - 4
+              - 255
+            - - 255
+              - 150
+              - 4
+          - - - 2
+              - 230
+              - 255
+            - - 255
+              - 74
+              - 2
+          - - - 43
+              - 255
+              - 1
+            - - 255
+              - 1
+              - 39
+          - - - 255
+              - 247
+              - 0
+            - - 247
+              - 0
+              - 255
+          - - - 255
+              - 0
+              - 0
+          - - - 0
+              - 128
+              - 0
+          - - - 0
+              - 0
+              - 255
+          - - - 255
+              - 255
+              - 0
+          - - - 255
+              - 192
+              - 203
+        _number_of_color_schemes: 10
+        active_audio_channel_index: 0
+        active_color_scheme_index: 5
+        active_visualizer_effect: piano_scroll
+        audio_decay: 0.1
+        audio_gain: 1
+        audio_samples_filter_max: 24
+        audio_samples_filter_min: 0
+        blur_value: 4.0
+        chunk_size: 5
+        color_schemes:
+          - - red
+            - green
+            - blue
+          - - '#2a04ff'
+            - '#ff9604'
+          - - '#02e6ff'
+            - '#ff4a02'
+          - - '#2bff01'
+            - '#ff0127'
+          - - '#fff700'
+            - '#f700ff'
+          - - red
+          - - green
+          - - blue
+          - - yellow
+          - - pink
+        division_value: 0
+        is_mirror: false
+        is_reverse: true
+        max_brightness: 120
+        name: predator 2
+        time_interval: 120
+      - _formatted_color_schemes:
+          - - - 255
+              - 0
+              - 0
+            - - 0
+              - 128
+              - 0
+            - - 0
+              - 0
+              - 255
+          - - - 42
+              - 4
+              - 255
+            - - 255
+              - 150
+              - 4
+          - - - 2
+              - 230
+              - 255
+            - - 255
+              - 74
+              - 2
+          - - - 43
+              - 255
+              - 1
+            - - 255
+              - 1
+              - 39
+          - - - 255
+              - 247
+              - 0
+            - - 247
+              - 0
+              - 255
+          - - - 255
+              - 0
+              - 0
+          - - - 0
+              - 128
+              - 0
+          - - - 0
+              - 0
+              - 255
+          - - - 255
+              - 255
+              - 0
+          - - - 255
+              - 192
+              - 203
+        _number_of_color_schemes: 10
+        active_audio_channel_index: 0
+        active_color_scheme_index: 0
+        active_visualizer_effect: fade_out
+        audio_decay: 0.1
+        audio_gain: 1
+        audio_samples_filter_max: 24
+        audio_samples_filter_min: 0
+        blur_value: 4.0
+        chunk_size: 5
+        color_schemes:
+          - - red
+            - green
+            - blue
+          - - '#2a04ff'
+            - '#ff9604'
+          - - '#02e6ff'
+            - '#ff4a02'
+          - - '#2bff01'
+            - '#ff0127'
+          - - '#fff700'
+            - '#f700ff'
+          - - red
+          - - green
+          - - blue
+          - - yellow
+          - - pink
+        division_value: 0
+        is_mirror: false
+        is_reverse: false
+        max_brightness: 120
+        name: CLEAR
+        time_interval: 120
+      - _formatted_color_schemes:
+          - - - 255
+              - 0
+              - 0
+            - - 0
+              - 128
+              - 0
+            - - 0
+              - 0
+              - 255
+          - - - 42
+              - 4
+              - 255
+            - - 255
+              - 150
+              - 4
+          - - - 2
+              - 230
+              - 255
+            - - 255
+              - 74
+              - 2
+          - - - 43
+              - 255
+              - 1
+            - - 255
+              - 1
+              - 39
+          - - - 255
+              - 247
+              - 0
+            - - 247
+              - 0
+              - 255
+          - - - 255
+              - 0
+              - 0
+          - - - 0
+              - 128
+              - 0
+          - - - 0
+              - 0
+              - 255
+          - - - 255
+              - 255
+              - 0
+          - - - 255
+              - 192
+              - 203
+        _number_of_color_schemes: 10
+        active_audio_channel_index: 0
+        active_color_scheme_index: 7
+        active_visualizer_effect: channel_intensity
+        audio_decay: 0.1
+        audio_gain: 0.9
+        audio_samples_filter_max: 24
+        audio_samples_filter_min: 0
+        blur_value: 2.4
+        chunk_size: 5
+        color_schemes:
+          - - red
+            - green
+            - blue
+          - - '#2a04ff'
+            - '#ff9604'
+          - - '#02e6ff'
+            - '#ff4a02'
+          - - '#2bff01'
+            - '#ff0127'
+          - - '#fff700'
+            - '#f700ff'
+          - - red
+          - - green
+          - - blue
+          - - yellow
+          - - pink
+        division_value: 0
+        is_mirror: false
+        is_reverse: false
+        max_brightness: 21
+        name: FOREVERMORE 2
+        time_interval: 349
+      - _formatted_color_schemes:
+          - - - 255
+              - 0
+              - 0
+            - - 0
+              - 128
+              - 0
+            - - 0
+              - 0
+              - 255
+          - - - 42
+              - 4
+              - 255
+            - - 255
+              - 150
+              - 4
+          - - - 2
+              - 230
+              - 255
+            - - 255
+              - 74
+              - 2
+          - - - 43
+              - 255
+              - 1
+            - - 255
+              - 1
+              - 39
+          - - - 255
+              - 247
+              - 0
+            - - 247
+              - 0
+              - 255
+          - - - 255
+              - 0
+              - 0
+          - - - 0
+              - 128
+              - 0
+          - - - 0
+              - 0
+              - 255
+          - - - 255
+              - 255
+              - 0
+          - - - 255
+              - 192
+              - 203
+        _number_of_color_schemes: 10
+        active_audio_channel_index: 0
+        active_color_scheme_index: 7
+        active_visualizer_effect: piano_scroll
+        audio_decay: 0.1
+        audio_gain: 1
+        audio_samples_filter_max: 24
+        audio_samples_filter_min: 0
+        blur_value: 4.0
+        chunk_size: 5
+        color_schemes:
+          - - red
+            - green
+            - blue
+          - - '#2a04ff'
+            - '#ff9604'
+          - - '#02e6ff'
+            - '#ff4a02'
+          - - '#2bff01'
+            - '#ff0127'
+          - - '#fff700'
+            - '#f700ff'
+          - - red
+          - - green
+          - - blue
+          - - yellow
+          - - pink
+        division_value: 0
+        is_mirror: false
+        is_reverse: false
+        max_brightness: 120
+        name: ABIMES
+        time_interval: 270
+      - _formatted_color_schemes:
+          - - - 255
+              - 0
+              - 0
+            - - 0
+              - 128
+              - 0
+            - - 0
+              - 0
+              - 255
+          - - - 42
+              - 4
+              - 255
+            - - 255
+              - 150
+              - 4
+          - - - 2
+              - 230
+              - 255
+            - - 255
+              - 74
+              - 2
+          - - - 43
+              - 255
+              - 1
+            - - 255
+              - 1
+              - 39
+          - - - 255
+              - 247
+              - 0
+            - - 247
+              - 0
+              - 255
+          - - - 255
+              - 0
+              - 0
+          - - - 0
+              - 128
+              - 0
+          - - - 0
+              - 0
+              - 255
+          - - - 255
+              - 255
+              - 0
+          - - - 255
+              - 192
+              - 203
+        _number_of_color_schemes: 10
+        active_audio_channel_index: 0
+        active_color_scheme_index: 2
+        active_visualizer_effect: energy
+        audio_decay: 0.1
+        audio_gain: 1
+        audio_samples_filter_max: 24
+        audio_samples_filter_min: 0
+        blur_value: 4.0
+        chunk_size: 5
+        color_schemes:
+          - - red
+            - green
+            - blue
+          - - '#2a04ff'
+            - '#ff9604'
+          - - '#02e6ff'
+            - '#ff4a02'
+          - - '#2bff01'
+            - '#ff0127'
+          - - '#fff700'
+            - '#f700ff'
+          - - red
+          - - green
+          - - blue
+          - - yellow
+          - - pink
+        division_value: 0
+        is_mirror: false
+        is_reverse: false
+        max_brightness: 13
+        name: DOUDOUNE
+        time_interval: 120
+      - _formatted_color_schemes:
+          - - - 255
+              - 0
+              - 0
+            - - 0
+              - 128
+              - 0
+            - - 0
+              - 0
+              - 255
+          - - - 42
+              - 4
+              - 255
+            - - 255
+              - 150
+              - 4
+          - - - 2
+              - 230
+              - 255
+            - - 255
+              - 74
+              - 2
+          - - - 43
+              - 255
+              - 1
+            - - 255
+              - 1
+              - 39
+          - - - 255
+              - 247
+              - 0
+            - - 247
+              - 0
+              - 255
+          - - - 255
+              - 0
+              - 0
+          - - - 0
+              - 128
+              - 0
+          - - - 0
+              - 0
+              - 255
+          - - - 255
+              - 255
+              - 0
+          - - - 255
+              - 192
+              - 203
+        _number_of_color_schemes: 10
+        active_audio_channel_index: 0
+        active_color_scheme_index: 2
+        active_visualizer_effect: channel_flash
+        audio_decay: 0.1
+        audio_gain: 0.9
+        audio_samples_filter_max: 24
+        audio_samples_filter_min: 0
+        blur_value: 0.1
+        chunk_size: 5
+        color_schemes:
+          - - red
+            - green
+            - blue
+          - - '#2a04ff'
+            - '#ff9604'
+          - - '#02e6ff'
+            - '#ff4a02'
+          - - '#2bff01'
+            - '#ff0127'
+          - - '#fff700'
+            - '#f700ff'
+          - - red
+          - - green
+          - - blue
+          - - yellow
+          - - pink
+        division_value: 0
+        is_mirror: false
+        is_reverse: false
+        max_brightness: 120
+        name: DOUDOUNE 2
+        time_interval: 0
+      - _formatted_color_schemes:
+          - - - 255
+              - 0
+              - 0
+            - - 0
+              - 128
+              - 0
+            - - 0
+              - 0
+              - 255
+          - - - 42
+              - 4
+              - 255
+            - - 255
+              - 150
+              - 4
+          - - - 2
+              - 230
+              - 255
+            - - 255
+              - 74
+              - 2
+          - - - 43
+              - 255
+              - 1
+            - - 255
+              - 1
+              - 39
+          - - - 255
+              - 247
+              - 0
+            - - 247
+              - 0
+              - 255
+          - - - 255
+              - 0
+              - 0
+          - - - 0
+              - 128
+              - 0
+          - - - 0
+              - 0
+              - 255
+          - - - 255
+              - 255
+              - 0
+          - - - 255
+              - 192
+              - 203
+        _number_of_color_schemes: 10
+        active_audio_channel_index: 0
+        active_color_scheme_index: 0
+        active_visualizer_effect: clear_frame
+        audio_decay: 0.1
+        audio_gain: 1
+        audio_samples_filter_max: 24
+        audio_samples_filter_min: 0
+        blur_value: 4.0
+        chunk_size: 5
+        color_schemes:
+          - - red
+            - green
+            - blue
+          - - '#2a04ff'
+            - '#ff9604'
+          - - '#02e6ff'
+            - '#ff4a02'
+          - - '#2bff01'
+            - '#ff0127'
+          - - '#fff700'
+            - '#f700ff'
+          - - red
+          - - green
+          - - blue
+          - - yellow
+          - - pink
+        division_value: 0
+        is_mirror: false
+        is_reverse: false
+        max_brightness: 120
+        name: DOUDOUNE 3
+        time_interval: 120
+_timeSinceStart:
+  end: 1595944927.163147
+  start: 1595944927.163147
+desirated_framerate: 60
+display_shell_interface: false
+file_name: /Users/gingermccurly/Desktop/Samples/CONFIG.yml
+is_zmq_api_enabled: true

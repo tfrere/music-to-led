@@ -51,9 +51,9 @@ class Spectrum():
     def initSpectrum(self):
 
         # if(self.strip_config.is_mirror):
-        #     new_length = self.number_of_pixels // 2
+        #     new_length = self._number_of_pixels // 2
         # else:
-        new_length = self.number_of_pixels
+        new_length = self._number_of_pixels
 
         self.prev_spectrum = np.tile(0.01, new_length)
 
@@ -81,9 +81,9 @@ class Spectrum():
     def visualizeSpectrum(self):
         """Effect that maps the Mel filterbank frequencies onto the LED strip"""
 
-        active_color_scheme = self.active_state.formatted_color_schemes[
+        active_color_scheme = self.active_state._formatted_color_schemes[
             self.active_state.active_color_scheme_index]
-        new_length = self.number_of_pixels
+        new_length = self._number_of_pixels
 
         audio_data = np.copy(interpolate(self.audio_data, new_length))
 

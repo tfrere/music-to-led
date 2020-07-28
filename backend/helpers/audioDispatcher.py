@@ -12,12 +12,12 @@ class AudioDispatcher():
         framerate=60
     ):
         self.framerate = framerate
-        self.audio_ports = audio_ports
-        self.number_of_audio_ports = len(audio_ports)
+        self._audio_ports = audio_ports
+        self._number_of_audio_ports = len(audio_ports)
         self.audio_datas = []
         self.audio_input_classes = []
         self.audio_processors = []
-        for audio_port in self.audio_ports:
+        for audio_port in self._audio_ports:
             self.audio_input_classes.append(
                 Audio(
                     port_name=audio_port.name,
@@ -40,7 +40,7 @@ class AudioDispatcher():
 
     def dispatch(self):
         self.audio_datas = []
-        for i in range(self.number_of_audio_ports):
+        for i in range(self._number_of_audio_ports):
             self.audio_datas.append(
                 self.audio_processors[i].render(
                     self.audio_input_classes[i].getRawData()

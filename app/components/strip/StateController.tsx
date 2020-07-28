@@ -56,7 +56,7 @@ class State extends React.Component {
           <Button
             className={'button--large button--has-type'}
             onClick={() => {
-              this.props.sendNote(26, this.props.index);
+              this.props.sendNote(26, this.props.index + 1);
             }}
           >
             <>
@@ -149,7 +149,7 @@ class StateController extends React.Component {
   render() {
     return (
       <div className="state-controller">
-        <label className="state-controller__title">States</label>
+        <label className="state-controller__title">Presets</label>
         <div className="state-controller__states">
           {this.props.strip.states.map((state, index) => {
             return (
@@ -187,7 +187,7 @@ class StateController extends React.Component {
                 <input
                   name="new-state"
                   value={this.state.newStateName}
-                  placeholder={'new state name'}
+                  placeholder={'new preset name ...'}
                   onChange={e => {
                     this.setState({
                       newStateName: e.target.value
