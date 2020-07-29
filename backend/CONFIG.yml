@@ -3,137 +3,434 @@ desirated_framerate: 60
 display_shell_interface: false
 is_zmq_api_enabled: true
 audio_ports:
-- max_frequency: 12000
-  min_frequency: 200
-  name: Loopback Audio
-- max_frequency: 12000
-  min_frequency: 200
-  name: Built-in Microphone
+  - max_frequency: 12000
+    min_frequency: 200
+    name: Loopback Audio
+  - max_frequency: 12000
+    min_frequency: 200
+    name: Built-in Microphone
 strips:
-- active_state_index: 0
-  midi_ports_for_changing_mode:
-  - Audio2Led ChangeMod Center
-  midi_ports_for_visualization:
-  - Audio2Led Synth
-  name: Angles
-  original_physical_shape:
-  - 34
-  - 52
-  - 50
-  scene:
-    shapes:
-    - offset:
-      - 0
-      - 0
-      pixel_range:
-      - 86
-      - 136
-      svg_string: M0,0 0,100 T75,175
-    - offset:
-      - 0
-      - 0
-      pixel_range:
+  - name: Angles
+    serial_port_name: /dev/tty.usbserial-A50285BI
+    is_online: false
+    midi_ports_for_changing_mode:
+      - Audio2Led ChangeMod Center
+    midi_ports_for_visualization:
+      - Audio2Led Synth
+      - LPK25
+    original_physical_shape:
       - 34
-      - 86
-      svg_string: M50,0 50,75 T100,125
-    - offset:
-      - 0
-      - 0
-      pixel_range:
-      - 0
-      - 34
-      svg_string: M100,0 100,50 T125,75
-    - offset:
-      - 0
-      - 0
-      pixel_range:
-      - 86
-      - 136
-      svg_string: M300,0 300,100 T225,175
-    - offset:
-      - 0
-      - 0
-      pixel_range:
-      - 34
-      - 86
-      svg_string: M250,0 250,75 T200,125
-    - offset:
-      - 0
-      - 0
-      pixel_range:
-      - 0
-      - 34
-      svg_string: M200,0 200,50 T175,75
-    size:
-      height: 170
-      scale: 1.2
-      width: 300
-  serial_port_name: /dev/tty.usbserial-A50285BI
-  states:
-  - active_audio_channel_index: 0
-    active_color_scheme_index: 0
-    active_propagation_curve: ease_in
-    active_visualizer_effect: piano_scroll
-    audio_decay: 0.1
-    audio_gain: 1
-    audio_samples_filter_max: 24
-    audio_samples_filter_min: 0
-    blur_value: 1.0
-    chunk_size: 50
-    color_schemes:
-    - - red
-      - green
-      - blue
-    - - red
-    - - green
-    - - blue
-    division_value: 0
-    is_mirror: false
-    is_reverse: false
-    max_brightness: 100
-    name: Classic energy 23
-    time_interval: 10
-  - active_audio_channel_index: 1
-    active_color_scheme_index: 0
-    active_propagation_curve: ease_in
-    active_visualizer_effect: scroll
-    audio_decay: 0.1
-    audio_gain: 1
-    audio_samples_filter_max: 24
-    audio_samples_filter_min: 0
-    blur_value: 0.1
-    chunk_size: 50
-    color_schemes:
-    - - red
-      - blue
-    - - red
-      - green
-      - blue
-    division_value: 0
-    is_mirror: true
-    is_reverse: false
-    max_brightness: 100
-    name: Classic scroll
-    time_interval: 10
-  - active_audio_channel_index: 0
-    active_color_scheme_index: 0
-    active_propagation_curve: ease_in
-    active_visualizer_effect: piano_scroll
-    audio_decay: 0.1
-    audio_gain: 1
-    audio_samples_filter_max: 24
-    audio_samples_filter_min: 0
-    blur_value: 1.1
-    chunk_size: 50
-    color_schemes:
-    - - red
-      - blue
-    - - red
-      - green
-      - blue
-    division_value: 0
-    is_mirror: false
-    is_reverse: false
-    max_brightness: 100
-    name: Piano note
-    time_interval: 10
+      - 52
+      - 50
+    scene:
+      shapes:
+        - offset:
+            - 0
+            - 0
+          pixel_range:
+            - 86
+            - 136
+          svg_string: M0,0 0,100 T75,175
+        - offset:
+            - 0
+            - 0
+          pixel_range:
+            - 34
+            - 86
+          svg_string: M50,0 50,75 T100,125
+        - offset:
+            - 0
+            - 0
+          pixel_range:
+            - 0
+            - 34
+          svg_string: M100,0 100,50 T125,75
+        - offset:
+            - 0
+            - 0
+          pixel_range:
+            - 86
+            - 136
+          svg_string: M300,0 300,100 T225,175
+        - offset:
+            - 0
+            - 0
+          pixel_range:
+            - 34
+            - 86
+          svg_string: M250,0 250,75 T200,125
+        - offset:
+            - 0
+            - 0
+          pixel_range:
+            - 0
+            - 34
+          svg_string: M200,0 200,50 T175,75
+      size:
+        height: 170
+        scale: 1.2
+        width: 300
+    states:
+      - name: Forevermore
+        active_audio_channel_index: 1
+        audio_samples_filter_min: 0
+        audio_samples_filter_max: 24
+        audio_gain: 1
+        audio_decay: 0.1
+        division_value: 0
+        active_visualizer_effect: channel_intensity
+        max_brightness: 138
+        time_interval: 120
+        chunk_size: 5
+        blur_value: 0.6
+        is_reverse: false
+        is_mirror: false
+        active_color_scheme_index: 10
+        color_schemes:
+          - - red
+            - green
+            - blue
+          - - '#2a04ff'
+            - '#ff9604'
+          - - '#02e6ff'
+            - '#ff4a02'
+          - - '#2bff01'
+            - '#ff0127'
+          - - '#fff700'
+            - '#f700ff'
+          - - red
+          - - green
+          - - blue
+          - - yellow
+          - - pink
+          - - '#ee00ac'
+            - blue
+          - - '#BE008A'
+            - green
+      - name: Hypervoid
+        active_audio_channel_index: 1
+        audio_samples_filter_min: 0
+        audio_samples_filter_max: 24
+        audio_gain: 1
+        audio_decay: 0.1
+        division_value: 0
+        active_visualizer_effect: channel_intensity
+        max_brightness: 120
+        time_interval: 120
+        chunk_size: 5
+        blur_value: 0.1
+        is_reverse: true
+        is_mirror: false
+        active_color_scheme_index: 11
+        color_schemes:
+          - - red
+            - green
+            - blue
+          - - '#2a04ff'
+            - '#ff9604'
+          - - '#02e6ff'
+            - '#ff4a02'
+          - - '#2bff01'
+            - '#ff0127'
+          - - '#fff700'
+            - '#f700ff'
+          - - red
+          - - green
+          - - blue
+          - - yellow
+          - - pink
+          - - '#ee00ac'
+            - blue
+          - - '#BE008A'
+            - green
+      - name: Predator
+        active_audio_channel_index: 1
+        audio_samples_filter_min: 0
+        audio_samples_filter_max: 24
+        audio_gain: 1
+        audio_decay: 0.1
+        division_value: 0
+        active_visualizer_effect: piano_scroll
+        max_brightness: 120
+        time_interval: 429
+        chunk_size: 5
+        blur_value: 1.2
+        is_reverse: false
+        is_mirror: false
+        active_color_scheme_index: 5
+        color_schemes:
+          - - red
+            - green
+            - blue
+          - - '#2a04ff'
+            - '#ff9604'
+          - - '#02e6ff'
+            - '#ff4a02'
+          - - '#2bff01'
+            - '#ff0127'
+          - - '#fff700'
+            - '#f700ff'
+          - - red
+          - - green
+          - - blue
+          - - yellow
+          - - pink
+          - - '#ee00ac'
+            - blue
+          - - '#BE008A'
+            - green
+      - &id001
+        name: Predator 2
+        active_audio_channel_index: 1
+        audio_samples_filter_min: 0
+        audio_samples_filter_max: 24
+        audio_gain: 1
+        audio_decay: 0.1
+        division_value: 0
+        active_visualizer_effect: piano_scroll
+        max_brightness: 120
+        time_interval: 120
+        chunk_size: 5
+        blur_value: 4.0
+        is_reverse: true
+        is_mirror: false
+        active_color_scheme_index: 5
+        color_schemes:
+          - - red
+            - green
+            - blue
+          - - '#2a04ff'
+            - '#ff9604'
+          - - '#02e6ff'
+            - '#ff4a02'
+          - - '#2bff01'
+            - '#ff0127'
+          - - '#fff700'
+            - '#f700ff'
+          - - red
+          - - green
+          - - blue
+          - - yellow
+          - - pink
+          - - '#ee00ac'
+            - blue
+          - - '#BE008A'
+            - green
+      - name: Clear
+        active_audio_channel_index: 1
+        audio_samples_filter_min: 0
+        audio_samples_filter_max: 24
+        audio_gain: 1
+        audio_decay: 0.1
+        division_value: 0
+        active_visualizer_effect: clear_frame
+        max_brightness: 120
+        time_interval: 120
+        chunk_size: 5
+        blur_value: 4.0
+        is_reverse: false
+        is_mirror: false
+        active_color_scheme_index: 0
+        color_schemes:
+          - - red
+            - green
+            - blue
+          - - '#2a04ff'
+            - '#ff9604'
+          - - '#02e6ff'
+            - '#ff4a02'
+          - - '#2bff01'
+            - '#ff0127'
+          - - '#fff700'
+            - '#f700ff'
+          - - red
+          - - green
+          - - blue
+          - - yellow
+          - - pink
+          - - '#ee00ac'
+            - blue
+          - - '#BE008A'
+            - green
+      - name: Forevermore 2
+        active_audio_channel_index: 1
+        audio_samples_filter_min: 0
+        audio_samples_filter_max: 24
+        audio_gain: 1
+        audio_decay: 0.1
+        division_value: 0
+        active_visualizer_effect: channel_intensity
+        max_brightness: 21
+        time_interval: 337
+        chunk_size: 5
+        blur_value: 2.3
+        is_reverse: false
+        is_mirror: false
+        active_color_scheme_index: 7
+        color_schemes:
+          - - red
+            - green
+            - blue
+          - - '#2a04ff'
+            - '#ff9604'
+          - - '#02e6ff'
+            - '#ff4a02'
+          - - '#2bff01'
+            - '#ff0127'
+          - - '#fff700'
+            - '#f700ff'
+          - - red
+          - - green
+          - - blue
+          - - yellow
+          - - pink
+          - - '#ee00ac'
+            - blue
+          - - '#BE008A'
+            - green
+      - name: Abimes
+        active_audio_channel_index: 1
+        audio_samples_filter_min: 0
+        audio_samples_filter_max: 24
+        audio_gain: 1
+        audio_decay: 0.1
+        division_value: 0
+        active_visualizer_effect: piano_scroll
+        max_brightness: 120
+        time_interval: 262
+        chunk_size: 5
+        blur_value: 4.0
+        is_reverse: false
+        is_mirror: false
+        active_color_scheme_index: 7
+        color_schemes:
+          - - red
+            - green
+            - blue
+          - - '#2a04ff'
+            - '#ff9604'
+          - - '#02e6ff'
+            - '#ff4a02'
+          - - '#2bff01'
+            - '#ff0127'
+          - - '#fff700'
+            - '#f700ff'
+          - - red
+          - - green
+          - - blue
+          - - yellow
+          - - pink
+          - - '#ee00ac'
+            - blue
+          - - '#BE008A'
+            - green
+      - name: Doudoune
+        active_audio_channel_index: 1
+        audio_samples_filter_min: 0
+        audio_samples_filter_max: 24
+        audio_gain: 1
+        audio_decay: 0.1
+        division_value: 0
+        active_visualizer_effect: energy
+        max_brightness: 13
+        time_interval: 120
+        chunk_size: 5
+        blur_value: 4.0
+        is_reverse: false
+        is_mirror: false
+        active_color_scheme_index: 2
+        color_schemes:
+          - - red
+            - green
+            - blue
+          - - '#2a04ff'
+            - '#ff9604'
+          - - '#02e6ff'
+            - '#ff4a02'
+          - - '#2bff01'
+            - '#ff0127'
+          - - '#fff700'
+            - '#f700ff'
+          - - red
+          - - green
+          - - blue
+          - - yellow
+          - - pink
+          - - '#ee00ac'
+            - blue
+          - - '#BE008A'
+            - green
+      - name: Doudoune 2
+        active_audio_channel_index: 1
+        audio_samples_filter_min: 0
+        audio_samples_filter_max: 24
+        audio_gain: 1
+        audio_decay: 0.1
+        division_value: 0
+        active_visualizer_effect: channel_flash
+        max_brightness: 120
+        time_interval: 120
+        chunk_size: 5
+        blur_value: 0.6
+        is_reverse: false
+        is_mirror: false
+        active_color_scheme_index: 2
+        color_schemes:
+          - - red
+            - green
+            - blue
+          - - '#2a04ff'
+            - '#ff9604'
+          - - '#02e6ff'
+            - '#ff4a02'
+          - - '#2bff01'
+            - '#ff0127'
+          - - '#fff700'
+            - '#f700ff'
+          - - red
+          - - green
+          - - blue
+          - - yellow
+          - - pink
+          - - '#ee00ac'
+            - blue
+          - - '#BE008A'
+            - green
+      - name: Doudoune 3
+        active_audio_channel_index: 0
+        audio_samples_filter_min: 0
+        audio_samples_filter_max: 24
+        audio_gain: 1
+        audio_decay: 0.1
+        division_value: 0
+        active_visualizer_effect: clear_frame
+        max_brightness: 120
+        time_interval: 120
+        chunk_size: 5
+        blur_value: 4.0
+        is_reverse: false
+        is_mirror: false
+        active_color_scheme_index: 0
+        color_schemes:
+          - - red
+            - green
+            - blue
+          - - '#2a04ff'
+            - '#ff9604'
+          - - '#02e6ff'
+            - '#ff4a02'
+          - - '#2bff01'
+            - '#ff0127'
+          - - '#fff700'
+            - '#f700ff'
+          - - red
+          - - green
+          - - blue
+          - - yellow
+          - - pink
+          - - '#ee00ac'
+            - blue
+          - - '#BE008A'
+            - green
+    active_state_index: 3
+    active_state: *id001

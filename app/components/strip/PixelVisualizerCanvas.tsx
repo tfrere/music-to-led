@@ -107,11 +107,11 @@ class SizedPixelVisualizerCanvas extends React.Component {
 
       ctx.fillStyle =
         'rgb(' +
-        this.props.pixels[0][pixel_index] * 2 +
+        this.props.pixels[0][pixel_index] * 5 +
         ',' +
-        this.props.pixels[1][pixel_index] * 2 +
+        this.props.pixels[1][pixel_index] * 5 +
         ',' +
-        this.props.pixels[2][pixel_index] * 2 +
+        this.props.pixels[2][pixel_index] * 5 +
         ')';
 
       // ctx.fillRect(

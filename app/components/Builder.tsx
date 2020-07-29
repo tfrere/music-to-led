@@ -232,21 +232,9 @@ class Builder extends React.Component {
             </div>{' '}
             {active_strip_data ? (
               <div>
+                {/* active_states, is_strip_online, framerate, strip_index, */}
                 <div className="card">
-                  <StripController
-                    name={active_strip_data.name}
-                    audios={active_strip_data.audios}
-                    strip={active_strip_data.strip}
-                    is_strip_online={active_strip_data.is_strip_online}
-                    framerate={active_strip_data.framerate}
-                    active_state={active_strip_data.active_state}
-                    config={active_strip_data.config}
-                    active_audio_channel_name={
-                      active_strip_data.active_audio_channel_name
-                    }
-                    className={'active'}
-                    strip_index={active_strip_data.strip_index}
-                  />
+                  <StripController active_strip_data={active_strip_data} />
                 </div>
               </div>
             ) : null}

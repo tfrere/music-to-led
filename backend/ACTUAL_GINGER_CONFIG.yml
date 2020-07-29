@@ -297,7 +297,7 @@ _strips:
         height: 170
         scale: 1.5
         width: 300
-    serial_port_name: /dev/tty.usbserial-14120
+    serial_port_name: /dev/tty.usbserial-A50285BI
     states:
       - *id002
       - _formatted_color_schemes:

@@ -36,17 +36,17 @@ class StripController extends React.Component {
 
   componentDidMount() {
     let that = this;
-    that.changeMidiChannel(that.props.name);
+    that.changeMidiChannel(this.props.active_strip_data.name);
   }
 
   componentWillUpdate(oldProps) {
     let that = this;
     if (
-      this.props.name != oldProps.name ||
+      this.props.active_strip_data.name != oldProps.active_strip_data.name ||
       window.midiOutputs != this.state.midiOutputs
     ) {
       window.setTimeout(() => {
-        that.changeMidiChannel(that.props.name);
+        that.changeMidiChannel(that.props.active_strip_data.name);
       });
     }
   }
@@ -85,7 +85,7 @@ class StripController extends React.Component {
 
   isAlreadyTakenStateName(name) {
     let response = false;
-    this.props.strip.states.map(elem => {
+    this.props.active_strip_data.strip.states.map(elem => {
       if (name == elem.name) {
         response = true;
       }
@@ -94,25 +94,16 @@ class StripController extends React.Component {
   }
 
   render() {
-    const {
-      active_audio_channel_name,
-      active_states,
-      active_state,
-      strip,
-      is_strip_online,
-      framerate,
-      config,
-      audios,
-      strip_index
-    } = this.props;
+    const { active_strip_data } = this.props;
 
-    console.log('stripcontrollerrendered');
+    console.log('stripControllerRender');
 
-    let active_shape = strip._shapes[active_state.division_value].shape;
-    let active_color_scheme =
-      active_state.color_schemes[active_state.active_color_scheme_index];
-    let is_reverse = active_state.is_reverse.toString();
-    let is_mirror = active_state.is_mirror.toString();
+    let active_audio_channel_name = active_strip_data.active_audio_channel_name;
+    let active_state = active_strip_data.active_state;
+    let strip = active_strip_data.strip;
+    let config = active_strip_data.config;
+    let audios = active_strip_data.audios;
+
     let time_interval = active_state.time_interval;
     let max_brightness = active_state.max_brightness;
     let audio_samples_filter_min = active_state.audio_samples_filter_min;
@@ -375,13 +366,15 @@ class StripController extends React.Component {
                       <div>
                         <span>G#-1</span>
                         <Select
-                          options={this.props.config._audio_ports.map(elem => {
-                            return { name: elem.name };
-                          })}
+                          options={this.props.active_strip_data.config._audio_ports.map(
+                            elem => {
+                              return { name: elem.name };
+                            }
+                          )}
                           defaultValue={active_audio_channel_name}
                           setValue={value => {
                             let stateIndex = -1;
-                            this.props.config._audio_ports.map(
+                            this.props.active_strip_data.config._audio_ports.map(
                               (elem, index) => {
                                 if (elem.name === value) {
                                   stateIndex = index;

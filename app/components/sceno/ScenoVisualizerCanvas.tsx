@@ -123,7 +123,7 @@ class ScenoVisualizerCanvas extends React.Component {
     while (i < pixels_length) {
       const coords = properties.getPointAtLength(gap * i);
 
-      ctx.fillStyle = 'rgb(' + r[i] * 2 + ',' + g[i] * 2 + ',' + b[i] * 2 + ')';
+      ctx.fillStyle = 'rgb(' + r[i] * 5 + ',' + g[i] * 5 + ',' + b[i] * 5 + ')';
 
       ctx.beginPath();
       ctx.arc(

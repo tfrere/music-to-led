@@ -243,9 +243,9 @@ if __name__ == "__main__":
         Serial.testDevice(args.test_serial_device)
 
     elif(args.test_config_file):
-        configLoader = ConfigLoader(args.with_config_file, debug=False)
-        configLoader.data.saveToYmlFile()
-        # ConfigLoader.testConfig(path=args.test_config_file, debug=True)
+        # configLoader = ConfigLoader(args.with_config_file, debug=False)
+        # configLoader.data.saveToYmlFile()
+        ConfigLoader.testConfig(path=args.test_config_file, debug=True)
 
     elif((not len(sys.argv) > 1) or (len(sys.argv) > 1 and args.with_config_file)):
 
