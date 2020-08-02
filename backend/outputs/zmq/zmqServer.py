@@ -7,10 +7,10 @@ import datetime
 
 class ZmqServer():
 
-    def __init__(self, host, verbose=False):
+    def __init__(self, host, topic="sendLiveInfos", verbose=False):
 
         self.host = host
-        self.topic = "sendInfos"
+        self.topic = topic
         self.context = zmq.Context()
         self.socket = self.context.socket(zmq.PUB)
         self.socket.bind(host)
@@ -31,7 +31,7 @@ class ZmqServer():
 
         return string
 
-    def computeLiveData(self, shared_list):
+    def computeLiveDatas(self, shared_list):
 
         # 0     : Config
         # 1     : Audio datas

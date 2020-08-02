@@ -16,7 +16,7 @@ let object = null;
 async function getZMQData() {
   const sock = new Subscriber();
 
-  const topic = 'sendInfos';
+  const topic = 'sendLiveDatas';
 
   sock.connect('tcp://127.0.0.1:8000');
   sock.subscribe(topic);
@@ -41,6 +41,7 @@ async function getZMQData() {
     server_time = timestamp;
   }
 }
+
 getZMQData();
 
 class Builder extends React.Component {

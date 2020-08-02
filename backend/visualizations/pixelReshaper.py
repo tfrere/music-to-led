@@ -26,16 +26,36 @@ class PixelReshaper:
             self._strips.append([])
             self._strips[i] = np.tile(.0, (3, strip_length))
 
+    # def concatenatePixels(self, strips):
+    #     """Concatenate the x strips into 1"""
+
+    #     tmp = [[], [], []]
+
+    #     for i, strip_length in enumerate(self.strip_shape):
+    #         tmp[0] = np.concatenate((tmp[0], strips[i][0]), axis=0)
+    #         tmp[1] = np.concatenate((tmp[1], strips[i][1]), axis=0)
+    #         tmp[2] = np.concatenate((tmp[2], strips[i][2]), axis=0)
+
+    #     return tmp
+
     def concatenatePixels(self, strips):
-        """Concatenate the x strips into 1"""
-        tmp = [[], [], []]
+        stripsIndex = range(len(self.strip_shape))
 
-        for i, strip_length in enumerate(self.strip_shape):
-            tmp[0] = np.concatenate((tmp[0], strips[i][0]), axis=0)
-            tmp[1] = np.concatenate((tmp[1], strips[i][1]), axis=0)
-            tmp[2] = np.concatenate((tmp[2], strips[i][2]), axis=0)
+        # define list o substrips
+        listOfSubsStrips = [
+            [strips[i][0] for i in stripsIndex],
+            [strips[i][1] for i in stripsIndex],
+            [strips[i][2] for i in stripsIndex],
+        ]
 
-        return tmp
+        # MErge eqch list of substrips qccording to R, G, B indexes
+        rgb = [
+            [item for subStrips in listOfSubsStrips[0] for item in subStrips],
+            [item for subStrips in listOfSubsStrips[1] for item in subStrips],
+            [item for subStrips in listOfSubsStrips[2] for item in subStrips],
+        ]
+
+        return rgb
 
     def splitForStrips(self, strips, pixels):
         """Split pixels to respect the shape"""
