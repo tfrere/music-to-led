@@ -34,12 +34,14 @@ class ColorPicker extends React.Component {
         <PopOver
           showArrow
           triggerNode={
-            <button className="button button--square button--has-type">
-              <span className="button__type">{'G-1'}</span>
+            <Button
+              alt="G-1"
+              className="button button--square button--has-type"
+            >
               <ColorScheme
                 scheme={this.props.schemes[this.props.activeSchemeIndex]}
               />
-            </button>
+            </Button>
           }
           trigger="click"
         >

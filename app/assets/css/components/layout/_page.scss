@@ -1,7 +1,7 @@
 .page {
   position: absolute;
-  top: 25px;
-  height: calc(100% - 105px);
+  top: $topBarHeight;
+  height: $pageHeight;
   width: 100%;
   left: 0;
   &.page--with-left-panel {

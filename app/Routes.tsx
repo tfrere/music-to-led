@@ -26,9 +26,7 @@ export default function Routes() {
         <Route path={routes.INIT} component={InitPage} />
         <Route path={routes.SHOW} component={ShowPage} />
         <Route path={routes.BUILDER} component={BuilderPage} />
-        {process.env.NODE_ENV === 'development' ? (
-          <Route path={routes.TEST} component={TestPage} />
-        ) : null}
+        <Route path={routes.TEST} component={TestPage} />
         <Redirect from="*" exact to={routes.BUILDER} />
       </Switch>
       <br />

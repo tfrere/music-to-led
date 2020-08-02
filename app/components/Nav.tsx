@@ -49,18 +49,21 @@ class Nav extends React.Component {
           isVisible={this.state.isConfigLoaderVisible}
         />
         <nav className="nav">
-          <NavLink disabled activeClassName="active" to={routes.INIT}>
+          {/* <NavLink disabled activeClassName="active" to={routes.INIT}>
             <i className="la la-cog" /> INIT
-          </NavLink>
+          </NavLink> */}
           <NavLink activeClassName="active" to={routes.BUILDER}>
             <i className="la la-pencil-ruler" /> BUILD
           </NavLink>
           <NavLink activeClassName="active" to={routes.SHOW}>
             <i className="la la-satellite"></i> SHOW
           </NavLink>
-          <NavLink disabled activeClassName="active" to={routes.TEST}>
-            <i className="la la-cog" /> TESTS
-          </NavLink>
+          {process.env.NODE_ENV === 'development' ? (
+            <NavLink disabled activeClassName="active" to={routes.TEST}>
+              <i className="la la-cog" /> TESTS
+            </NavLink>
+          ) : null}
+
           <div className="nav__right">
             <Button
               className="button button--danger"

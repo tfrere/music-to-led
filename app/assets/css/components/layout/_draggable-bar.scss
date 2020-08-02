@@ -16,7 +16,7 @@
   top: 4px;
   right: 7px;
   margin-left: auto;
-  color: darken($backgroundColor, 10%);
+  color: $backgroundColor;
   text-shadow: 0.5px 0.5px 0px lighten($backgroundColor, 20%);
   font-weight: bold;
 }

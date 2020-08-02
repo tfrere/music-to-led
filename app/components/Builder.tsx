@@ -21,9 +21,9 @@ async function getZMQData() {
   sock.connect('tcp://127.0.0.1:8000');
   sock.subscribe(topic);
   console.log('Subscriber connected to port 8000');
-  var re = new RegExp("'", 'g');
-  var re2 = new RegExp('True', 'g');
-  var re3 = new RegExp('False', 'g');
+  const quoteRegex = new RegExp("'", 'g');
+  const trueRegex = new RegExp('True', 'g');
+  const falseRegex = new RegExp('False', 'g');
 
   for await (const [buffer, msg] of sock) {
     const timestamp = new Date().getTime();
@@ -31,9 +31,9 @@ async function getZMQData() {
     const json_string = buffer
       .toString('utf8')
       .slice(topic.length + 1)
-      .replace(re, '"')
-      .replace(re2, '1')
-      .replace(re3, '0');
+      .replace(quoteRegex, '"')
+      .replace(trueRegex, '1')
+      .replace(falseRegex, '0');
     object = JSON.parse(json_string);
     // console.log('connected');
     const current_server_timestamp = Math.round(object.time * 1000);
@@ -89,7 +89,6 @@ class Builder extends React.Component {
 
   render() {
     let {
-      active_states,
       are_strips_online,
       config,
       framerates,
@@ -105,8 +104,6 @@ class Builder extends React.Component {
     let active_strip_index = this.state.active_strip_index;
 
     const isOkToLaunch =
-      active_states &&
-      active_states[0] &&
       are_strips_online &&
       framerates &&
       framerates[0] != 0 &&
@@ -114,7 +111,6 @@ class Builder extends React.Component {
       config._audio_ports &&
       config._audio_ports.length >= 1 &&
       strips &&
-      active_states.length === strips.length &&
       audios &&
       framerates &&
       pixels &&
@@ -126,15 +122,9 @@ class Builder extends React.Component {
 
         const pixelsFrame = pixels[index];
         const is_strip_online = are_strips_online[index];
-        const active_state = active_states[index];
-        // console.log('strip', strip);
-        // console.log('active_states', active_states);
-        // console.log('active_state', active_state);
+        const active_state = strip.active_state;
         const active_shape = strip._shapes[active_state.division_value];
         const framerate = framerates[index];
-        const onlineClassNames = is_strip_online
-          ? ' online-notifier--online'
-          : ' online-notifier--offline';
 
         if (isActiveStrip) {
           active_strip_data = {
@@ -184,13 +174,28 @@ class Builder extends React.Component {
 
       audiosElem = audios.map((audio, index) => {
         return (
-          <div className={'left-panel__list__item'}>
-            <AudioVisualizerCanvas audio={audio} width={120} height={60} />
-            <div>
-              <h4>{config._audio_ports[index].name}</h4>
-              <span>
-                {config._audio_ports[index].number_of_audio_samples} samples
-              </span>
+          <div className="left-panel__list__item">
+            <div className="left-panel__list__item__header">
+              <h4 className="left-panel__list__item__header__title">
+                {config._audio_ports[index].name}
+              </h4>
+              <div className="online-notifier online-notifier--online">
+                <label className="online-notifier__label">Online&nbsp;</label>
+                <div className="online-notifier__circle"></div>
+              </div>
+            </div>
+            <div className="left-panel__list__item__content">
+              <AudioVisualizerCanvas audio={audio} width={85} height={45} />
+              <div>
+                <span>
+                  {config._audio_ports[index].number_of_audio_samples}{' '}
+                  <span>samples</span>
+                </span>
+                <span>
+                  {config._audio_ports[index].min_frequency} <span>-</span>{' '}
+                  {config._audio_ports[index].max_frequency} <span>hz</span>
+                </span>
+              </div>
             </div>
           </div>
         );
@@ -219,11 +224,11 @@ class Builder extends React.Component {
                 {stripsElem}
               </div>
             </div>
-            <div style={{ height: '310px' }}>
+            <div style={{ height: '330px' }}>
               <ScenoVisualizerCanvas
                 config={config}
                 pixels={pixels}
-                height={280}
+                height={300}
                 hasDarkMode={false}
                 hasGrid={false}
                 activeStripIndex={active_strip_data.strip_index}

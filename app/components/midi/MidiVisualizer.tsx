@@ -14,9 +14,8 @@ const sysexMessage = note => {
 const standardMessage = note => {
   return (
     <>
-      <span>{note.port}</span> -> <span>{note.type}</span> :
-      <span> {guessNoteFromNumber(note.note)}</span> ({note.note}) at velocity{' '}
-      <span>{note.velocity}</span>
+      <span>{note.port}</span> :<span> {guessNoteFromNumber(note.note)}</span>{' '}
+      at velocity <span>{note.velocity}</span>
     </>
   );
 };
@@ -43,9 +42,22 @@ class MidiVisualizer extends React.Component {
       });
 
       if (notes.length == 0) {
-        toRender = <div className="midi-logs">No midi logs...</div>;
+        toRender = (
+          <div className="midi-logs">
+            <label>Midi logs</label>
+            No entry for the moment...
+          </div>
+        );
       } else {
-        toRender = <div className="midi-logs">{notes || <div> </div>}</div>;
+        toRender = (
+          <div className="midi-logs">
+            <label>
+              {/* <span>{this.props.channels}</span> */}
+              Midi logs
+            </label>
+            {notes || <div> </div>}
+          </div>
+        );
       }
     }
     return toRender;

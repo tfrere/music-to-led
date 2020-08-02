@@ -1,5 +1,12 @@
 .midi-logs {
   color: rgba(255, 255, 255, 0.3);
+  label {
+    color: rgba(255, 255, 255, 0.3);
+    text-transform: uppercase;
+    letter-spacing: 0.05rem;
+    font-size: 10px;
+    margin-bottom: 3px !important;
+  }
   span {
     color: rgba(255, 255, 255, 0.6);
   }

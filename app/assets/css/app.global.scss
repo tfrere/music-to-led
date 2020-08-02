@@ -8,7 +8,10 @@ $cardBackgroundColor: lighten($primary-color, 4%);
 
 $topBarHeight: 22px;
 $bottomBarHeight: 80px;
-$leftPanelWidth: 300px;
+
+$leftPanelWidth: 250px;
+
+$pageHeight: calc(100% - #{$topBarHeight + $bottomBarHeight});
 
 @import 'const/_font.scss';
 @import 'const/_normalize.scss';

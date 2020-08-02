@@ -12,7 +12,7 @@ import Button from '../generic/Button';
 import ColorScheme from '../generic/ColorScheme';
 import ColorPicker from '../generic/ColorPicker';
 import CircularSlider from '../generic/CircularSlider';
-
+import InputRange from 'react-input-range';
 import MidiVisualizer from '../midi/MidiVisualizer';
 import StateController from '../strip/StateController';
 
@@ -53,17 +53,23 @@ class StripController extends React.Component {
 
   changeMidiChannel = name => {
     let that = this;
+    console.log('to change', name);
     if (window.midiOutputs) {
       for (const output of window.midiOutputs) {
+        console.log('list', output.name);
         if (output.name === name) {
           that.setState({
             midiOutput: output,
             midiOutputs: window.midiOutputs
           });
-          console.log(output);
+          console.log('changed', output.name);
         }
       }
     }
+  };
+
+  convertRangeAndSendNote = (note, value, range1, range2) => {
+    this.sendNote(note, convertRange(value, range1, range2));
   };
 
   sendNote = (note, velocity = 127) => {
@@ -96,7 +102,7 @@ class StripController extends React.Component {
   render() {
     const { active_strip_data } = this.props;
 
-    console.log('stripControllerRender');
+    // console.log('stripControllerRender');
 
     let active_audio_channel_name = active_strip_data.active_audio_channel_name;
     let active_state = active_strip_data.active_state;
@@ -138,7 +144,6 @@ class StripController extends React.Component {
                   this.sendNote(elem.note_int);
                 }}
               >
-                <span className="button__type">{elem.note}</span>
                 {elem.label}
               </Button>
             </>
@@ -185,16 +190,19 @@ class StripController extends React.Component {
                   </div>
                   <div style={{ width: '25%' }}>
                     <Select
+                      alt={guessNoteFromNumber(25)}
                       options={[
-                        { name: 1, prefix: 'C#-0 divide ' },
-                        { name: 2, prefix: 'C#-0 divide ' },
-                        { name: 3, prefix: 'C#-0 divide ' }
+                        { name: 1, prefix: 'divide ' },
+                        { name: 2, prefix: 'divide ' },
+                        { name: 3, prefix: 'divide ' }
                       ]}
                       defaultValue={division_value + 1}
                       setValue={value => {
-                        this.sendNote(
+                        this.convertRangeAndSendNote(
                           25,
-                          convertRange(value, [1, 4], [1, 127])
+                          value,
+                          [1, 4],
+                          [1, 127]
                         );
                       }}
                     />
@@ -202,6 +210,7 @@ class StripController extends React.Component {
                   <div style={{ width: '50%' }}>
                     <div className="button-group button-group--stretched">
                       <Button
+                        alt={guessNoteFromNumber(16)}
                         className={
                           active_state.is_reverse
                             ? 'button--reverse button--has-type'
@@ -211,10 +220,10 @@ class StripController extends React.Component {
                           this.sendNote(16);
                         }}
                       >
-                        <span className="button__type">{'E-1'}</span>
                         Reverse
                       </Button>
                       <Button
+                        alt={guessNoteFromNumber(17)}
                         className={
                           active_state.is_mirror
                             ? 'button--reverse button--has-type'
@@ -224,7 +233,6 @@ class StripController extends React.Component {
                           this.sendNote(17);
                         }}
                       >
-                        <span className="button__type">{'F-1'}</span>
                         Mirror
                       </Button>
                     </div>
@@ -235,14 +243,16 @@ class StripController extends React.Component {
                   <div className="strip-controller__sub-card">
                     <div className="slider-holder">
                       <label htmlFor="time">
-                        Speed <span>{time_interval}</span> A-1
+                        Speed <span>{time_interval}</span>
                       </label>
                       <input
                         className="input"
                         onChange={e => {
-                          this.sendNote(
+                          this.convertRangeAndSendNote(
                             21,
-                            convertRange(e.target.value, [0, 500], [1, 127])
+                            e.target.value,
+                            [0, 500],
+                            [1, 127]
                           );
                         }}
                         type="range"
@@ -254,7 +264,7 @@ class StripController extends React.Component {
                     </div>
                     <div className="slider-holder">
                       <label htmlFor="brightness">
-                        Brightness <span>{max_brightness}</span> A#-1
+                        Bright. <span>{max_brightness}</span>
                       </label>
                       <input
                         className="input"
@@ -273,7 +283,7 @@ class StripController extends React.Component {
                     </div>
                     <div className="slider-holder">
                       <label htmlFor="chunk_size">
-                        Chunk Size <span>{chunk_size}</span> B-1
+                        Chunk <span>{chunk_size}</span>
                       </label>
                       <input
                         className="input"
@@ -292,19 +302,11 @@ class StripController extends React.Component {
                     </div>
                     <div className="slider-holder">
                       <label htmlFor="blur_value">
-                        Blur value <span>{blur_value}</span> C-0
+                        Blur <span>{blur_value}</span>
                       </label>
                       <input
                         className="input"
                         onChange={e => {
-                          console.log(
-                            convertRange(
-                              e.target.value,
-                              [0.1, 8],
-                              [1, 127],
-                              true
-                            )
-                          );
                           this.sendNote(
                             24,
                             convertRange(
@@ -361,11 +363,32 @@ class StripController extends React.Component {
                         width={120}
                         height={60}
                       />
+                      {/* 
+                      <InputRange
+                        minValue={0}
+                        maxValue={24}
+                        draggableTrack={false}
+                        onChange={value => {
+                          this.sendNote(
+                            27,
+                            convertRange(value.min, [0, 24], [1, 25])
+                          );
+
+                          this.sendNote(
+                            28,
+                            convertRange(value.max, [0, 24], [1, 25])
+                          );
+                        }}
+                        value={{
+                          min: audio_samples_filter_min,
+                          max: audio_samples_filter_max
+                        }}
+                      /> */}
                     </div>
                     <div>
                       <div>
-                        <span>G#-1</span>
                         <Select
+                          alt={guessNoteFromNumber(20)}
                           options={this.props.active_strip_data.config._audio_ports.map(
                             elem => {
                               return { name: elem.name };
@@ -388,7 +411,7 @@ class StripController extends React.Component {
                       </div>
                       <div className="slider-holder">
                         <label htmlFor="audio_samples_filter_min">
-                          min <span>{audio_samples_filter_min}</span> D#-0
+                          min <span>{audio_samples_filter_min}</span>
                         </label>
                         <input
                           className="input"
@@ -408,7 +431,7 @@ class StripController extends React.Component {
 
                       <div className="slider-holder">
                         <label htmlFor="audio_samples_filter_max">
-                          max <span>{audio_samples_filter_max}</span> E-0
+                          max <span>{audio_samples_filter_max}</span>
                         </label>
                         <input
                           className="input"
@@ -428,7 +451,7 @@ class StripController extends React.Component {
 
                       <div className="slider-holder">
                         <label htmlFor="audio_gain">
-                          gain <span>{audio_gain}</span> F-0
+                          gain <span>{audio_gain}</span>
                         </label>
                         <input
                           className="input"

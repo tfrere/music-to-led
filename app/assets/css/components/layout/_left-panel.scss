@@ -1,7 +1,7 @@
 .left-panel {
   position: fixed;
   left: 0;
-  height: calc(100% - 105px);
+  height: $pageHeight;
   width: $leftPanelWidth;
   overflow-x: hidden;
   background: lighten($backgroundColor, 3%);
@@ -13,8 +13,10 @@
   .title {
     padding: 0;
     margin: 0;
-    padding-top: 20px;
-    padding-bottom: 20px;
+    padding-top: 10px;
+    padding-bottom: 10px;
+    font-size: 13px;
+    margin-left: -13px;
   }
 }
 
@@ -43,7 +45,9 @@
   margin-right: -20px;
   padding-bottom: 10px;
   padding: 10px;
-  margin-bottom: 5px !important;
+  &:not(:last-child) {
+    margin-bottom: 5px !important;
+  }
   hr {
     margin-top: 0;
     margin-bottom: 0;
@@ -66,6 +70,7 @@
   height: 12px;
   line-height: 12px;
   width: 70%;
+  margin-bottom: 10px;
   span {
     color: rgba(255, 255, 255, 0.5);
     margin: 0 5px;
@@ -82,4 +87,30 @@
 
 .left-panel__list__item--active {
   background: rgba(255, 255, 255, 0.1);
+}
+
+.left-panel__list--audio .left-panel__list__item {
+  display: flex;
+  flex-direction: column;
+  flex-wrap: wrap;
+}
+
+.left-panel__list--audio {
+  .left-panel__list__item__content {
+    display: flex;
+    flex-direction: row;
+    & > div > span {
+      display: block;
+      font-size: 12px;
+      font-weight: 600;
+      margin-bottom: 2px;
+      color: rgba(255, 255, 255, 1);
+      span {
+        color: rgba(255, 255, 255, 0.5);
+      }
+    }
+  }
+  .audio-visualizer {
+    width: 100px;
+  }
 }

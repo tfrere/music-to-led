@@ -16,7 +16,22 @@ class ZmqServer():
         self.socket.bind(host)
         self.verbose = verbose
 
-    def computeInfos(self, shared_list):
+    def computeConfigData(self, shared_list):
+
+        config = shared_list[0]
+
+        config_json = json.dumps(
+            config, default=lambda o: o.__dict__)
+
+        message = json.loads(
+            bytes(config_json, encoding="utf-8"))
+        string = ("%s %s" % (self.topic, str(message)))
+        if(self.verbose):
+            print(string)
+
+        return string
+
+    def computeLiveData(self, shared_list):
 
         # 0     : Config
         # 1     : Audio datas

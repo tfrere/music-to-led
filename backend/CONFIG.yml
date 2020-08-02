@@ -1,6 +1,6 @@
 file_name: /Users/thibaudfrere/Documents/music-2-led/backend/CONFIG.yml
 desirated_framerate: 60
-display_shell_interface: false
+display_shell_interface: true
 is_zmq_api_enabled: true
 audio_ports:
   - max_frequency: 12000
@@ -11,7 +11,7 @@ audio_ports:
     name: Built-in Microphone
 strips:
   - name: Angles
-    serial_port_name: /dev/tty.usbserial-A50285BI
+    serial_port_name: /dev/tty.usbserial-4
     is_online: false
     midi_ports_for_changing_mode:
       - Audio2Led ChangeMod Center
@@ -72,18 +72,18 @@ strips:
         width: 300
     states:
       - name: Forevermore
-        active_audio_channel_index: 1
+        active_audio_channel_index: 0
         audio_samples_filter_min: 0
-        audio_samples_filter_max: 24
-        audio_gain: 1
+        audio_samples_filter_max: 3
+        audio_gain: 0.1
         audio_decay: 0.1
         division_value: 0
-        active_visualizer_effect: channel_intensity
+        active_visualizer_effect: energy
         max_brightness: 138
         time_interval: 120
         chunk_size: 5
         blur_value: 0.6
-        is_reverse: false
+        is_reverse: true
         is_mirror: false
         active_color_scheme_index: 10
         color_schemes:
@@ -108,273 +108,20 @@ strips:
           - - '#BE008A'
             - green
       - name: Hypervoid
-        active_audio_channel_index: 1
-        audio_samples_filter_min: 0
-        audio_samples_filter_max: 24
-        audio_gain: 1
-        audio_decay: 0.1
-        division_value: 0
-        active_visualizer_effect: channel_intensity
-        max_brightness: 120
-        time_interval: 120
-        chunk_size: 5
-        blur_value: 0.1
-        is_reverse: true
-        is_mirror: false
-        active_color_scheme_index: 11
-        color_schemes:
-          - - red
-            - green
-            - blue
-          - - '#2a04ff'
-            - '#ff9604'
-          - - '#02e6ff'
-            - '#ff4a02'
-          - - '#2bff01'
-            - '#ff0127'
-          - - '#fff700'
-            - '#f700ff'
-          - - red
-          - - green
-          - - blue
-          - - yellow
-          - - pink
-          - - '#ee00ac'
-            - blue
-          - - '#BE008A'
-            - green
-      - name: Predator
-        active_audio_channel_index: 1
-        audio_samples_filter_min: 0
-        audio_samples_filter_max: 24
-        audio_gain: 1
-        audio_decay: 0.1
-        division_value: 0
-        active_visualizer_effect: piano_scroll
-        max_brightness: 120
-        time_interval: 429
-        chunk_size: 5
-        blur_value: 1.2
-        is_reverse: false
-        is_mirror: false
-        active_color_scheme_index: 5
-        color_schemes:
-          - - red
-            - green
-            - blue
-          - - '#2a04ff'
-            - '#ff9604'
-          - - '#02e6ff'
-            - '#ff4a02'
-          - - '#2bff01'
-            - '#ff0127'
-          - - '#fff700'
-            - '#f700ff'
-          - - red
-          - - green
-          - - blue
-          - - yellow
-          - - pink
-          - - '#ee00ac'
-            - blue
-          - - '#BE008A'
-            - green
-      - &id001
-        name: Predator 2
-        active_audio_channel_index: 1
-        audio_samples_filter_min: 0
-        audio_samples_filter_max: 24
-        audio_gain: 1
-        audio_decay: 0.1
-        division_value: 0
-        active_visualizer_effect: piano_scroll
-        max_brightness: 120
-        time_interval: 120
-        chunk_size: 5
-        blur_value: 4.0
-        is_reverse: true
-        is_mirror: false
-        active_color_scheme_index: 5
-        color_schemes:
-          - - red
-            - green
-            - blue
-          - - '#2a04ff'
-            - '#ff9604'
-          - - '#02e6ff'
-            - '#ff4a02'
-          - - '#2bff01'
-            - '#ff0127'
-          - - '#fff700'
-            - '#f700ff'
-          - - red
-          - - green
-          - - blue
-          - - yellow
-          - - pink
-          - - '#ee00ac'
-            - blue
-          - - '#BE008A'
-            - green
-      - name: Clear
-        active_audio_channel_index: 1
-        audio_samples_filter_min: 0
-        audio_samples_filter_max: 24
-        audio_gain: 1
-        audio_decay: 0.1
-        division_value: 0
-        active_visualizer_effect: clear_frame
-        max_brightness: 120
-        time_interval: 120
-        chunk_size: 5
-        blur_value: 4.0
-        is_reverse: false
-        is_mirror: false
-        active_color_scheme_index: 0
-        color_schemes:
-          - - red
-            - green
-            - blue
-          - - '#2a04ff'
-            - '#ff9604'
-          - - '#02e6ff'
-            - '#ff4a02'
-          - - '#2bff01'
-            - '#ff0127'
-          - - '#fff700'
-            - '#f700ff'
-          - - red
-          - - green
-          - - blue
-          - - yellow
-          - - pink
-          - - '#ee00ac'
-            - blue
-          - - '#BE008A'
-            - green
-      - name: Forevermore 2
-        active_audio_channel_index: 1
-        audio_samples_filter_min: 0
-        audio_samples_filter_max: 24
-        audio_gain: 1
-        audio_decay: 0.1
-        division_value: 0
-        active_visualizer_effect: channel_intensity
-        max_brightness: 21
-        time_interval: 337
-        chunk_size: 5
-        blur_value: 2.3
-        is_reverse: false
-        is_mirror: false
-        active_color_scheme_index: 7
-        color_schemes:
-          - - red
-            - green
-            - blue
-          - - '#2a04ff'
-            - '#ff9604'
-          - - '#02e6ff'
-            - '#ff4a02'
-          - - '#2bff01'
-            - '#ff0127'
-          - - '#fff700'
-            - '#f700ff'
-          - - red
-          - - green
-          - - blue
-          - - yellow
-          - - pink
-          - - '#ee00ac'
-            - blue
-          - - '#BE008A'
-            - green
-      - name: Abimes
-        active_audio_channel_index: 1
-        audio_samples_filter_min: 0
-        audio_samples_filter_max: 24
-        audio_gain: 1
-        audio_decay: 0.1
-        division_value: 0
-        active_visualizer_effect: piano_scroll
-        max_brightness: 120
-        time_interval: 262
-        chunk_size: 5
-        blur_value: 4.0
-        is_reverse: false
-        is_mirror: false
-        active_color_scheme_index: 7
-        color_schemes:
-          - - red
-            - green
-            - blue
-          - - '#2a04ff'
-            - '#ff9604'
-          - - '#02e6ff'
-            - '#ff4a02'
-          - - '#2bff01'
-            - '#ff0127'
-          - - '#fff700'
-            - '#f700ff'
-          - - red
-          - - green
-          - - blue
-          - - yellow
-          - - pink
-          - - '#ee00ac'
-            - blue
-          - - '#BE008A'
-            - green
-      - name: Doudoune
-        active_audio_channel_index: 1
+        active_audio_channel_index: 0
         audio_samples_filter_min: 0
         audio_samples_filter_max: 24
         audio_gain: 1
         audio_decay: 0.1
         division_value: 0
         active_visualizer_effect: energy
-        max_brightness: 13
-        time_interval: 120
-        chunk_size: 5
-        blur_value: 4.0
-        is_reverse: false
-        is_mirror: false
-        active_color_scheme_index: 2
-        color_schemes:
-          - - red
-            - green
-            - blue
-          - - '#2a04ff'
-            - '#ff9604'
-          - - '#02e6ff'
-            - '#ff4a02'
-          - - '#2bff01'
-            - '#ff0127'
-          - - '#fff700'
-            - '#f700ff'
-          - - red
-          - - green
-          - - blue
-          - - yellow
-          - - pink
-          - - '#ee00ac'
-            - blue
-          - - '#BE008A'
-            - green
-      - name: Doudoune 2
-        active_audio_channel_index: 1
-        audio_samples_filter_min: 0
-        audio_samples_filter_max: 24
-        audio_gain: 1
-        audio_decay: 0.1
-        division_value: 0
-        active_visualizer_effect: channel_flash
         max_brightness: 120
-        time_interval: 120
+        time_interval: 238
         chunk_size: 5
-        blur_value: 0.6
-        is_reverse: false
+        blur_value: 0.1
+        is_reverse: true
         is_mirror: false
-        active_color_scheme_index: 2
+        active_color_scheme_index: 10
         color_schemes:
           - - red
             - green
@@ -396,7 +143,7 @@ strips:
             - blue
           - - '#BE008A'
             - green
-      - name: Doudoune 3
+      - name: test
         active_audio_channel_index: 0
         audio_samples_filter_min: 0
         audio_samples_filter_max: 24
@@ -432,5 +179,457 @@ strips:
             - blue
           - - '#BE008A'
             - green
-    active_state_index: 3
-    active_state: *id001
+    active_state_index: 2
+    active_state:
+      name: test
+      active_audio_channel_index: 0
+      audio_samples_filter_min: 0
+      audio_samples_filter_max: 24
+      audio_gain: 1
+      audio_decay: 0.1
+      division_value: 0
+      active_visualizer_effect: clear_frame
+      max_brightness: 120
+      time_interval: 120
+      chunk_size: 5
+      blur_value: 4.0
+      is_reverse: false
+      is_mirror: false
+      active_color_scheme_index: 0
+      color_schemes:
+        - - red
+          - green
+          - blue
+        - - '#2a04ff'
+          - '#ff9604'
+        - - '#02e6ff'
+          - '#ff4a02'
+        - - '#2bff01'
+          - '#ff0127'
+        - - '#fff700'
+          - '#f700ff'
+        - - red
+        - - green
+        - - blue
+        - - yellow
+        - - pink
+        - - '#ee00ac'
+          - blue
+        - - '#BE008A'
+          - green
+      _number_of_color_schemes: 12
+      _formatted_color_schemes:
+        - - - 255
+            - 0
+            - 0
+          - - 0
+            - 128
+            - 0
+          - - 0
+            - 0
+            - 255
+        - - - 42
+            - 4
+            - 255
+          - - 255
+            - 150
+            - 4
+        - - - 2
+            - 230
+            - 255
+          - - 255
+            - 74
+            - 2
+        - - - 43
+            - 255
+            - 1
+          - - 255
+            - 1
+            - 39
+        - - - 255
+            - 247
+            - 0
+          - - 247
+            - 0
+            - 255
+        - - - 255
+            - 0
+            - 0
+        - - - 0
+            - 128
+            - 0
+        - - - 0
+            - 0
+            - 255
+        - - - 255
+            - 255
+            - 0
+        - - - 255
+            - 192
+            - 203
+        - - - 238
+            - 0
+            - 172
+          - - 0
+            - 0
+            - 255
+        - - - 190
+            - 0
+            - 138
+          - - 0
+            - 128
+            - 0
+  - name: Top bar
+    serial_port_name: /dev/tty.usbserial-A50285BI
+    is_online: false
+    midi_ports_for_changing_mode:
+      - Audio2Led ChangeMod TopBar
+    midi_ports_for_visualization:
+      - Audio2Led Synth
+      - LPK25
+    original_physical_shape:
+      - 80
+    scene:
+      shapes:
+        - offset:
+            - 0
+            - 0
+          pixel_range:
+            - 0
+            - 80
+          svg_string: M0,-20 T300,-20
+      size:
+        height: 170
+        scale: 1.2
+        width: 300
+    states:
+      - name: Test2
+        active_audio_channel_index: 0
+        audio_samples_filter_min: 0
+        audio_samples_filter_max: 24
+        audio_gain: 0.1
+        audio_decay: 0.1
+        division_value: 0
+        active_visualizer_effect: energy
+        max_brightness: 138
+        time_interval: 0
+        chunk_size: 5
+        blur_value: 8.0
+        is_reverse: false
+        is_mirror: true
+        active_color_scheme_index: 10
+        color_schemes:
+          - - red
+            - green
+            - blue
+          - - '#2a04ff'
+            - '#ff9604'
+          - - '#02e6ff'
+            - '#ff4a02'
+          - - '#2bff01'
+            - '#ff0127'
+          - - '#fff700'
+            - '#f700ff'
+          - - red
+          - - green
+          - - blue
+          - - yellow
+          - - pink
+          - - '#ee00ac'
+            - blue
+          - - '#BE008A'
+            - green
+      - name: test
+        active_audio_channel_index: 0
+        audio_samples_filter_min: 0
+        audio_samples_filter_max: 24
+        audio_gain: 0.1
+        audio_decay: 0.1
+        division_value: 0
+        active_visualizer_effect: spectrum
+        max_brightness: 255
+        time_interval: 0
+        chunk_size: 50
+        blur_value: 0.5
+        is_reverse: false
+        is_mirror: true
+        active_color_scheme_index: 1
+        color_schemes: &id001
+          - - red
+            - green
+            - blue
+          - - '#2a04ff'
+            - '#ff9604'
+          - - '#02e6ff'
+            - '#ff4a02'
+          - - '#2bff01'
+            - '#ff0127'
+          - - '#fff700'
+            - '#f700ff'
+          - - red
+          - - green
+          - - blue
+          - - yellow
+          - - pink
+          - - '#ee00ac'
+            - blue
+          - - '#BE008A'
+            - green
+    active_state_index: 1
+    active_state:
+      name: test
+      active_audio_channel_index: 0
+      audio_samples_filter_min: 0
+      audio_samples_filter_max: 24
+      audio_gain: 0.1
+      audio_decay: 0.1
+      division_value: 0
+      active_visualizer_effect: spectrum
+      max_brightness: 255
+      time_interval: 0
+      chunk_size: 50
+      blur_value: 0.5
+      is_reverse: false
+      is_mirror: true
+      active_color_scheme_index: 1
+      color_schemes: *id001
+      _number_of_color_schemes: 12
+      _formatted_color_schemes:
+        - - - 255
+            - 0
+            - 0
+          - - 0
+            - 128
+            - 0
+          - - 0
+            - 0
+            - 255
+        - - - 42
+            - 4
+            - 255
+          - - 255
+            - 150
+            - 4
+        - - - 2
+            - 230
+            - 255
+          - - 255
+            - 74
+            - 2
+        - - - 43
+            - 255
+            - 1
+          - - 255
+            - 1
+            - 39
+        - - - 255
+            - 247
+            - 0
+          - - 247
+            - 0
+            - 255
+        - - - 255
+            - 0
+            - 0
+        - - - 0
+            - 128
+            - 0
+        - - - 0
+            - 0
+            - 255
+        - - - 255
+            - 255
+            - 0
+        - - - 255
+            - 192
+            - 203
+        - - - 238
+            - 0
+            - 172
+          - - 0
+            - 0
+            - 255
+        - - - 190
+            - 0
+            - 138
+          - - 0
+            - 128
+            - 0
+  - name: Circle
+    serial_port_name: /dev/tty.usbserial-4
+    is_online: false
+    midi_ports_for_changing_mode:
+      - Audio2Led ChangeMod Circle
+    midi_ports_for_visualization:
+      - Audio2Led Synth
+      - LPK25
+    original_physical_shape:
+      - 60
+    scene:
+      shapes:
+        - offset:
+            - 45
+            - 90
+          pixel_range:
+            - 0
+            - 60
+          svg_string:
+            m56.75,0.75c30.939227,0 56,25.060773 56,56c0,30.939227 -25.060773,56
+            -56,56c-30.939227,0 -56,-25.060773 -56,-56c0,-30.939227 25.060773,-56 56,-56z
+      size:
+        height: 170
+        scale: 0.5
+        width: 300
+    states:
+      - name: Circle bounce
+        active_audio_channel_index: 0
+        audio_samples_filter_min: 0
+        audio_samples_filter_max: 3
+        audio_gain: 0.1
+        audio_decay: 0.1
+        division_value: 0
+        active_visualizer_effect: piano_scroll
+        max_brightness: 138
+        time_interval: 120
+        chunk_size: 5
+        blur_value: 0.6
+        is_reverse: true
+        is_mirror: true
+        active_color_scheme_index: 10
+        color_schemes:
+          - - red
+            - green
+            - blue
+          - - '#2a04ff'
+            - '#ff9604'
+          - - '#02e6ff'
+            - '#ff4a02'
+          - - '#2bff01'
+            - '#ff0127'
+          - - '#fff700'
+            - '#f700ff'
+          - - red
+          - - green
+          - - blue
+          - - yellow
+          - - pink
+          - - '#ee00ac'
+            - blue
+          - - '#BE008A'
+            - green
+      - name: Circle 2
+        active_audio_channel_index: 0
+        audio_samples_filter_min: 0
+        audio_samples_filter_max: 24
+        audio_gain: 0.1
+        audio_decay: 0.1
+        division_value: 0
+        active_visualizer_effect: energy
+        max_brightness: 120
+        time_interval: 120
+        chunk_size: 5
+        blur_value: 1.4
+        is_reverse: false
+        is_mirror: true
+        active_color_scheme_index: 0
+        color_schemes: &id002
+          - - red
+            - green
+            - blue
+          - - '#2a04ff'
+            - '#ff9604'
+          - - '#02e6ff'
+            - '#ff4a02'
+          - - '#2bff01'
+            - '#ff0127'
+          - - '#fff700'
+            - '#f700ff'
+          - - red
+          - - green
+          - - blue
+          - - yellow
+          - - pink
+          - - '#ee00ac'
+            - blue
+          - - '#BE008A'
+            - green
+    active_state_index: 1
+    active_state:
+      name: Circle 2
+      active_audio_channel_index: 0
+      audio_samples_filter_min: 0
+      audio_samples_filter_max: 24
+      audio_gain: 0.1
+      audio_decay: 0.1
+      division_value: 0
+      active_visualizer_effect: energy
+      max_brightness: 120
+      time_interval: 120
+      chunk_size: 5
+      blur_value: 1.4
+      is_reverse: false
+      is_mirror: true
+      active_color_scheme_index: 0
+      color_schemes: *id002
+      _number_of_color_schemes: 12
+      _formatted_color_schemes:
+        - - - 255
+            - 0
+            - 0
+          - - 0
+            - 128
+            - 0
+          - - 0
+            - 0
+            - 255
+        - - - 42
+            - 4
+            - 255
+          - - 255
+            - 150
+            - 4
+        - - - 2
+            - 230
+            - 255
+          - - 255
+            - 74
+            - 2
+        - - - 43
+            - 255
+            - 1
+          - - 255
+            - 1
+            - 39
+        - - - 255
+            - 247
+            - 0
+          - - 247
+            - 0
+            - 255
+        - - - 255
+            - 0
+            - 0
+        - - - 0
+            - 128
+            - 0
+        - - - 0
+            - 0
+            - 255
+        - - - 255
+            - 255
+            - 0
+        - - - 255
+            - 192
+            - 203
+        - - - 238
+            - 0
+            - 172
+          - - 0
+            - 0
+            - 255
+        - - - 190
+            - 0
+            - 138
+          - - 0
+            - 128
+            - 0

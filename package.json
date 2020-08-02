@@ -39,7 +39,9 @@
     "test-e2e": "node -r @babel/register ./internals/scripts/CheckBuildsExist.js && cross-env NODE_ENV=test testcafe electron:./app ./test/e2e/HomePage.e2e.ts",
     "test-e2e-live": "node -r @babel/register ./internals/scripts/CheckBuildsExist.js && cross-env NODE_ENV=test testcafe --live electron:./app ./test/e2e/HomePage.e2e.ts",
     "test-watch": "yarn test --watch",
-    "check-asar-content": "rm -Rf asarWatchContentFolder; npx asar extract /Users/thibaudfrere/Documents/music-2-led/release/mac/Music2Led.app/Contents/Resources/app.asar asarWatchContentFolder"
+    "check-asar-content": "rm -Rf asarWatchContentFolder; npx asar extract /Users/thibaudfrere/Documents/music-2-led/release/mac/Music2Led.app/Contents/Resources/app.asar asarWatchContentFolder",
+    "count-tsx-lines": "find . -name '*.tsx' | xargs wc -l",
+    "count-python-lines": "find . -name '*.py' | xargs wc -l"
   },
   "lint-staged": {
     "*.{js,jsx,ts,tsx}": [

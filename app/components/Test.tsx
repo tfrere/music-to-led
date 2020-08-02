@@ -1,6 +1,7 @@
 import React from 'react';
 import CircularSlider from './generic/CircularSlider';
 import InputRange from 'react-input-range';
+
 import { render } from 'enzyme';
 
 class Test extends React.Component {

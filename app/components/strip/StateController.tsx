@@ -5,6 +5,7 @@ const NOTE_OFF = 0x80;
 const META_TEXT = 0xff;
 
 import Button from '../generic/Button';
+import guessNoteFromNumber from '../../utils/guessNoteFromNumber.js';
 
 class State extends React.Component {
   state = {
@@ -54,16 +55,14 @@ class State extends React.Component {
           ></input>
         ) : (
           <Button
+            alt={guessNoteFromNumber(26)}
             className={'button--large button--has-type'}
             onClick={() => {
               this.props.sendNote(26, this.props.index + 1);
             }}
           >
             <>
-              <span className="button__type">
-                {'D0 - ' + (this.props.index + 1)}
-              </span>
-              {this.props.state.name}
+              {this.props.index + 1 + '. '} {this.props.state.name}
             </>
           </Button>
         )}
