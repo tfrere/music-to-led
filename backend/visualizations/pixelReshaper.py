@@ -64,6 +64,7 @@ class PixelReshaper:
                 strips[i] = pixels[:, self._number_of_pixels - strip_length:]
             elif(self.strip_config.active_state.is_mirror and not self.strip_config.active_state.is_reverse):
                 center = self._number_of_pixels // 2
+                # poupi: put center_of_strip as global scope (each eaf must have it)
                 center_of_strip = strip_length // 2
                 strips[i] = pixels[
                     :,
@@ -73,8 +74,10 @@ class PixelReshaper:
             elif(self.strip_config.active_state.is_mirror and self.strip_config.active_state.is_reverse):
                 tmp = pixels[:, :strip_length // 2]
                 tmp2 = pixels[:, self._number_of_pixels - strip_length // 2:]
+                # poupi : tmp + tmp2 // watchout double di;ensions array contenated by indexes ==> requires double linked co;prehesnion list (cf concatenatePixels)
                 strips[i] = np.concatenate((tmp, tmp2), axis=1)
             else:
+                # poupi : strips[i][j] = pixels[0][:, strip_length + 1]  // Strip_length << pixels[i] / strip_length + 1 to get the strip_length index inside
                 strips[i][0] = np.resize(pixels[0], strip_length)
                 strips[i][1] = np.resize(pixels[1], strip_length)
                 strips[i][2] = np.resize(pixels[2], strip_length)
@@ -83,6 +86,7 @@ class PixelReshaper:
 
     def reversePixels(self, pixels):
         """Reverse pixels"""
+        # poupi : only reversed ? // To check if list() is required pixels[i][::-1] or pixels[i].reverse()
         pixels[0] = list(reversed(pixels[0]))
         pixels[1] = list(reversed(pixels[1]))
         pixels[2] = list(reversed(pixels[2]))
@@ -90,12 +94,16 @@ class PixelReshaper:
 
     def mirrorPixels(self, pixels, number_of_pixels):
         """Mirror pixels"""
+        # poupi : number_of_pixels // 2 as constante
+        # poupi : put variable to know if checking middle index vs end index
+        # poupi : nu;py return new array // As we are in functionm args are passed as value, so the result is always a new object ==> manipulate object with pythons only
+        tmp = []
         if(self.strip_config.active_state.is_reverse):
             tmp = np.copy(pixels[:, number_of_pixels // 2:])
-            return np.concatenate((tmp[:, ::-1], tmp), axis=1)
         else:
             tmp = np.copy(pixels[:, :number_of_pixels // 2])
-            return np.concatenate((tmp[:, ::-1], tmp), axis=1)
+
+        return np.concatenate((tmp[:, ::-1], tmp), axis=1)
 
     def reshapeFromStrips(self, strips):
 

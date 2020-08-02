@@ -5,12 +5,26 @@ from copy import deepcopy
 from config.configLoader import StateConfig
 
 
-def convertRange(value, r1, r2, rounded=True):
-    value = ((value - r1[0]) * (r2[1] - r2[0])) / (r1[1] - r1[0]) + r2[0]
-    if(rounded is True):
-        return round(value)
-    else:
+# def convertRange(value, r1, r2, rounded=True):
+#     value = ((value - r1[0]) * (r2[1] - r2[0])) / (r1[1] - r1[0]) + r2[0]
+#     if(rounded is True):
+#         return round(value)
+#     else:
+#         return round(value * 10) / 10
+
+
+def convertRange(value, oldRange, newRange, rounded=True):
+    """Compute the value within the new provided range"""
+    # Value is tested against new range, and divided against old range
+    value = ((value - oldRange[0]) * (newRange[1] - newRange[0])
+             ) / (oldRange[1] - oldRange[0]) + newRange[0]
+
+    # Result is a valid integer, return is casted as valid integer
+    if (not rounded):
+        # send back a valid integer
         return round(value * 10) / 10
+
+    return round(value)
 
 
 class ModSwitcher:
@@ -44,6 +58,17 @@ class ModSwitcher:
 
         return new_value
 
+        #poupi : refactor
+        # returned value is either "0" or "value * increment" or "old_value + increment"
+        # Below, the code is proposed
+        # new_value = 0 # default case
+        # if (value * increment < max):
+        #     new_value = value * increment
+        # elif (old_value + increment < max):
+        #     new_value = old_value + increment
+
+        # return new_value
+
     def changeMod(self):
         if(self.midi_datas):
             for midi_data in self.midi_datas:
@@ -59,13 +84,13 @@ class ModSwitcher:
                             self.strip_config._number_of_states = len(
                                 self.strip_config.states)
 
-                            newActiveStateIndex = len(
+                            new_active_state_index = len(
                                 self.strip_config.states) - 1
-                            self.strip_config.active_state_index = newActiveStateIndex
+                            self.strip_config.active_state_index = new_active_state_index
                             self.strip_config.active_state = deepcopy(
-                                self.strip_config.states[newActiveStateIndex])
+                                self.strip_config.states[new_active_state_index])
                             self.active_state = self.strip_config.active_state
-                            self.config._strips[self.strip_index].active_state_index = newActiveStateIndex
+                            self.config._strips[self.strip_index].active_state_index = new_active_state_index
 
                             self.config.saveToYmlFile()
 
@@ -109,17 +134,17 @@ class ModSwitcher:
                                               self.strip_config.states)
                                         del self.strip_config.states[i]
 
-                                        newActiveStateIndex = len(
+                                        new_active_state_index = len(
                                             self.strip_config.states) - 1
-                                        print(newActiveStateIndex)
-                                        self.strip_config.active_state_index = newActiveStateIndex
+                                        print(new_active_state_index)
+                                        self.strip_config.active_state_index = new_active_state_index
                                         self.strip_config._number_of_states = len(
                                             self.strip_config.states)
                                         self.strip_config.active_state = deepcopy(
-                                            self.strip_config.states[newActiveStateIndex])
+                                            self.strip_config.states[new_active_state_index])
 
                                         self.active_state = self.strip_config.active_state
-                                        self.config._strips[self.strip_index].active_state_index = newActiveStateIndex
+                                        self.config._strips[self.strip_index].active_state_index = new_active_state_index
 
                                         self.config._strips[self.strip_index]
 
@@ -138,57 +163,58 @@ class ModSwitcher:
                     velocity = midi_data["velocity"]
                     old_vizualizer_effect = self.active_state.active_visualizer_effect
                     # VISUALIZATIONS EFFECTS
-                    base_note_increment = 0
-                    if(mode >= base_note_increment + 0 and mode < base_note_increment + 16):
+                    # poupi : switch caes + refactor message definition + handling
+                    # poupi : json file to handle "scroll", "energy", ... values limked to mode numeric values
+                    if(mode >= 0 and mode < 16):
 
                         # SOUND BASED
-                        if(mode == base_note_increment + 0):
+                        if(mode == 0):
                             self.visualizer.resetFrame()
                             self.active_state.active_visualizer_effect = "scroll"
-                        elif(mode == base_note_increment + 1):
+                        elif(mode == 1):
                             self.active_state.active_visualizer_effect = "energy"
-                        elif(mode == base_note_increment + 2):
+                        elif(mode == 2):
                             self.active_state.active_visualizer_effect = "channel_flash"
-                        elif(mode == base_note_increment + 3):
+                        elif(mode == 3):
                             self.active_state.active_visualizer_effect = "channel_intensity"
-                        elif(mode == base_note_increment + 4):
+                        elif(mode == 4):
                             self.active_state.active_visualizer_effect = "spectrum"
 
                         # MIDI BASED
-                        elif(mode == base_note_increment + 5):
+                        elif(mode == 5):
                             self.visualizer.initPianoScroll()
                             self.visualizer.resetFrame()
                             self.active_state.active_visualizer_effect = "piano_scroll"
-                        elif(mode == base_note_increment + 6):
+                        elif(mode == 6):
                             self.visualizer.resetFrame()
                             self.active_state.active_visualizer_effect = "piano_note"
-                        elif(mode == base_note_increment + 7):
+                        elif(mode == 7):
                             self.visualizer.resetFrame()
                             self.active_state.active_visualizer_effect = "pitchwheel_flash"
 
                         # TIME BASED
-                        elif(mode == base_note_increment + 8):
+                        elif(mode == 8):
                             self.visualizer.drawAlternateColorChunks()
                             self.active_state.active_visualizer_effect = "alternate_color_chunks"
-                        elif(mode == base_note_increment + 9):
+                        elif(mode == 9):
                             self.active_state.active_visualizer_effect = "alternate_color_shapes"
-                        elif(mode == base_note_increment + 10):
+                        elif(mode == 10):
                             self.active_state.active_visualizer_effect = "transition_color_shapes"
-                        elif(mode == base_note_increment + 11):
+                        elif(mode == 11):
                             self.visualizer.resetFrame()
                             self.active_state.active_visualizer_effect = "draw_line"
                         # GENERIC
-                        elif(mode == base_note_increment + 12):
+                        elif(mode == 12):
                             self.visualizer.old_full_intensity = 0
                             self.visualizer.old_fade_out_intensity = 0
                             self.active_state.active_visualizer_effect = "full_color"
-                        elif(mode == base_note_increment + 13):
+                        elif(mode == 13):
                             self.visualizer.old_full_intensity = 1
                             self.visualizer.old_fade_out_intensity = 1
                             self.active_state.active_visualizer_effect = "fade_out"
-                        elif(mode == base_note_increment + 14):
+                        elif(mode == 14):
                             self.active_state.active_visualizer_effect = "clear_frame"
-                        elif(mode == base_note_increment + 15):
+                        elif(mode == 15):
                             self.active_state.active_visualizer_effect = "fire"
 
                         # LOGGER
@@ -198,21 +224,21 @@ class ModSwitcher:
                             self.logger(self.strip_config.name, message)
 
                     # MODIFIERS
-                    if(mode >= base_note_increment + 16 and mode <= base_note_increment + 35):
+                    elif(mode >= 16 and mode <= 35):
 
-                        if(mode == base_note_increment + 16):
+                        if(mode == 16):
                             self.active_state.is_reverse = not self.active_state.is_reverse
                             message = "is changing reverse mode to -> " + \
                                 str(self.active_state.is_reverse)
                             self.logger(self.strip_config.name, message)
 
-                        elif(mode == base_note_increment + 17):
+                        elif(mode == 17):
                             self.active_state.is_mirror = not self.active_state.is_mirror
                             message = "is changing mirror mode to -> " + \
                                 str(self.active_state.is_mirror)
                             self.logger(self.strip_config.name, message)
 
-                        elif(mode == base_note_increment + 18):
+                        elif(mode == 18):
                             self.active_state.division_value = self.valueUpdater(
                                 self.active_state.division_value,
                                 velocity,
@@ -226,7 +252,7 @@ class ModSwitcher:
                                     self.strip_config._shapes[self.active_state.division_value].shape)
                             self.logger(self.strip_config.name, message)
 
-                        elif(mode == base_note_increment + 19):
+                        elif(mode == 19):
                             self.active_state.active_color_scheme_index = self.valueUpdater(
                                 self.active_state.active_color_scheme_index,
                                 velocity,
@@ -238,7 +264,7 @@ class ModSwitcher:
                                     self.active_state.color_schemes[self.active_state.active_color_scheme_index])
                             self.logger(self.strip_config.name, message)
 
-                        elif(mode == base_note_increment + 20):
+                        elif(mode == 20):
                             self.active_state.active_audio_channel_index = self.valueUpdater(
                                 self.active_state.active_audio_channel_index,
                                 velocity,
@@ -251,7 +277,7 @@ class ModSwitcher:
                                     self.config._audio_ports[self.active_state.active_audio_channel_index].name)
                             self.logger(self.strip_config.name, message)
 
-                        elif(mode == base_note_increment + 21):
+                        elif(mode == 21):
 
                             self.active_state.time_interval = convertRange(
                                 velocity, [1, 127], [0, 500])
@@ -259,7 +285,7 @@ class ModSwitcher:
                                 str(self.active_state.time_interval)
                             self.logger(self.strip_config.name, message)
 
-                        elif(mode == base_note_increment + 22):
+                        elif(mode == 22):
 
                             self.active_state.max_brightness = convertRange(
                                 velocity, [1, 127], [1, 255])
@@ -267,19 +293,19 @@ class ModSwitcher:
                                 str(self.active_state.max_brightness)
                             self.logger(self.strip_config.name, message)
 
-                        elif(mode == base_note_increment + 23):
+                        elif(mode == 23):
                             self.active_state.chunk_size = convertRange(
                                 velocity, [1, 127], [2, 50])
                             self.logger(
                                 self.strip_config.name, "is chunk size to " + str(self.active_state.chunk_size))
 
-                        elif(mode == base_note_increment + 24):
+                        elif(mode == 24):
                             self.active_state.blur_value = convertRange(
                                 velocity, [1, 127], [0.1, 8], rounded=False)
                             self.logger(
                                 self.strip_config.name, "is changing blur value to " + str(self.active_state.blur_value))
 
-                        elif(mode == base_note_increment + 25):
+                        elif(mode == 25):
                             # print(velocity)
                             self.active_state.division_value = convertRange(
                                 velocity, [1, 127], [0, 3], rounded=True)
@@ -288,7 +314,7 @@ class ModSwitcher:
                             self.logger(
                                 self.strip_config.name, "is changing division value to " + str(self.active_state.division_value))
 
-                        elif(mode == base_note_increment + 26):
+                        elif(mode == 26):
                             self.visualizer.resetFrame()
                             self.strip_config.active_state_index = self.valueUpdater(
                                 self.strip_config.active_state_index,
@@ -306,25 +332,25 @@ class ModSwitcher:
                             self.logger(self.strip_config.name, "is changing state for " +
                                         self.strip_config.states[self.strip_config.active_state_index].name)
 
-                        elif(mode == base_note_increment + 27):
+                        elif(mode == 27):
                             self.active_state.audio_samples_filter_min = convertRange(
                                 velocity, [1, 25], [0, 24], rounded=True)
                             self.logger(
                                 self.strip_config.name, "is changing audio filter min to " + str(self.active_state.audio_samples_filter_min))
 
-                        elif(mode == base_note_increment + 28):
+                        elif(mode == 28):
                             self.active_state.audio_samples_filter_max = convertRange(
                                 velocity, [1, 25], [0, 24], rounded=True)
                             self.logger(
                                 self.strip_config.name, "is changing audio filter max to " + str(self.active_state.audio_samples_filter_max))
 
-                        elif(mode == base_note_increment + 29):
+                        elif(mode == 29):
                             self.active_state.audio_gain = convertRange(
                                 velocity, [1, 127], [0.0, 1.0], rounded=False)
                             self.logger(
                                 self.strip_config.name, "is changing audio gain to " + str(self.active_state.audio_gain))
 
-                        elif(mode == base_note_increment + 30):
+                        elif(mode == 30):
                             self.active_state.audio_decay = convertRange(
                                 velocity, [1, 127], [0.00001, 0.1], rounded=False)
                             self.logger(

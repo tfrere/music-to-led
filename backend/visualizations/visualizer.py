@@ -91,9 +91,8 @@ class Visualizer(Spectrum, FullColor, FadeOut, Clear, AlternateColors, Transitio
         for i, channel in enumerate(new_audio_data):
             if(new_audio_data[i] > self.old_audio_data[i]):
                 new_audio_data[i] = new_audio_data[i]
-            else:
-                if(new_audio_data[i] > decay_value):
-                    new_audio_data[i] = self.old_audio_data[i] - decay_value
+            elif(new_audio_data[i] > decay_value):
+                new_audio_data[i] = self.old_audio_data[i] - decay_value
 
         self.old_audio_data = new_audio_data.copy()
 
@@ -122,12 +121,14 @@ class Visualizer(Spectrum, FullColor, FadeOut, Clear, AlternateColors, Transitio
 
     @staticmethod
     def clampToNewRange(value, old_min, old_max, new_min, new_max):
+        # poupi : dupplicate convertRange(value, [old_min, old_max], [new_min, new_max], False)
         new_value = (((value - old_min) * (new_max - new_min)) //
                      (old_max - old_min)) + new_min
         return new_value
 
     @staticmethod
     def lerp(start, end, d):
+        """Limear interpolation"""
         return start * (1 - d) + end * d
 
     def resetFrame(self):
@@ -141,6 +142,7 @@ class Visualizer(Spectrum, FullColor, FadeOut, Clear, AlternateColors, Transitio
         return pixels
 
     def applyMaxBrightness(self, pixels, max_brightness):
+        # poupi : test numpy perf
         return np.clip(pixels, 0, max_brightness)
 
     def drawFrame(self):
@@ -150,6 +152,8 @@ class Visualizer(Spectrum, FullColor, FadeOut, Clear, AlternateColors, Transitio
             self.audio_datas[self.active_state.active_audio_channel_index])
 
         pixels = []
+
+        # poupi : ref constante var against JSON files
 
         # SOUND BASED
         if(self.active_state.active_visualizer_effect == "scroll"):
