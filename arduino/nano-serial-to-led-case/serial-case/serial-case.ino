@@ -48,7 +48,7 @@ void setup()
   leds.show();
 
   // Open serial port and tell the controller we're ready.
-  Serial.begin(1000000);
+  Serial.begin(115200);
   Serial.println("Setup ok");
   Serial.write(0x00);
 }
@@ -93,7 +93,9 @@ void loop()
       for (int i = 0; i < count; i++)
       {
         Serial.readBytes(pixelBuffer, 3);
+        cli();
         leds.setPixelColor(i, pixelBuffer[0], pixelBuffer[1], pixelBuffer[2]);
+        sei();
       }
       break;
 
