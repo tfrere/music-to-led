@@ -20,12 +20,15 @@ class StateConfig():
         blur_value=4.0,
         is_mirror=False,
         active_color_scheme_index=0,
-        color_schemes=[["red", "green", "blue"],
-                       ["#2a04ff", "#ff9604"], ["#02e6ff", "#ff4a02"], ["#2bff01", "#ff0127"], ["#fff700", "#f700ff"], ["red"], ["green"], ["blue"], ["yellow"], ["pink"], ['#ee00ac', 'blue'], ['#BE008A', 'green']],
         debug=False,
         verbose=False
     ):
         self.name = name
+
+        self.active_visualizer_effect = active_visualizer_effect
+
+        self.active_color_scheme_index = active_color_scheme_index
+
         self.active_audio_channel_index = active_audio_channel_index
         self.audio_samples_filter_min = audio_samples_filter_min
         self.audio_samples_filter_max = audio_samples_filter_max
@@ -33,7 +36,6 @@ class StateConfig():
         self.audio_decay = audio_decay
 
         self.division_value = division_value
-        self.active_visualizer_effect = active_visualizer_effect
         self.max_brightness = max_brightness
 
         self.time_interval = time_interval
@@ -42,16 +44,6 @@ class StateConfig():
 
         self.is_reverse = is_reverse
         self.is_mirror = is_mirror
-
-        self.active_color_scheme_index = active_color_scheme_index
-        self.color_schemes = color_schemes
-        self._number_of_color_schemes = len(color_schemes)
-
-        self._formatted_color_schemes = []
-        colorSchemeFormatter = ColorSchemeFormatter()
-        for scheme in self.color_schemes:
-            self._formatted_color_schemes.append(
-                colorSchemeFormatter.render(scheme))
 
         if(verbose):
             self.print()
@@ -72,8 +64,7 @@ class StateConfig():
             self.chunk_size,
             self.blur_value,
             self.is_mirror,
-            self.active_color_scheme_index,
-            self.color_schemes
+            self.active_color_scheme_index
         )
 
     def print(self):
@@ -95,8 +86,6 @@ class StateConfig():
         print("blur_value -> ", self.blur_value)
         print("is_reverse -> ", self.is_reverse)
         print("is_mirror -> ", self.is_mirror)
-        print("color_schemes -> ", self.color_schemes)
         print("active_color_scheme_index -> ", self.active_color_scheme_index)
-        print("_formatted_color_schemes -> ", self._formatted_color_schemes)
         print("----------------")
         print("--")

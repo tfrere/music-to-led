@@ -256,12 +256,12 @@ class ModSwitcher:
                             self.active_state.active_color_scheme_index = self.valueUpdater(
                                 self.active_state.active_color_scheme_index,
                                 velocity,
-                                self.active_state._number_of_color_schemes,
+                                self.config._number_of_color_schemes,
                                 1
                             )
                             message = "is changing color scheme to -> " + \
                                 str(
-                                    self.active_state.color_schemes[self.active_state.active_color_scheme_index])
+                                    self.config.color_schemes[self.active_state.active_color_scheme_index])
                             self.logger(self.strip_config.name, message)
 
                         elif(mode == 20):

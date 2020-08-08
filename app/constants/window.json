@@ -1,0 +1,30 @@
+{
+  "dev": {
+    "small": {
+      "width": 1000,
+      "height": 500,
+      "minWidth": 1000,
+      "minHeight": 500
+    },
+    "big": {
+      "width": 1450,
+      "height": 800,
+      "minWidth": 1450,
+      "minHeight": 800
+    }
+  },
+  "prod": {
+    "small": {
+      "width": 500,
+      "height": 500,
+      "minWidth": 500,
+      "minHeight": 500
+    },
+    "big": {
+      "width": 1000,
+      "height": 800,
+      "minWidth": 1000,
+      "minHeight": 800
+    }
+  }
+}

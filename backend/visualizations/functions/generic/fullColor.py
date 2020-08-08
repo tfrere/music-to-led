@@ -7,7 +7,7 @@ class FullColor():
         self.old_full_intensity = 0
 
     def visualizeFullColor(self):
-        color_scheme = self.active_state._formatted_color_schemes[
+        color_scheme = self.config._formatted_color_schemes[
             self.active_state.active_color_scheme_index]
         self.pixels[0] = self.lerp(
             self.pixels[0], color_scheme[0][0], self.old_full_intensity)

@@ -3,11 +3,44 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 import routes from '../constants/routes.json';
 import { promiseTimeout, zeromqMessages } from '../utils/zeromq';
+import { compareObjects } from '../utils/compareObjects';
 
 import Strip from './strip/Strip';
 import StripController from './strip/StripController';
 import ScenoVisualizerCanvas from './sceno/ScenoVisualizerCanvas';
+import RgbVisualizerCanvas from './strip/RgbVisualizerCanvas';
 import AudioVisualizerCanvas from './audio/AudioVisualizerCanvas';
+Object.compare = function(obj1, obj2) {
+  //Loop through properties in object 1
+  for (var p in obj1) {
+    //Check property exists on both objects
+    if (obj1.hasOwnProperty(p) !== obj2.hasOwnProperty(p)) return false;
+
+    switch (typeof obj1[p]) {
+      //Deep compare objects
+      case 'object':
+        if (!Object.compare(obj1[p], obj2[p])) return false;
+        break;
+      //Compare function code
+      case 'function':
+        if (
+          typeof obj2[p] == 'undefined' ||
+          (p != 'compare' && obj1[p].toString() != obj2[p].toString())
+        )
+          return false;
+        break;
+      //Compare values
+      default:
+        if (obj1[p] != obj2[p]) return false;
+    }
+  }
+
+  //Check object 2 for any extra properties
+  for (var p in obj2) {
+    if (typeof obj1[p] == 'undefined') return false;
+  }
+  return true;
+};
 
 let client_time = new Date().getTime();
 let server_time = 0;
@@ -74,8 +107,16 @@ class Builder extends React.Component {
         active_states: object.active_states,
         are_strips_online: object.are_strips_online,
         framerates: object.framerates,
+        has_config_changed: !Object.compare(
+          this.state.active_states,
+          object.active_states
+        ),
         isZMQConnected: true
       });
+      console.log(
+        'hasConfigChanged',
+        !Object.compare(this.state.active_states, object.active_states)
+      );
     } else {
       this.setState({
         isZMQConnected: false
@@ -130,7 +171,7 @@ class Builder extends React.Component {
         if (isActiveStrip) {
           active_strip_data = {
             name: strip.midi_ports_for_changing_mode[0],
-            audios: audios,
+            // audios: audios,
             strip: strip,
             is_strip_online: is_strip_online,
             framerate: framerate,
@@ -240,6 +281,15 @@ class Builder extends React.Component {
               <div>
                 {/* active_states, is_strip_online, framerate, strip_index, */}
                 <div className="card">
+                  <RgbVisualizerCanvas
+                    pixels={pixels[active_strip_data.strip_index]}
+                    physical_shape={active_strip_data.strip._physical_shape}
+                    active_shape={
+                      active_strip_data.strip._shapes[
+                        active_strip_data.active_state.division_value
+                      ]
+                    }
+                  />
                   <StripController active_strip_data={active_strip_data} />
                 </div>
               </div>

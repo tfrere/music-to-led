@@ -64,8 +64,18 @@ class ScenoVisualizerCanvas extends React.Component {
     const { ctx, scenes } = this.state;
     const strip = this.props.config._strips[0];
     ctx.clearRect(0, 0, this.props.width, this.props.height);
-
     scenes.map((scene, index) => {
+      if (scene.backgrounds) {
+        ctx.strokeWidth = '2';
+        ctx.strokeStyle = 'rgba(255,255,255, 1)';
+
+        scene.backgrounds.map(elem => {
+          var path = new Path2D(elem.svg_string);
+          // var path = new Path2D('M 100,100 h 50 v 50 h 50');
+
+          ctx.stroke(path);
+        });
+      }
       scene.shapes.map(elem => {
         ctx.strokeWidth = '2';
         ctx.strokeStyle = 'rgba(255,255,255, 0.03)';

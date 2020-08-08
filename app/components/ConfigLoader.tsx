@@ -1,8 +1,12 @@
 import React, { ReactNode } from 'react';
 import routes from '../constants/routes.json';
+import windowData from '../constants/window.json';
 import Select from './generic/Select';
 import Button from './generic/Button';
 import InputFile from './generic/InputFile';
+
+const isProd = process.env.NODE_ENV === 'production';
+const windowSize = isProd ? windowData.prod : windowData.dev;
 
 class ConfigLoader extends React.Component {
   constructor(props) {
@@ -12,7 +16,7 @@ class ConfigLoader extends React.Component {
       isLoadingApp: false,
       errorMessage: '',
       isTestingConfigFile: false,
-      isVisible: this.props.isVisible
+      isVisible: true
     };
   }
 
@@ -21,7 +25,7 @@ class ConfigLoader extends React.Component {
       console.log('didUpdate props isvisible', this.props.isVisible);
       if (this.props.isVisible) {
         this.setState({ configFile: null });
-        this.resizeWindowCall(500, 500);
+        this.resizeWindowCall(windowSize.small.width, windowSize.small.height);
       }
       this.setState({ isVisible: this.props.isVisible });
     }
@@ -68,9 +72,10 @@ class ConfigLoader extends React.Component {
           this.apiCall('spawn?file=' + this.state.configFile);
           let that = this;
           window.setTimeout(() => {
-            that.resizeWindowCall(1000, 800);
+            that.resizeWindowCall(windowSize.big.width, windowSize.big.height);
             that.setState({ isLoadingApp: false, isTestingConfigFile: false });
-            that.props.onBackendLoaded();
+            this.props.history.push(routes.BUILDER);
+            // that.props.onBackendLoaded();
           }, 1000);
         } else {
           console.log(res.error);
@@ -100,9 +105,9 @@ class ConfigLoader extends React.Component {
                 <>
                   <h3>Choose a config file to load</h3>
                   <div className="config-loader__content-wrapper">
-                    {/* <div className="config-loader__content-wrapper__create">
+                    <div className="config-loader__content-wrapper__create">
                       <span>Not implemented yet</span>
-                    </div> */}
+                    </div>
                     <div className="config-loader__content-wrapper__load">
                       <InputFile
                         onChange={filePath => {

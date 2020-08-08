@@ -24,7 +24,7 @@ from helpers.audioDispatcher import AudioDispatcher
 
 from inputs.audio import Audio
 from inputs.midi import Midi
-from outputs.serial import Serial
+from outputs.serial.main import Serial
 from outputs.zmq.zmqServer import ZmqServer
 
 from visualizations.visualizer import Visualizer
@@ -69,7 +69,7 @@ def zmqUpdateConfigProcess(shared_list):
     server = ZmqServer(host, topic="sendConfig")
 
     while True:
-        server.socket.send_string(server.computeLiveDatas(shared_list))
+        server.socket.send_string(server.computeConfig(shared_list))
         time.sleep(0.050)
 
 
@@ -255,10 +255,9 @@ if __name__ == "__main__":
         Serial.testDevice(args.test_serial_device)
 
     elif(args.test_config_file):
-        configLoader = ConfigLoader(args.with_config_file, debug=False)
-        configLoader.data.saveToYmlFile()
-
-        # ConfigLoader.testConfig(path=args.test_config_file, debug=True)
+        # configLoader = ConfigLoader(args.with_config_file, debug=False)
+        # configLoader.data.saveToYmlFile()
+        ConfigLoader.testConfig(path=args.test_config_file, debug=True)
 
     elif((not len(sys.argv) > 1) or (len(sys.argv) > 1 and args.with_config_file)):
 

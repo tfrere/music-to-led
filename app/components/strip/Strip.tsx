@@ -31,7 +31,6 @@ class Strip extends React.Component {
       (className && className.includes('left-panel__list__item--active')) ||
       false;
     let cardClassNames = isReverse ? 'left-panel__list__item--active ' : '';
-
     return (
       <div
         key={'left-panel__list__item' + index}
@@ -45,6 +44,7 @@ class Strip extends React.Component {
         <div className="left-panel__list__item__header">
           <h4 className="left-panel__list__item__header__title">
             {strip.name}
+            {strip.serial_port_name}
           </h4>
           <div className={'online-notifier' + onlineClassNames}>
             {is_strip_online ? (

@@ -5,10 +5,14 @@ import BuilderPage from './containers/BuilderPage';
 import InitPage from './containers/InitPage';
 import TestPage from './containers/TestPage';
 import ShowPage from './containers/ShowPage';
+import ConfigLoaderPage from './containers/ConfigLoaderPage';
 import SplashScreen from './components/SplashScreen';
 import Nav from './components/Nav';
+import { useHistory } from 'react-router-dom';
 
 export default function Routes() {
+  let history = useHistory();
+  console.log('history', history);
   return (
     <React.Fragment>
       <div className="draggable-bar">
@@ -21,13 +25,14 @@ export default function Routes() {
         )}
       </div>
       {process.env.NODE_ENV !== 'development' ? <SplashScreen /> : ''}
-      <Nav />
+      <Nav history={history} />
       <Switch>
         <Route path={routes.INIT} component={InitPage} />
         <Route path={routes.SHOW} component={ShowPage} />
         <Route path={routes.BUILDER} component={BuilderPage} />
         <Route path={routes.TEST} component={TestPage} />
-        <Redirect from="*" exact to={routes.BUILDER} />
+        <Route path={routes.CONFIG_LOADER} component={ConfigLoaderPage} />
+        <Redirect from="*" exact to={routes.CONFIG_LOADER} />
       </Switch>
       <br />
       <br />

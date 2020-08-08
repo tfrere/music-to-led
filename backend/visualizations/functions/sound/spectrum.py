@@ -81,7 +81,7 @@ class Spectrum():
     def visualizeSpectrum(self):
         """Effect that maps the Mel filterbank frequencies onto the LED strip"""
 
-        active_color_scheme = self.active_state._formatted_color_schemes[
+        active_color_scheme = self.config._formatted_color_schemes[
             self.active_state.active_color_scheme_index]
         new_length = self._number_of_pixels
 

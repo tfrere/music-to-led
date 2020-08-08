@@ -1,20 +1,20 @@
 import React from 'react';
 
-// function debounce(func, wait, immediate) {
-//   var timeout;
-//   return function() {
-//     var context = this,
-//       args = arguments;
-//     var later = function() {
-//       timeout = null;
-//       if (!immediate) func.apply(context, args);
-//     };
-//     var callNow = immediate && !timeout;
-//     clearTimeout(timeout);
-//     timeout = setTimeout(later, wait);
-//     if (callNow) func.apply(context, args);
-//   };
-// }
+function debounce(func, wait, immediate) {
+  var timeout;
+  return function() {
+    var context = this,
+      args = arguments;
+    var later = function() {
+      timeout = null;
+      if (!immediate) func.apply(context, args);
+    };
+    var callNow = immediate && !timeout;
+    clearTimeout(timeout);
+    timeout = setTimeout(later, wait);
+    if (callNow) func.apply(context, args);
+  };
+}
 
 class CircularSlider extends React.Component {
   constructor(props) {
@@ -27,9 +27,9 @@ class CircularSlider extends React.Component {
   componentDidMount() {
     this.y = 0;
 
-    // var myEfficientFn = debounce(this.handleMouseMove, 250);
+    var myEfficientFn = debounce(this.handleMouseMove, 10, false);
 
-    document.addEventListener('mousemove', this.handleMouseMove);
+    document.addEventListener('mousemove', myEfficientFn);
     document.addEventListener('mouseup', this.handleMouseUp);
   }
 

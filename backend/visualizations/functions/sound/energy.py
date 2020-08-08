@@ -31,7 +31,7 @@ class Energy():
         # g = int(np.mean(self.audio_data[len(self.audio_data) // 3: 2 * len(self.audio_data) // 3]**scale))
         # b = int(np.mean(self.audio_data[2 * len(self.audio_data) // 3:]**scale))
 
-        active_color_scheme = self.active_state._formatted_color_schemes[
+        active_color_scheme = self.config._formatted_color_schemes[
             self.active_state.active_color_scheme_index]
         chunk_size = len(self.audio_data) // len(active_color_scheme)
         for i in range(len(active_color_scheme)):

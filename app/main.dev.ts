@@ -10,6 +10,7 @@ import { autoUpdater } from 'electron-updater';
 import log from 'electron-log';
 import MenuBuilder from './menu';
 import pythonConfig from './constants/python.json';
+import windowConfig from './constants/window.json';
 
 import { getPythonProcessPath } from './server/getPythonProcessPath';
 import {
@@ -31,10 +32,22 @@ let globals = {
   appPath: app.getAppPath(),
   mainWindow: BrowserWindow || null,
   windowParams: {
-    width: 500,
-    height: 500,
-    minWidth: 500,
-    minHeight: 500,
+    width:
+      process.env.NODE_ENV === 'production'
+        ? windowConfig.prod.small.width
+        : windowConfig.dev.small.width,
+    height:
+      process.env.NODE_ENV === 'production'
+        ? windowConfig.prod.small.height
+        : windowConfig.dev.small.height,
+    minWidth:
+      process.env.NODE_ENV === 'production'
+        ? windowConfig.prod.small.minWidth
+        : windowConfig.dev.small.minWidth,
+    minHeight:
+      process.env.NODE_ENV === 'production'
+        ? windowConfig.prod.small.minHeight
+        : windowConfig.dev.small.minHeight,
     backgroundColor: '#061B28'
   },
   httpServerPort: 8080,

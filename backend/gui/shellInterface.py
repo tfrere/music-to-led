@@ -235,7 +235,7 @@ class ShellInterface():
         reverse_mode = self.textWithColor(
             255, 255, 255, 'reverse') if active_state.is_reverse else self.textWithColor(50, 50, 50, 'reverse')
         color_scheme = ""
-        for current_color in active_state._formatted_color_schemes[active_state.active_color_scheme_index]:
+        for current_color in self.config._formatted_color_schemes[active_state.active_color_scheme_index]:
             color_scheme += self.term.color(
                 int(rgbToAnsi256(current_color[0], current_color[1], current_color[2])))('█ ')
         shape = ""

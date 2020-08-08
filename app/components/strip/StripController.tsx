@@ -185,7 +185,7 @@ class StripController extends React.Component {
                         this.sendNote(19, index);
                       }}
                       activeSchemeIndex={active_state.active_color_scheme_index}
-                      schemes={active_state.color_schemes}
+                      schemes={config.color_schemes}
                     />
                   </div>
                   <div style={{ width: '25%' }}>
@@ -330,12 +330,12 @@ class StripController extends React.Component {
                       radius={140}
                       border={30}
                       value={blur_value}
-                      range={[0.0, 8.0]}
+                      range={[0.1, 8.0]}
                       round={1}
                       onChange={value => {
                         this.sendNote(
                           24,
-                          convertRange(value, [1, 255], [1, 127], true)
+                          convertRange(value, [1, 8], [1, 127], true)
                         );
                       }}
                     /> */}
@@ -344,7 +344,7 @@ class StripController extends React.Component {
                   <h5 className="strip-controller__title">Audio</h5>
                   <div className="strip-controller__audio-block strip-controller__sub-card">
                     <div>
-                      <AudioVisualizerCanvas
+                      {/* <AudioVisualizerCanvas
                         name={
                           config._audio_ports[
                             active_state.active_audio_channel_index
@@ -362,7 +362,7 @@ class StripController extends React.Component {
                         audio_gain={active_state.audio_gain}
                         width={120}
                         height={60}
-                      />
+                      /> */}
                       {/* 
                       <InputRange
                         minValue={0}

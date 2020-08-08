@@ -30,7 +30,7 @@ class TransitionColors():
         ms = self._timeSinceStart.getMs()
         interval = self._timeSinceStart.getMsIntervalFromBpm(
             self.active_state.time_interval)
-        color_scheme = self.active_state._formatted_color_schemes[
+        color_scheme = self.config._formatted_color_schemes[
             self.active_state.active_color_scheme_index]
         currentTime = round(ms / interval, 2)
 

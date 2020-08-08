@@ -34,7 +34,7 @@
 #     def visualizePianoNote(self):
 #         """PianoNote midi visualizer"""
 
-#         color_scheme = self.active_state._formatted_color_schemes[
+#         color_scheme = self.config._formatted_color_schemes[
 #             self.active_state.active_color_scheme_index]
 
 #         for midi_note in self.midi_datas:
@@ -154,7 +154,7 @@ class PianoNote():
     def visualizePianoNote(self):
         """PianoNote midi visualizer"""
 
-        color_scheme = self.active_state._formatted_color_schemes[
+        color_scheme = self.config._formatted_color_schemes[
             self.active_state.active_color_scheme_index]
 
         which_color = 0

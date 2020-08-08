@@ -9,7 +9,7 @@ class AlternateColors():
 
     def drawAlternateColorChunks(self):
 
-        color_scheme = self.active_state._formatted_color_schemes[
+        color_scheme = self.config._formatted_color_schemes[
             self.active_state.active_color_scheme_index]
 
         self.alternateColorsInterval = self._timeSinceStart.getMsIntervalFromBpm(
@@ -41,7 +41,7 @@ class AlternateColors():
 
     def visualizeAlternateColorShapes(self):
         """Effect that alternate two colors moving forward"""
-        color_scheme = self.active_state._formatted_color_schemes[
+        color_scheme = self.config._formatted_color_schemes[
             self.active_state.active_color_scheme_index]
 
         interval = self._timeSinceStart.getMsIntervalFromBpm(

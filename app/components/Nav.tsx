@@ -42,12 +42,12 @@ class Nav extends React.Component {
   render() {
     return (
       <>
-        <ConfigLoader
+        {/* <ConfigLoader
           onBackendLoaded={() => {
             this.setState({ isConfigLoaderVisible: false }, () => {});
           }}
           isVisible={this.state.isConfigLoaderVisible}
-        />
+        /> */}
         <nav className="nav">
           {/* <NavLink disabled activeClassName="active" to={routes.INIT}>
             <i className="la la-cog" /> INIT
@@ -57,6 +57,9 @@ class Nav extends React.Component {
           </NavLink>
           <NavLink activeClassName="active" to={routes.SHOW}>
             <i className="la la-satellite"></i> SHOW
+          </NavLink>
+          <NavLink activeClassName="active" to={routes.CONFIG_LOADER}>
+            <i className="la la-satellite"></i> CONFIG
           </NavLink>
           {process.env.NODE_ENV === 'development' ? (
             <NavLink disabled activeClassName="active" to={routes.TEST}>

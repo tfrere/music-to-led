@@ -1,6 +1,6 @@
 from inputs.midi import Midi
 from inputs.audio import Audio
-from outputs.serial import Serial
+from outputs.serial.main import Serial
 
 from config.shapeConfig import ShapeConfig
 from config.stateConfig import StateConfig
@@ -28,6 +28,7 @@ class StripConfig():
 
         self.name = name
         self.serial_port_name = serial_port_name
+        self.active_state_index = active_state_index
         self.is_online = is_online
         self.midi_ports_for_changing_mode = midi_ports_for_changing_mode
         self.midi_ports_for_visualization = midi_ports_for_visualization
@@ -58,7 +59,6 @@ class StripConfig():
                     max_brightness=state["max_brightness"],
                     active_visualizer_effect=state["active_visualizer_effect"],
                     division_value=state["division_value"],
-                    color_schemes=state["color_schemes"],
                     active_color_scheme_index=state["active_color_scheme_index"],
                     time_interval=state["time_interval"],
                     chunk_size=state["chunk_size"],
@@ -70,7 +70,6 @@ class StripConfig():
                 )
             )
 
-        self.active_state_index = active_state_index
         self.active_state = self.states[active_state_index].copy()
         self._number_of_states = len(self.states)
 
