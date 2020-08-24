@@ -52,6 +52,4 @@ class Energy():
         self.p_filt.update(self.pixels)
         self.pixels = np.round(self.p_filt.value)
 
-        self.pixels = self.blurFrame(self.pixels, self.active_state.blur_value)
-
         return self.pixelReshaper.reshapeFromPixels(self.pixels)

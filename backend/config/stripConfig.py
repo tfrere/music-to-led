@@ -21,6 +21,7 @@ class StripConfig():
         active_state=0,
         original_physical_shape=[20, 20],
         scene=[],
+        midi_range=[0, 10],
         states=[],
         debug=False,
         verbose=False
@@ -34,6 +35,7 @@ class StripConfig():
         self.midi_ports_for_visualization = midi_ports_for_visualization
         self.original_physical_shape = original_physical_shape
         self._physical_shape = ShapeConfig(original_physical_shape)
+        self.midi_range = midi_range
         self.scene = scene
 
         self._shapes = []
@@ -69,12 +71,14 @@ class StripConfig():
                     verbose=verbose
                 )
             )
+        if (len(self.states) == 0):
+            self.states.append(StateConfig())
 
         self.active_state = self.states[active_state_index].copy()
         self._number_of_states = len(self.states)
 
         if(debug):
-            Serial.tryPort(serial_port_name)
+            # Serial.tryPort(serial_port_name)
             if(midi_ports_for_visualization):
                 for name in midi_ports_for_visualization:
                     Midi.tryPort(name)
@@ -98,6 +102,7 @@ class StripConfig():
               self.midi_ports_for_visualization)
         print("original_physical_shape -> ", self.original_physical_shape)
         print("physical_shape -> ", self._physical_shape)
+        print("midi_range -> ", self.midi_range)
         print("shapes -> ", self._shapes)
         print("active_state_index -> ", self.active_state_index)
         print("----------------")

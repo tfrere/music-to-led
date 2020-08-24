@@ -48,5 +48,4 @@ class Scroll():
 
         self.pixels = np.clip(self.pixels, 0, 255)
 
-        self.pixels = self.blurFrame(self.pixels, self.active_state.blur_value)
         return self.pixelReshaper.reshapeFromPixels(self.pixels)

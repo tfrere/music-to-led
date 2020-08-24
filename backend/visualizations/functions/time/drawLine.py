@@ -15,6 +15,4 @@ class DrawLine():
         self.pixels[1][0] = color_scheme[0][1]
         self.pixels[2][0] = color_scheme[0][2]
 
-        self.pixels = self.blurFrame(self.pixels, self.active_state.blur_value)
-
         return self.pixelReshaper.reshapeFromPixels(self.pixels)

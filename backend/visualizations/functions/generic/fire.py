@@ -127,8 +127,7 @@ class Fire():
 
         time.sleep(0.015)
 
-        # self.pixels = self.blurFrame(self.pixels, self.active_state.blur_value)
-        self.pixels = self.blurFrame(self.pixels, 3.0)
+        # self.pixels = self.blurFrame(self.pixels, 3.0)
 
         return self.pixelReshaper.reshapeFromPixels(self.pixels)
 

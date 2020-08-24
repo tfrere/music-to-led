@@ -113,10 +113,10 @@ class Builder extends React.Component {
         ),
         isZMQConnected: true
       });
-      console.log(
-        'hasConfigChanged',
-        !Object.compare(this.state.active_states, object.active_states)
-      );
+      // console.log(
+      //   'hasConfigChanged',
+      //   !Object.compare(this.state.active_states, object.active_states)
+      // );
     } else {
       this.setState({
         isZMQConnected: false
@@ -171,7 +171,7 @@ class Builder extends React.Component {
         if (isActiveStrip) {
           active_strip_data = {
             name: strip.midi_ports_for_changing_mode[0],
-            // audios: audios,
+            audios: audios,
             strip: strip,
             is_strip_online: is_strip_online,
             framerate: framerate,
@@ -266,17 +266,14 @@ class Builder extends React.Component {
                 {stripsElem}
               </div>
             </div>
-            <div style={{ height: '330px' }}>
-              <ScenoVisualizerCanvas
-                config={config}
-                pixels={pixels}
-                height={300}
-                hasDarkMode={false}
-                hasGrid={false}
-                activeStripIndex={active_strip_data.strip_index}
-                hasActiveBoundingBoxVisible={true}
-              />
-            </div>{' '}
+            <ScenoVisualizerCanvas
+              config={config}
+              pixels={pixels}
+              hasDarkMode={false}
+              hasGrid={false}
+              activeStripIndex={active_strip_data.strip_index}
+              hasActiveBoundingBoxVisible={true}
+            />
             {active_strip_data ? (
               <div>
                 {/* active_states, is_strip_online, framerate, strip_index, */}

@@ -93,6 +93,7 @@ class Config():
                 "midi_ports_for_visualization": ["Audio2Led Side"],
                 "active_state_index": 0,
                 "original_physical_shape": [50, 50],
+                "midi_range": [0, 10],
                 "scene": [],
                 "states": []
             }
@@ -138,9 +139,10 @@ class Config():
                     is_online=False,
                     midi_ports_for_changing_mode=strip["midi_ports_for_changing_mode"],
                     midi_ports_for_visualization=strip["midi_ports_for_visualization"],
+                    original_physical_shape=strip["original_physical_shape"],
+                    midi_range=strip["midi_range"],
                     scene=strip["scene"],
                     states=strip["states"],
-                    original_physical_shape=strip["original_physical_shape"],
                     active_state_index=strip["active_state_index"],
                     active_state=strip["states"][strip["active_state_index"]],
                     debug=debug,

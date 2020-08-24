@@ -9,8 +9,8 @@
 
 .popover-content {
   width: 200px;
-  background-color: darken($backgroundColor, 5%);
-  border: 1px solid darken($backgroundColor, 12%);
+  background-color: $backgroundColor;
+  border: 1px solid lighten($backgroundColor, 6%);
   margin-top: 10px;
   -webkit-background-clip: padding-box;
   -moz-background-clip: padding-box;

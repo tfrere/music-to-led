@@ -3,6 +3,8 @@ import { SizeMe } from 'react-sizeme';
 
 import { svgPathProperties } from 'svg-path-properties';
 
+const minHeight = 100;
+
 class ScenoVisualizerCanvas extends React.Component {
   constructor(props) {
     super(props);
@@ -11,9 +13,16 @@ class ScenoVisualizerCanvas extends React.Component {
       return strip.scene;
     });
 
+    const maxHeight = this.props.config._strips.reduce(function(prev, current) {
+      return prev.scene.size.height > current.scene.size.height
+        ? prev
+        : current;
+    }).scene.size.height;
+
     this.state = {
       ctx: null,
       scenes: scenes,
+      height: maxHeight > minHeight ? maxHeight : minHeight,
       hasDarkMode: this.props.hasDarkMode || false,
       hasGrid: this.props.hasGrid || false,
       hasActiveBoundingBoxVisible:
@@ -63,7 +72,7 @@ class ScenoVisualizerCanvas extends React.Component {
   updateCanvas = () => {
     const { ctx, scenes } = this.state;
     const strip = this.props.config._strips[0];
-    ctx.clearRect(0, 0, this.props.width, this.props.height);
+    ctx.clearRect(0, 0, this.props.width, this.state.height);
     scenes.map((scene, index) => {
       if (scene.backgrounds) {
         ctx.strokeWidth = '2';
@@ -88,7 +97,7 @@ class ScenoVisualizerCanvas extends React.Component {
           ctx.setLineDash([3, 12]);
           ctx.strokeRect(
             this.props.width / 2 - this.state.scenes[index].size.width / 2 - 10,
-            this.props.height / 2 -
+            this.state.height / 2 -
               this.state.scenes[index].size.height / 2 -
               10,
             this.state.scenes[index].size.width + 20,
@@ -123,7 +132,7 @@ class ScenoVisualizerCanvas extends React.Component {
 
     const XCenterOffset = this.props.width / 2 - (size.width * size.scale) / 2;
     const YCenterOffset =
-      this.props.height / 2 - (size.height * size.scale) / 2;
+      this.state.height / 2 - (size.height * size.scale) / 2;
     const length = properties.getTotalLength();
     const pixels_length = r.length;
     const gap = length / pixels_length;
@@ -153,11 +162,15 @@ class ScenoVisualizerCanvas extends React.Component {
   render() {
     const hasGridClass = this.state.hasGrid ? 'grid-overlay' : '';
     return (
-      <React.Fragment>
+      <div
+        style={{
+          height: this.state.height + 30 + 'px'
+        }}
+      >
         {this.props.pixels ? (
           <div
             className={'sceno-visualizer ' + hasGridClass}
-            style={{ height: this.props.height }}
+            style={{ height: this.state.height }}
           >
             <div className="sceno-visualizer__toolbar">
               <button
@@ -196,13 +209,13 @@ class ScenoVisualizerCanvas extends React.Component {
                 background: this.state.hasDarkMode ? 'black' : 'transparent'
               }}
               width={this.props.width}
-              height={this.props.height}
+              height={this.state.height}
             />
           </div>
         ) : (
           <div className="loading"></div>
         )}
-      </React.Fragment>
+      </div>
     );
   }
 }
@@ -212,13 +225,7 @@ class PixelVisualizerCanvas extends React.Component {
     return (
       <SizeMe>
         {({ size }) => {
-          return (
-            <ScenoVisualizerCanvas
-              {...this.props}
-              width={size.width}
-              height={this.props.height || 500}
-            />
-          );
+          return <ScenoVisualizerCanvas {...this.props} width={size.width} />;
         }}
       </SizeMe>
     );

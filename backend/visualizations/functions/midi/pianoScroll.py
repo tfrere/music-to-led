@@ -103,9 +103,6 @@ class PianoScroll():
 
         # applyGradientDecrease(self.pixels)
 
-        # # Apply substantial blur to smooth the edges
-        self.pixels = self.blurFrame(self.pixels, self.active_state.blur_value)
-
         # print(self.pixels)
         # time.sleep(.028)
         return self.pixelReshaper.reshapeFromPixels(self.pixels)

@@ -1,4 +1,5 @@
 import numpy as np
+from scipy.ndimage.filters import gaussian_filter1d
 
 
 class PixelReshaper:
@@ -7,13 +8,19 @@ class PixelReshaper:
         self.strip_config = strip_config
         self.initActiveShape()
 
+    @staticmethod
+    def blurFrame(pixels, value=1.0):
+        pixels[0, :] = gaussian_filter1d(pixels[0, :], sigma=value)
+        pixels[1, :] = gaussian_filter1d(pixels[1, :], sigma=value)
+        pixels[2, :] = gaussian_filter1d(pixels[2, :], sigma=value)
+        return pixels
+
     def initActiveShape(self):
         self.division_value = self.strip_config.active_state.division_value
         self._number_of_pixels = self.strip_config._shapes[
             self.division_value]._number_of_pixels
         self._number_of_strips = self.strip_config._shapes[
             self.division_value]._number_of_substrip
-        self.pixels = np.tile(.0, (3, self._number_of_pixels))
         self.strip_shape = self.strip_config._shapes[self.division_value].shape
         self._strips = []
         for i, strip_length in enumerate(self.strip_shape):
@@ -39,16 +46,17 @@ class PixelReshaper:
     #     return tmp
 
     def concatenatePixels(self, strips):
+        """Concatenate the x strips into 1"""
         stripsIndex = range(len(self.strip_shape))
 
-        # define list o substrips
+        # define list of substrips
         listOfSubsStrips = [
             [strips[i][0] for i in stripsIndex],
             [strips[i][1] for i in stripsIndex],
             [strips[i][2] for i in stripsIndex],
         ]
 
-        # MErge eqch list of substrips qccording to R, G, B indexes
+        # Merge each list of substrips qccording to R, G, B indexes
         rgb = [
             [item for subStrips in listOfSubsStrips[0] for item in subStrips],
             [item for subStrips in listOfSubsStrips[1] for item in subStrips],
@@ -60,24 +68,24 @@ class PixelReshaper:
     def splitForStrips(self, strips, pixels):
         """Split pixels to respect the shape"""
         for i, strip_length in enumerate(self.strip_shape):
+            center_of_strip = strip_length // 2
             if(self.strip_config.active_state.is_reverse and not self.strip_config.active_state.is_mirror):
                 strips[i] = pixels[:, self._number_of_pixels - strip_length:]
             elif(self.strip_config.active_state.is_mirror and not self.strip_config.active_state.is_reverse):
                 center = self._number_of_pixels // 2
-                # poupi: put center_of_strip as global scope (each eaf must have it)
-                center_of_strip = strip_length // 2
+                # performance improvements: put center_of_strip as global scope (each eaf must have it)
                 strips[i] = pixels[
                     :,
                     center - center_of_strip:
                     center + center_of_strip
                 ]
             elif(self.strip_config.active_state.is_mirror and self.strip_config.active_state.is_reverse):
-                tmp = pixels[:, :strip_length // 2]
-                tmp2 = pixels[:, self._number_of_pixels - strip_length // 2:]
-                # poupi : tmp + tmp2 // watchout double di;ensions array contenated by indexes ==> requires double linked co;prehesnion list (cf concatenatePixels)
+                tmp = pixels[:, :center_of_strip]
+                tmp2 = pixels[:, self._number_of_pixels - center_of_strip:]
+                # performance improvements : tmp + tmp2 // watchout double di;ensions array contenated by indexes ==> requires double linked co;prehesnion list (cf concatenatePixels)
                 strips[i] = np.concatenate((tmp, tmp2), axis=1)
             else:
-                # poupi : strips[i][j] = pixels[0][:, strip_length + 1]  // Strip_length << pixels[i] / strip_length + 1 to get the strip_length index inside
+                # performance improvements : strips[i][j] = pixels[0][:, strip_length + 1]  // Strip_length << pixels[i] / strip_length + 1 to get the strip_length index inside
                 strips[i][0] = np.resize(pixels[0], strip_length)
                 strips[i][1] = np.resize(pixels[1], strip_length)
                 strips[i][2] = np.resize(pixels[2], strip_length)
@@ -86,7 +94,7 @@ class PixelReshaper:
 
     def reversePixels(self, pixels):
         """Reverse pixels"""
-        # poupi : only reversed ? // To check if list() is required pixels[i][::-1] or pixels[i].reverse()
+        # performance improvements : only reversed ? // To check if list() is required pixels[i][::-1] or pixels[i].reverse()
         pixels[0] = list(reversed(pixels[0]))
         pixels[1] = list(reversed(pixels[1]))
         pixels[2] = list(reversed(pixels[2]))
@@ -94,9 +102,9 @@ class PixelReshaper:
 
     def mirrorPixels(self, pixels, number_of_pixels):
         """Mirror pixels"""
-        # poupi : number_of_pixels // 2 as constante
-        # poupi : put variable to know if checking middle index vs end index
-        # poupi : nu;py return new array // As we are in functionm args are passed as value, so the result is always a new object ==> manipulate object with pythons only
+        # performance improvements : number_of_pixels // 2 as constante
+        # performance improvements : put variable to know if checking middle index vs end index
+        # performance improvements : nu;py return new array // As we are in functionm args are passed as value, so the result is always a new object ==> manipulate object with pythons only
         tmp = []
         if(self.strip_config.active_state.is_reverse):
             tmp = np.copy(pixels[:, number_of_pixels // 2:])
@@ -109,6 +117,10 @@ class PixelReshaper:
 
         tmp_s = []
         for x, strip in enumerate(strips):
+
+            strip = self.blurFrame(
+                strip, self.strip_config.active_state.blur_value)
+
             if(self.strip_config.active_state.is_reverse):
                 strip = self.reversePixels(strip)
             if(self.strip_config.active_state.is_mirror):
@@ -125,19 +137,22 @@ class PixelReshaper:
         if(self.strip_config.active_state.is_mirror):
             tmp_p = self.mirrorPixels(tmp_p, self._number_of_pixels)
 
+        tmp_p = self.blurFrame(
+            tmp_p, self.strip_config.active_state.blur_value)
+
         return self.splitForStrips(self._strips, tmp_p)
 
 
 if __name__ == "__main__":
     import time
-    from outputs.serialOutput import SerialOutput
-    from settings.settingsLoader import StripSettings
+    from outputs.serial.main import Serial
+    from config.stripConfig import StripConfig
 
     print('Starting PixelReshaper test on ports :')
-    print(SerialOutput.listAvailablePortsName())
-    ports = SerialOutput.listAvailablePortsName()
+    print(Serial.listAvailablePortsName())
+    ports = Serial.listAvailablePortsName()
 
-    settings = StripSettings()
+    settings = StripConfig()
 
     number_of_pixels = 16
 
@@ -153,7 +168,7 @@ if __name__ == "__main__":
     pixels[1, number_of_pixels - 2] = 255
 
     tmp = pixelReshaper.reshapeFromPixels(pixels)
-    serialOutput = SerialOutput(number_of_pixels, ports)
+    serialOutput = Serial(number_of_pixels, ports)
     serialOutput.setup()
 
     while True:

@@ -53,16 +53,16 @@ class StripController extends React.Component {
 
   changeMidiChannel = name => {
     let that = this;
-    console.log('to change', name);
+    // console.log('to change', name);
     if (window.midiOutputs) {
       for (const output of window.midiOutputs) {
-        console.log('list', output.name);
+        // console.log('list', output.name);
         if (output.name === name) {
           that.setState({
             midiOutput: output,
             midiOutputs: window.midiOutputs
           });
-          console.log('changed', output.name);
+          // console.log('changed', output.name);
         }
       }
     }
@@ -101,8 +101,6 @@ class StripController extends React.Component {
 
   render() {
     const { active_strip_data } = this.props;
-
-    // console.log('stripControllerRender');
 
     let active_audio_channel_name = active_strip_data.active_audio_channel_name;
     let active_state = active_strip_data.active_state;
@@ -182,7 +180,7 @@ class StripController extends React.Component {
                   <div style={{ width: '25%' }}>
                     <ColorPicker
                       onChange={index => {
-                        this.sendNote(19, index);
+                        this.sendNote(20, index);
                       }}
                       activeSchemeIndex={active_state.active_color_scheme_index}
                       schemes={config.color_schemes}
@@ -190,7 +188,7 @@ class StripController extends React.Component {
                   </div>
                   <div style={{ width: '25%' }}>
                     <Select
-                      alt={guessNoteFromNumber(25)}
+                      alt={guessNoteFromNumber(26)}
                       options={[
                         { name: 1, prefix: 'divide ' },
                         { name: 2, prefix: 'divide ' },
@@ -199,7 +197,7 @@ class StripController extends React.Component {
                       defaultValue={division_value + 1}
                       setValue={value => {
                         this.convertRangeAndSendNote(
-                          25,
+                          26,
                           value,
                           [1, 4],
                           [1, 127]
@@ -210,27 +208,27 @@ class StripController extends React.Component {
                   <div style={{ width: '50%' }}>
                     <div className="button-group button-group--stretched">
                       <Button
-                        alt={guessNoteFromNumber(16)}
+                        alt={guessNoteFromNumber(17)}
                         className={
                           active_state.is_reverse
                             ? 'button--reverse button--has-type'
                             : 'button--has-type'
                         }
                         onClick={() => {
-                          this.sendNote(16);
+                          this.sendNote(17);
                         }}
                       >
                         Reverse
                       </Button>
                       <Button
-                        alt={guessNoteFromNumber(17)}
+                        alt={guessNoteFromNumber(18)}
                         className={
                           active_state.is_mirror
                             ? 'button--reverse button--has-type'
                             : 'button--has-type'
                         }
                         onClick={() => {
-                          this.sendNote(17);
+                          this.sendNote(18);
                         }}
                       >
                         Mirror
@@ -249,7 +247,7 @@ class StripController extends React.Component {
                         className="input"
                         onChange={e => {
                           this.convertRangeAndSendNote(
-                            21,
+                            22,
                             e.target.value,
                             [0, 500],
                             [1, 127]
@@ -270,7 +268,7 @@ class StripController extends React.Component {
                         className="input"
                         onChange={e => {
                           this.sendNote(
-                            22,
+                            23,
                             convertRange(e.target.value, [0, 255], [1, 127])
                           );
                         }}
@@ -289,7 +287,7 @@ class StripController extends React.Component {
                         className="input"
                         onChange={e => {
                           this.sendNote(
-                            23,
+                            24,
                             convertRange(e.target.value, [0, 50], [1, 127])
                           );
                         }}
@@ -308,10 +306,10 @@ class StripController extends React.Component {
                         className="input"
                         onChange={e => {
                           this.sendNote(
-                            24,
+                            25,
                             convertRange(
                               e.target.value,
-                              [0.1, 8],
+                              [0.1, 18],
                               [1, 127],
                               true
                             )
@@ -320,7 +318,7 @@ class StripController extends React.Component {
                         type="range"
                         name="blur_value"
                         min="0"
-                        max="8"
+                        max="16"
                         step="0.1"
                         value={blur_value}
                       />
@@ -344,7 +342,7 @@ class StripController extends React.Component {
                   <h5 className="strip-controller__title">Audio</h5>
                   <div className="strip-controller__audio-block strip-controller__sub-card">
                     <div>
-                      {/* <AudioVisualizerCanvas
+                      <AudioVisualizerCanvas
                         name={
                           config._audio_ports[
                             active_state.active_audio_channel_index
@@ -362,7 +360,7 @@ class StripController extends React.Component {
                         audio_gain={active_state.audio_gain}
                         width={120}
                         height={60}
-                      /> */}
+                      />
                       {/* 
                       <InputRange
                         minValue={0}
@@ -388,7 +386,7 @@ class StripController extends React.Component {
                     <div>
                       <div>
                         <Select
-                          alt={guessNoteFromNumber(20)}
+                          alt={guessNoteFromNumber(21)}
                           options={this.props.active_strip_data.config._audio_ports.map(
                             elem => {
                               return { name: elem.name };
@@ -405,7 +403,7 @@ class StripController extends React.Component {
                               }
                             );
 
-                            this.sendNote(20, stateIndex);
+                            this.sendNote(21, stateIndex);
                           }}
                         />
                       </div>
@@ -417,7 +415,7 @@ class StripController extends React.Component {
                           className="input"
                           onChange={e => {
                             this.sendNote(
-                              27,
+                              28,
                               convertRange(e.target.value, [0, 24], [1, 25])
                             );
                           }}
@@ -437,7 +435,7 @@ class StripController extends React.Component {
                           className="input"
                           onChange={e => {
                             this.sendNote(
-                              28,
+                              29,
                               convertRange(e.target.value, [0, 24], [1, 25])
                             );
                           }}
@@ -457,7 +455,7 @@ class StripController extends React.Component {
                           className="input"
                           onChange={e => {
                             this.sendNote(
-                              29,
+                              30,
                               convertRange(e.target.value, [0.0, 1.0], [1, 127])
                             );
                           }}

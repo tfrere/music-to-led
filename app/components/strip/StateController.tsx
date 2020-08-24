@@ -55,10 +55,10 @@ class State extends React.Component {
           ></input>
         ) : (
           <Button
-            alt={guessNoteFromNumber(26)}
+            alt={guessNoteFromNumber(27)}
             className={'button--large button--has-type'}
             onClick={() => {
-              this.props.sendNote(26, this.props.index + 1);
+              this.props.sendNote(27, this.props.index + 1);
             }}
           >
             <>

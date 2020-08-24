@@ -53,8 +53,6 @@ class SizedRgbVisualizerCanvas extends React.Component {
     const pixelSize = baseSize > 5 ? baseSize : 5;
     const height = baseSize > 10 ? baseSize : 20;
 
-    console.log('height', height);
-
     this.state = {
       shape_offsets: shape_offsets,
       number_of_chunks: number_of_chunks,
@@ -118,42 +116,42 @@ class SizedRgbVisualizerCanvas extends React.Component {
   updateCanvas = () => {
     const ctx = this.refs.canvas.getContext('2d');
 
-    // this.state.shape_offsets.map(offset => {
-    //   if (offset === pixel_index) {
-    //     gapIndex++;
-    //   }
-    // });
-
     ctx.clearRect(0, 0, this.props.width, height);
 
-    this.state.shape_offsets.map(elem => {
-      console.log(elem);
-    });
+    let offset = 0;
+    let old_offset = 0;
+    let gap_index = 0;
 
-    this.drawLine(
-      ctx,
-      this.props.pixels[0],
-      0,
-      this.props.pixels[0].length,
-      0,
-      'rgb(255,0,0)'
-    );
-    this.drawLine(
-      ctx,
-      this.props.pixels[1],
-      0,
-      this.props.pixels[0].length,
-      0,
-      'rgb(0,255,0)'
-    );
-    this.drawLine(
-      ctx,
-      this.props.pixels[2],
-      0,
-      this.props.pixels[0].length,
-      0,
-      'rgb(0,0,255)'
-    );
+    this.state.shape_offsets.map(elem => {
+      offset = elem;
+      this.drawLine(
+        ctx,
+        this.props.pixels[0],
+        old_offset,
+        offset,
+        gap_index * this.state.gap_size,
+        'rgb(255,0,0)'
+      );
+      this.drawLine(
+        ctx,
+        this.props.pixels[1],
+        old_offset,
+        offset,
+        gap_index * this.state.gap_size,
+        'rgb(0,255,0)'
+      );
+      this.drawLine(
+        ctx,
+        this.props.pixels[2],
+        old_offset,
+        offset,
+        gap_index * this.state.gap_size,
+        'rgb(0,0,255)'
+      );
+
+      old_offset = elem;
+      gap_index++;
+    });
   };
 
   render() {

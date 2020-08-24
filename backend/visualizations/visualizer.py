@@ -15,6 +15,7 @@ from visualizations.functions.sound.channelFlash import ChannelFlash
 from visualizations.functions.sound.spectrum import Spectrum
 
 from visualizations.functions.midi.pianoNote import PianoNote
+from visualizations.functions.midi.pianoEcho import PianoEcho
 from visualizations.functions.midi.pianoScroll import PianoScroll
 from visualizations.functions.midi.pitchwheelFlash import PitchwheelFlash
 
@@ -30,7 +31,7 @@ from visualizations.functions.generic.fire import Fire
 from scipy.ndimage.filters import gaussian_filter1d
 
 
-class Visualizer(Spectrum, FullColor, FadeOut, Clear, AlternateColors, TransitionColors, DrawLine, Scroll, ChannelIntensity, ChannelFlash, Energy, PianoNote, PianoScroll, Fire, PitchwheelFlash):
+class Visualizer(Spectrum, FullColor, FadeOut, Clear, AlternateColors, TransitionColors, DrawLine, Scroll, ChannelIntensity, ChannelFlash, Energy, PianoNote, PianoEcho, PianoScroll, Fire, PitchwheelFlash):
 
     def __init__(self, config, index):
         """ The main class that contain all viz functions """
@@ -39,16 +40,16 @@ class Visualizer(Spectrum, FullColor, FadeOut, Clear, AlternateColors, Transitio
         self.strip_config = config._strips[index]
         self.pixelReshaper = PixelReshaper(self.strip_config)
 
-        self.hasBegun = False
         self.audio_datas = []
         self.audio_data = []
         self.old_audio_data = []
         self.midi_datas = []
 
+        self.old_pixels = []
+
         self.initVizualiser()
 
     def initVizualiser(self):
-        # self.active_state = deepcopy(self.strip_config.active_state)
         self.active_state = self.strip_config.active_state
         self._number_of_pixels = self.strip_config._shapes[
             self.active_state.division_value]._number_of_pixels
@@ -72,6 +73,7 @@ class Visualizer(Spectrum, FullColor, FadeOut, Clear, AlternateColors, Transitio
 
         self.initPianoNote()
         self.initPianoScroll()
+        self.initPianoEcho()
         self.initPitchwheelFlash()
 
         self.initAlternateColors()
@@ -121,7 +123,7 @@ class Visualizer(Spectrum, FullColor, FadeOut, Clear, AlternateColors, Transitio
 
     @staticmethod
     def clampToNewRange(value, old_min, old_max, new_min, new_max):
-        # poupi : dupplicate convertRange(value, [old_min, old_max], [new_min, new_max], False)
+        # performance improvements : dupplicate convertRange(value, [old_min, old_max], [new_min, new_max], False)
         new_value = (((value - old_min) * (new_max - new_min)) //
                      (old_max - old_min)) + new_min
         return new_value
@@ -142,7 +144,7 @@ class Visualizer(Spectrum, FullColor, FadeOut, Clear, AlternateColors, Transitio
         return pixels
 
     def applyMaxBrightness(self, pixels, max_brightness):
-        # poupi : test numpy perf
+        # performance improvements : test numpy perf
         return np.clip(pixels, 0, max_brightness)
 
     def drawFrame(self):
@@ -153,7 +155,7 @@ class Visualizer(Spectrum, FullColor, FadeOut, Clear, AlternateColors, Transitio
 
         pixels = []
 
-        # poupi : ref constante var against JSON files
+        # performance improvements : ref constante var against JSON files
 
         # SOUND BASED
         if(self.active_state.active_visualizer_effect == "scroll"):
@@ -172,6 +174,8 @@ class Visualizer(Spectrum, FullColor, FadeOut, Clear, AlternateColors, Transitio
             pixels = self.visualizePianoScroll()
         elif(self.active_state.active_visualizer_effect == "piano_note"):
             pixels = self.visualizePianoNote()
+        elif(self.active_state.active_visualizer_effect == "piano_echo"):
+            pixels = self.visualizePianoEcho()
         elif(self.active_state.active_visualizer_effect == "pitchwheel_flash"):
             pixels = self.visualizePitchwheelFlash()
 
