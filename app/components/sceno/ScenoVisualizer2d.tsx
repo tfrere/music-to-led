@@ -1,11 +1,10 @@
 import React from 'react';
-import { SizeMe } from 'react-sizeme';
 
 import { svgPathProperties } from 'svg-path-properties';
 
-const minHeight = 100;
+const minHeight = 300;
 
-class ScenoVisualizerCanvas extends React.Component {
+class ScenoVisualizer2d extends React.Component {
   constructor(props) {
     super(props);
 
@@ -22,9 +21,10 @@ class ScenoVisualizerCanvas extends React.Component {
     this.state = {
       ctx: null,
       scenes: scenes,
-      height: maxHeight > minHeight ? maxHeight : minHeight,
+      hasControls: this.props.hasControls || false,
+      height: this.props.height,
       hasDarkMode: this.props.hasDarkMode || false,
-      hasGrid: this.props.hasGrid || false,
+      hasGrid: true,
       hasActiveBoundingBoxVisible:
         this.props.hasActiveBoundingBoxVisible || false
     };
@@ -72,7 +72,8 @@ class ScenoVisualizerCanvas extends React.Component {
   updateCanvas = () => {
     const { ctx, scenes } = this.state;
     const strip = this.props.config._strips[0];
-    ctx.clearRect(0, 0, this.props.width, this.state.height);
+    ctx.clearRect(0, 0, this.props.width, this.props.height);
+    ctx.moveTo(0, 0.5);
     scenes.map((scene, index) => {
       if (scene.backgrounds) {
         ctx.strokeWidth = '2';
@@ -86,22 +87,22 @@ class ScenoVisualizerCanvas extends React.Component {
         });
       }
       scene.shapes.map(elem => {
-        ctx.strokeWidth = '2';
+        ctx.strokeWidth = '9.5';
         ctx.strokeStyle = 'rgba(255,255,255, 0.03)';
 
         if (
           this.props.hasActiveBoundingBoxVisible &&
-          this.state.hasGrid &&
+          !this.props.hasDarkMode &&
           index == this.props.activeStripIndex
         ) {
-          ctx.setLineDash([3, 12]);
+          ctx.setLineDash([5, 5]);
           ctx.strokeRect(
             this.props.width / 2 - this.state.scenes[index].size.width / 2 - 10,
-            this.state.height / 2 -
+            this.props.height / 2 -
               this.state.scenes[index].size.height / 2 -
               10,
-            this.state.scenes[index].size.width + 20,
-            this.state.scenes[index].size.height + 20
+            this.state.scenes[index].size.width + 15,
+            this.state.scenes[index].size.height + 15
           );
         }
 
@@ -132,7 +133,7 @@ class ScenoVisualizerCanvas extends React.Component {
 
     const XCenterOffset = this.props.width / 2 - (size.width * size.scale) / 2;
     const YCenterOffset =
-      this.state.height / 2 - (size.height * size.scale) / 2;
+      this.props.height / 2 - (size.height * size.scale) / 2;
     const length = properties.getTotalLength();
     const pixels_length = r.length;
     const gap = length / pixels_length;
@@ -160,56 +161,20 @@ class ScenoVisualizerCanvas extends React.Component {
   };
 
   render() {
-    const hasGridClass = this.state.hasGrid ? 'grid-overlay' : '';
+    const hasGridClass = this.props.hasGrid ? 'grid-overlay' : '';
     return (
       <div
         style={{
-          height: this.state.height + 30 + 'px'
+          height: this.props.height + 2
         }}
       >
         {this.props.pixels ? (
-          <div
-            className={'sceno-visualizer ' + hasGridClass}
-            style={{ height: this.state.height }}
-          >
-            <div className="sceno-visualizer__toolbar">
-              <button
-                onClick={() => {
-                  this.setState({
-                    hasGrid: !this.state.hasGrid
-                  });
-                }}
-                className="sceno-visualizer__toggle-has-grid"
-              >
-                {this.state.hasGrid ? (
-                  <i className="la la-border-all"></i>
-                ) : (
-                  <i className="la la-tv"></i>
-                )}
-              </button>
-              <button
-                onClick={() => {
-                  this.setState({
-                    hasDarkMode: !this.state.hasDarkMode
-                  });
-                }}
-                className="sceno-visualizer__toggle-dark-mode"
-              >
-                {this.state.hasDarkMode ? (
-                  <i className="la la-moon"></i>
-                ) : (
-                  <i className="la la-sun"></i>
-                )}
-              </button>
-            </div>
+          <div className={'sceno-visualizer ' + hasGridClass}>
             <canvas
               className="sceno-visualizer__canvas"
               ref="canvas"
-              style={{
-                background: this.state.hasDarkMode ? 'black' : 'transparent'
-              }}
               width={this.props.width}
-              height={this.state.height}
+              height={this.props.height}
             />
           </div>
         ) : (
@@ -220,16 +185,4 @@ class ScenoVisualizerCanvas extends React.Component {
   }
 }
 
-class PixelVisualizerCanvas extends React.Component {
-  render() {
-    return (
-      <SizeMe>
-        {({ size }) => {
-          return <ScenoVisualizerCanvas {...this.props} width={size.width} />;
-        }}
-      </SizeMe>
-    );
-  }
-}
-
-export default PixelVisualizerCanvas;
+export default ScenoVisualizer2d;

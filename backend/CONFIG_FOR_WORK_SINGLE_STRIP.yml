@@ -81,20 +81,20 @@ strips:
     is_reverse: false
     is_mirror: true
   - name: Intensity
-    active_visualizer_effect: channel_intensity
+    active_visualizer_effect: energy
     active_color_scheme_index: 3
-    active_audio_channel_index: 0
+    active_audio_channel_index: 1
     audio_samples_filter_min: 0
     audio_samples_filter_max: 24
     audio_gain: 1
     audio_decay: 0.1
-    division_value: 2
+    division_value: 0
     max_brightness: 255
-    time_interval: 120
-    chunk_size: 5
+    time_interval: 1
+    chunk_size: 18
     blur_value: 0.1
     is_reverse: false
-    is_mirror: false
+    is_mirror: true
   - name: rwar
     active_visualizer_effect: piano_echo
     active_color_scheme_index: 0
@@ -125,45 +125,3 @@ strips:
     blur_value: 8.5
     is_reverse: false
     is_mirror: false
-- name: Top Bar
-  serial_port_name: /dev/tty.usbserial-A50285BI
-  active_state_index: 0
-  is_online: false
-  midi_ports_for_changing_mode:
-  - Audio2Led ChangeMod TopBar
-  midi_ports_for_visualization:
-  - Audio2Led Synth
-  original_physical_shape:
-  - 80
-  midi_range:
-  - 47
-  - 73
-  scene:
-    shapes:
-    - offset:
-      - 0
-      - 0
-      pixel_range:
-      - 0
-      - 80
-      svg_string: M0,-100 T300,-100
-    size:
-      width: 300
-      height: 10
-      scale: 1
-  states:
-  - name: Forevermore
-    active_visualizer_effect: alternate_color_chunks
-    active_color_scheme_index: 0
-    active_audio_channel_index: 0
-    audio_samples_filter_min: 0
-    audio_samples_filter_max: 24
-    audio_gain: 0.4
-    audio_decay: 0.5
-    division_value: 0
-    max_brightness: 255
-    time_interval: 361
-    chunk_size: 16
-    blur_value: 10.6
-    is_reverse: false
-    is_mirror: true

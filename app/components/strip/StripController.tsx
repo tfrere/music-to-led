@@ -73,7 +73,7 @@ class StripController extends React.Component {
   };
 
   sendNote = (note, velocity = 127) => {
-    const CHANGE_STATE = 26;
+    const CHANGE_STATE = 27;
     if (note != CHANGE_STATE && this.state.isStatePristine) {
       this.setState({ isStatePristine: false });
     } else if (note == CHANGE_STATE && !this.state.isStatePristine) {
@@ -104,6 +104,9 @@ class StripController extends React.Component {
 
     let active_audio_channel_name = active_strip_data.active_audio_channel_name;
     let active_state = active_strip_data.active_state;
+    let active_visualizer_infos = keyConfiguration.effects.find(elem => {
+      return active_state.active_visualizer_effect == elem.name;
+    });
     let strip = active_strip_data.strip;
     let config = active_strip_data.config;
     let audios = active_strip_data.audios;
@@ -135,13 +138,14 @@ class StripController extends React.Component {
           return (
             <>
               <Button
-                alt={elem.note}
+                alt={guessNoteFromNumber(elem.note_int)}
                 key={elem.name}
                 className={isActiveClass + ' button--has-type'}
                 onClick={() => {
                   this.sendNote(elem.note_int);
                 }}
               >
+                <span className="button__type">{elem.type}</span>
                 {elem.label}
               </Button>
             </>
@@ -173,9 +177,11 @@ class StripController extends React.Component {
           <>
             <div className="strip-controller-group">
               <div className="strip-controller-group__item strip-controller-group__item--effect">
+                <h5 className="label">Effects</h5>
                 {buttonHolder}
               </div>
               <div className="strip-controller-group__item strip-controller-group__item--modifiers ">
+                <h5 className="label">Modifiers</h5>
                 <div style={{ display: 'flex' }}>
                   <div style={{ width: '25%' }}>
                     <ColorPicker
@@ -237,7 +243,7 @@ class StripController extends React.Component {
                   </div>
                 </div>
                 <div className="strip-controller-group__item">
-                  <h5 className="strip-controller__title">Parameters</h5>
+                  <h5 className="label">Parameters</h5>
                   <div className="strip-controller__sub-card">
                     <div className="slider-holder">
                       <label htmlFor="time">
@@ -279,7 +285,14 @@ class StripController extends React.Component {
                         value={max_brightness}
                       />
                     </div>
-                    <div className="slider-holder">
+
+                    <div
+                      className={
+                        active_visualizer_infos.name == 'alternate_color_chunks'
+                          ? 'slider-holder strip-controller__sub-card'
+                          : 'slider-holder strip-controller__sub-card strip-controller__sub-card--disabled '
+                      }
+                    >
                       <label htmlFor="chunk_size">
                         Chunk <span>{chunk_size}</span>
                       </label>
@@ -339,8 +352,14 @@ class StripController extends React.Component {
                     /> */}
                   </div>
                   {/* audio filters */}
-                  <h5 className="strip-controller__title">Audio</h5>
-                  <div className="strip-controller__audio-block strip-controller__sub-card">
+                  <h5 className="label">Audio</h5>
+                  <div
+                    className={
+                      active_visualizer_infos.type == 'audio'
+                        ? 'strip-controller__audio-block strip-controller__sub-card'
+                        : 'strip-controller__audio-block strip-controller__sub-card strip-controller__sub-card--disabled '
+                    }
+                  >
                     <div>
                       <AudioVisualizerCanvas
                         name={
@@ -361,19 +380,19 @@ class StripController extends React.Component {
                         width={120}
                         height={60}
                       />
-                      {/* 
-                      <InputRange
+
+                      {/* <InputRange
                         minValue={0}
                         maxValue={24}
                         draggableTrack={false}
                         onChange={value => {
                           this.sendNote(
-                            27,
+                            28,
                             convertRange(value.min, [0, 24], [1, 25])
                           );
 
                           this.sendNote(
-                            28,
+                            29,
                             convertRange(value.max, [0, 24], [1, 25])
                           );
                         }}
@@ -383,7 +402,7 @@ class StripController extends React.Component {
                         }}
                       /> */}
                     </div>
-                    <div>
+                    <div style={{ flexGrow: 1 }}>
                       <div>
                         <Select
                           alt={guessNoteFromNumber(21)}

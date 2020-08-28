@@ -5,7 +5,6 @@ class AlternateColors():
 
     def initAlternateColors(self):
         self.alternate_colors_index = 0
-        self.hasBegun = False
 
     def drawAlternateColorChunks(self):
 
@@ -27,10 +26,6 @@ class AlternateColors():
             self.pixels[0][i] = color_scheme[which_color][0]
             self.pixels[1][i] = color_scheme[which_color][1]
             self.pixels[2][i] = color_scheme[which_color][2]
-        if(not self.hasBegun):
-            self.pixels = self.blurFrame(
-                self.pixels, self.active_state.blur_value)
-            self.hasBegun = True
 
     def visualizeAlternateColorChunks(self):
         """Effect that alternate two colors moving forward"""

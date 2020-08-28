@@ -6,7 +6,7 @@ import { promiseTimeout, zeromqMessages } from '../utils/zeromq';
 
 import Strip from './strip/Strip';
 import StripController from './strip/StripController';
-import ScenoVisualizerCanvas from './sceno/ScenoVisualizerCanvas';
+import ScenoVisualizer2d from './sceno/ScenoVisualizer2d';
 
 let client_time = new Date().getTime();
 let server_time = 0;
@@ -149,8 +149,8 @@ class Show extends React.Component {
       <React.Fragment>
         {isZMQConnected ? (
           <div className="screen-size flex-center-wrapper">
-            <div style={{ width: '100%', height: '500px' }}>
-              <ScenoVisualizerCanvas
+            <div style={{ width: '100%' }}>
+              <ScenoVisualizer2d
                 config={config}
                 pixels={pixels}
                 height={490}

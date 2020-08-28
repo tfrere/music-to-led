@@ -10,7 +10,7 @@ nav {
   bottom: 0px;
   left: 0;
   width: 100%;
-  z-index: 9;
+  z-index: $navZIndex;
   padding: 0 20px 0 20px;
   i {
     opacity: 0.7;
@@ -24,6 +24,16 @@ nav {
     height: 1px;
     bottom: 0;
     left: 0;
+  }
+  &:before {
+    content: '';
+    position: absolute;
+    left: 0px;
+    top: -9px;
+    height: 9px;
+    width: 100%;
+    background: linear-gradient(to bottom, transparent 0%, black 100%);
+    opacity: 0.1;
   }
   a {
     color: $textColor;

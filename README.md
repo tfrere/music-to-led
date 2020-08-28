@@ -16,13 +16,13 @@
  -->
 
 <p align="center">
-  <a href="https://github.com/tfrere/music-2-led" title="haxe.org"><img src="images/logo.svg" width="400"></a>
+  <a href="https://github.com/tfrere/music-to-led" title="haxe.org"><img src="images/logo.svg" width="400"></a>
 </p>
 <p align="center">
-<a href="https://github.com/tfrere/music-2-led#licence"><img src="https://img.shields.io/badge/licence-MIT-green" alt="Licence"></a>
-<a href="https://github.com/tfrere/music-2-led"><img src="https://img.shields.io/badge/platform-osx--64%20%7C%20linux--64-lightgrey" alt="Platform support"></a>
-<a href="https://github.com/tfrere/music-2-led"><img src="https://img.shields.io/github/last-commit/tfrere/music-2-led" alt="Last update"></a>
-<a href="https://github.com/tfrere/music-2-led"><img src="https://img.shields.io/github/v/tag/tfrere/music-2-led" alt="Current version"></a>
+<a href="https://github.com/tfrere/music-to-led#licence"><img src="https://img.shields.io/badge/licence-MIT-green" alt="Licence"></a>
+<a href="https://github.com/tfrere/music-to-led"><img src="https://img.shields.io/badge/platform-osx--64%20%7C%20linux--64-lightgrey" alt="Platform support"></a>
+<a href="https://github.com/tfrere/music-to-led"><img src="https://img.shields.io/github/last-commit/tfrere/music-to-led" alt="Last update"></a>
+<a href="https://github.com/tfrere/music-to-led"><img src="https://img.shields.io/github/v/tag/tfrere/music-to-led" alt="Current version"></a>
 </p>
 
 #

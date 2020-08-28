@@ -55,9 +55,6 @@ class Nav extends React.Component {
           <NavLink activeClassName="active" to={routes.BUILDER}>
             <i className="la la-pencil-ruler" /> BUILD
           </NavLink>
-          <NavLink activeClassName="active" to={routes.SHOW}>
-            <i className="la la-satellite"></i> SHOW
-          </NavLink>
           <NavLink activeClassName="active" to={routes.CONFIG_LOADER}>
             <i className="la la-satellite"></i> CONFIG
           </NavLink>

@@ -7,9 +7,11 @@ import { compareObjects } from '../utils/compareObjects';
 
 import Strip from './strip/Strip';
 import StripController from './strip/StripController';
-import ScenoVisualizerCanvas from './sceno/ScenoVisualizerCanvas';
+import ScenoVisualizer from './sceno/ScenoVisualizer';
+import ScenoVisualizer2d from './sceno/ScenoVisualizer2d';
 import RgbVisualizerCanvas from './strip/RgbVisualizerCanvas';
 import AudioVisualizerCanvas from './audio/AudioVisualizerCanvas';
+import SizedScenoVisualizerCanvas3d from './sceno/ScenoVisualizer3d';
 Object.compare = function(obj1, obj2) {
   //Loop through properties in object 1
   for (var p in obj1) {
@@ -98,7 +100,7 @@ class Builder extends React.Component {
   computeTime() {
     client_time = new Date().getTime();
     let is_connected = server_time - client_time;
-    if (is_connected > -200) {
+    if (is_connected > -400) {
       this.setState({
         config: object.config,
         audios: object.audios,
@@ -221,14 +223,13 @@ class Builder extends React.Component {
               <h4 className="left-panel__list__item__header__title">
                 {config._audio_ports[index].name}
               </h4>
-              <div className="online-notifier online-notifier--online">
-                <label className="online-notifier__label">Online&nbsp;</label>
+              <div className="online-notifier online-notifier--online online-notifier--no-blink">
                 <div className="online-notifier__circle"></div>
               </div>
             </div>
             <div className="left-panel__list__item__content">
-              <AudioVisualizerCanvas audio={audio} width={85} height={45} />
-              <div>
+              <AudioVisualizerCanvas audio={audio} width={100} height={55} />
+              {/* <div>
                 <span>
                   {config._audio_ports[index].number_of_audio_samples}{' '}
                   <span>samples</span>
@@ -237,7 +238,7 @@ class Builder extends React.Component {
                   {config._audio_ports[index].min_frequency} <span>-</span>{' '}
                   {config._audio_ports[index].max_frequency} <span>hz</span>
                 </span>
-              </div>
+              </div> */}
             </div>
           </div>
         );
@@ -249,12 +250,12 @@ class Builder extends React.Component {
         {isZMQConnected && isOkToLaunch ? (
           <>
             <div className="left-panel">
+              <h4 className="title">
+                <i className="la la-microphone la-2x" />
+                <span>{audios.length}</span> Audio
+                {audios.length > 1 ? 's' : ''}
+              </h4>
               <div className="left-panel__list left-panel__list--audio">
-                <h4 className="title">
-                  <i className="la la-microphone la-2x" />
-                  <span>{audios.length}</span> Audio
-                  {audios.length > 1 ? 's' : ''}
-                </h4>
                 {audiosElem}
               </div>
               <div className="left-panel__list left-panel__list--strip">
@@ -266,31 +267,33 @@ class Builder extends React.Component {
                 {stripsElem}
               </div>
             </div>
-            <ScenoVisualizerCanvas
-              config={config}
-              pixels={pixels}
-              hasDarkMode={false}
-              hasGrid={false}
-              activeStripIndex={active_strip_data.strip_index}
-              hasActiveBoundingBoxVisible={true}
-            />
-            {active_strip_data ? (
-              <div>
-                {/* active_states, is_strip_online, framerate, strip_index, */}
-                <div className="card">
-                  <RgbVisualizerCanvas
-                    pixels={pixels[active_strip_data.strip_index]}
-                    physical_shape={active_strip_data.strip._physical_shape}
-                    active_shape={
-                      active_strip_data.strip._shapes[
-                        active_strip_data.active_state.division_value
-                      ]
-                    }
-                  />
-                  <StripController active_strip_data={active_strip_data} />
+            <div className="main-content">
+              <ScenoVisualizer
+                config={config}
+                pixels={pixels}
+                hasDarkMode={false}
+                hasControls={true}
+                hasGrid={false}
+                activeStripIndex={active_strip_data.strip_index}
+                hasActiveBoundingBoxVisible={true}
+              />
+              {active_strip_data ? (
+                <div style={{ marginBottom: '20px' }}>
+                  <div className="card">
+                    <RgbVisualizerCanvas
+                      pixels={pixels[active_strip_data.strip_index]}
+                      physical_shape={active_strip_data.strip._physical_shape}
+                      active_shape={
+                        active_strip_data.strip._shapes[
+                          active_strip_data.active_state.division_value
+                        ]
+                      }
+                    />
+                    <StripController active_strip_data={active_strip_data} />
+                  </div>
                 </div>
-              </div>
-            ) : null}
+              ) : null}
+            </div>
           </>
         ) : (
           <>

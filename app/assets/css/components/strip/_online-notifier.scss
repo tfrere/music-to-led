@@ -28,14 +28,18 @@
 
 .online-notifier.online-notifier--online .online-notifier__circle {
   background-color: red;
-  animation: blink .7s alternate infinite;
+  animation: blink 0.7s alternate infinite;
+}
+
+.online-notifier.online-notifier--no-blink .online-notifier__circle {
+  background-color: red;
+  animation: none 0.7s alternate infinite;
 }
 
 .online-notifier.online-notifier--offline .online-notifier__circle {
   background-color: rgba(255, 255, 255, 0.5);
   border-radius: 0%;
 }
-
 
 @keyframes blink {
   0% {

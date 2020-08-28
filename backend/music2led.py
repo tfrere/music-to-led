@@ -58,7 +58,7 @@ def zmqLiveDataStreamProcess(shared_list):
 
     while True:
         server.socket.send_string(server.computeLiveDatas(shared_list))
-        time.sleep(0.050)
+        time.sleep(0.016)
 
 
 def audioProcess(shared_list):

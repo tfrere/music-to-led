@@ -1,7 +1,8 @@
 .audio-visualizer {
   display: inline-block;
-  border: 1px solid rgba(255, 255, 255, 0.2);
+  border: 1px solid rgba(255, 255, 255, 0.1);
   border-radius: 3px;
+  background-color: $visualizer-color;
   margin-right: 10px;
   canvas {
     margin: 0 5px;

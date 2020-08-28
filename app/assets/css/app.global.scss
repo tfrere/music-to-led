@@ -1,17 +1,26 @@
 $primary-color: #061b28;
 $primary-color-darken-1: darken($primary-color, 5%);
 $primary-color-lighten-1: lighten($primary-color, 15%);
+$visualizer-color: darken($primary-color, 2%);
 
 $backgroundColor: lighten($primary-color-darken-1, 4%);
 $textColor: rgba(255, 255, 255, 0.7);
 $cardBackgroundColor: lighten($primary-color, 4%);
+$leftNavActiveBackground: lighten($primary-color, 4%);
 
 $topBarHeight: 22px;
-$bottomBarHeight: 80px;
+$bottomBarHeight: 70px;
 
 $leftPanelWidth: 250px;
 
 $pageHeight: calc(100% - #{$topBarHeight + $bottomBarHeight});
+
+$draggableBarZIndex: 6;
+$leftPanelZIndex: 5;
+$fullScreenPortalZIndex: 6;
+$contentZIndex: 4;
+$scenoVisualizerZIndex: 4;
+$navZIndex: 6;
 
 @import 'const/_font.scss';
 @import 'const/_normalize.scss';
@@ -122,6 +131,16 @@ input[type='range'] {
   margin-right: 5px;
 }
 
+.label {
+  margin-top: 10px;
+  margin-bottom: 10px;
+  text-transform: uppercase;
+  letter-spacing: 0.05rem;
+  font-size: 10px;
+  color: rgba(255, 255, 255, 0.1);
+  // text-shadow: 0.5px 0.5px 0px lighten($primary-color, 20%);
+}
+
 h1,
 h2,
 h3,
@@ -168,6 +187,16 @@ hr {
   }
 }
 
+#full-screen-portal {
+  z-index: $fullScreenPortalZIndex;
+  position: absolute;
+  top: $topBarHeight;
+  left: 0;
+  width: 100%;
+  height: $pageHeight;
+  background: $backgroundColor;
+}
+
 @import 'components/generic/input-range/_input-range.scss';
 @import 'components/generic/_input-file.scss';
 @import 'components/generic/_pop-over.scss';
@@ -185,6 +214,7 @@ hr {
 @import 'components/strip/_midi-logs.scss';
 @import 'components/strip/_strip.scss';
 @import 'components/strip/_rgb-visualizer.scss';
+@import 'components/strip/_pixel-visualizer.scss';
 @import 'components/strip/_strip-visualizer.scss';
 @import 'components/strip/_online-notifier.scss';
 @import 'components/strip/_strip-controller.scss';

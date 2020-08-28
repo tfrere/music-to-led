@@ -44,8 +44,8 @@ class Strip extends React.Component {
         <div className="left-panel__list__item__header">
           <h4 className="left-panel__list__item__header__title">
             {strip.name}
-            {strip.serial_port_name}
           </h4>
+
           <div className={'online-notifier' + onlineClassNames}>
             {is_strip_online ? (
               <label className="online-notifier__label">
@@ -57,6 +57,9 @@ class Strip extends React.Component {
             <div className="online-notifier__circle"></div>
           </div>
         </div>
+        <h4 className="left-panel__list__item__header__sub-title">
+          {strip.serial_port_name}
+        </h4>
         <div className="strip-item__live-view">
           <PixelVisualizerCanvas
             physical_shape={strip._physical_shape}

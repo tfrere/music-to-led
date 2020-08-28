@@ -3,10 +3,12 @@
   left: 0;
   height: $pageHeight;
   width: $leftPanelWidth;
-  overflow-x: hidden;
   background: lighten($backgroundColor, 3%);
   border-right: 1px solid lighten($backgroundColor, 8%);
   padding-top: 0 !important;
+  padding: 0 20px;
+  z-index: $leftPanelZIndex;
+  overflow: scroll;
   .strip-item {
     margin: 0 -20px;
   }
@@ -18,21 +20,32 @@
     font-size: 13px;
     margin-left: -13px;
   }
+  &:after {
+    content: '';
+    position: absolute;
+    right: -10px;
+    top: 0;
+    height: 100%;
+    width: 6px;
+    background: linear-gradient(to bottom, transparent 0%, black 100%);
+    opacity: 0.1;
+  }
+  &::-webkit-scrollbar {
+    width: 0px; /* Remove scrollbar space */
+    background: transparent; /* Optional: just make scrollbar invisible */
+    height: 0;
+  }
 }
 
 .left-panel__list {
   &--audio .left-panel__list__item {
     display: flex;
-    .audio-visualizer {
-      // background: rgba(white, 0.1);
-    }
     canvas {
       margin-bottom: 0;
     }
   }
   &--strip .left-panel__list__item {
     cursor: pointer;
-    padding-bottom: 20px !important;
     .state-controller__title {
       margin-top: 10px;
       color: rgba(255, 255, 255, 0.3);
@@ -40,13 +53,20 @@
   }
 }
 
-.left-panel__list__item {
+.left-panel__list.left-panel__list--strip .left-panel__list__item {
   margin-left: -20px;
   margin-right: -20px;
-  padding-bottom: 10px;
   padding: 10px;
-  &:not(:last-child) {
-    margin-bottom: 5px !important;
+  padding-bottom: 10px;
+  position: relative;
+  background: darken($leftNavActiveBackground, 2%);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.04);
+
+  &:first-of-type {
+    border-top: 1px solid rgba(255, 255, 255, 0.04);
+  }
+  &:not(.left-panel__list__item--active):hover {
+    background: darken($leftNavActiveBackground, 1%);
   }
   hr {
     margin-top: 0;
@@ -57,8 +77,33 @@
   }
 }
 
+.left-panel__list.left-panel__list--strip .left-panel__list__item--active {
+  position: relative;
+  background: $leftNavActiveBackground;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.04);
+  &:first-of-type {
+    border-top: 1px solid rgba(255, 255, 255, 0.04);
+  }
+  &:before {
+    content: '';
+    position: absolute;
+    left: calc(100% + -9px);
+    top: 7px;
+    width: 16px;
+    height: 16px;
+    clip-path: polygon(0% 0%, 100% 100%, 0% 100%);
+    transform: rotate(-135deg);
+    border-radius: 0 0 0 0.15em;
+    background: $leftNavActiveBackground;
+    border: 1px solid lighten($leftNavActiveBackground, 3%);
+    z-index: 99999;
+    clip-depth: 2;
+  }
+}
+
 .left-panel__list__item__header {
   display: flex;
+  margin: 0 2px;
 }
 
 .left-panel__list__item__header__title {
@@ -78,42 +123,58 @@
 }
 
 .left-panel__list__item__header__sub-title {
+  font-size: 10px;
+  text-transform: uppercase;
+  color: rgba(255, 255, 255, 0.3);
+  height: 10px;
+  line-height: 10px;
+  width: 100%;
+  margin: 0 2px;
+  margin-top: -5px;
+  margin-bottom: 10px;
+  span {
+    color: rgba(255, 255, 255, 0.5);
+    margin: 0 5px;
+  }
+}
+
+.left-panel__list__item__header__sub-title {
 }
 
 .left-panel__list__item__live-view {
-  padding-top: 10px;
+  margin-bottom: 10px !important;
 }
 
 .left-panel__list__item {
-  background: rgba(255, 255, 255, 0.03);
+  //background: rgba(255, 255, 255, 0.03);
 }
 
 .left-panel__list__item--active {
-  background: rgba(255, 255, 255, 0.1);
-}
-
-.left-panel__list--audio .left-panel__list__item {
-  display: flex;
-  flex-direction: column;
-  flex-wrap: wrap;
+  //background: rgba(255, 255, 255, 0.1);
 }
 
 .left-panel__list--audio {
+  display: flex;
+  margin: 0;
+  .audio-visualizer {
+    margin-right: 0;
+  }
+  .left-panel__list__item {
+    flex-direction: column;
+    flex-grow: 1;
+    padding: 0px;
+    margin-left: -10px;
+    margin-right: 17px;
+  }
   .left-panel__list__item__content {
-    display: flex;
-    flex-direction: row;
-    & > div > span {
-      display: block;
-      font-size: 12px;
-      font-weight: 600;
-      margin-bottom: 2px;
-      color: rgba(255, 255, 255, 1);
-      span {
-        color: rgba(255, 255, 255, 0.5);
-      }
-    }
   }
   .audio-visualizer {
-    width: 100px;
+  }
+  .audio-visualizer__canvas {
+    padding: 0;
+    padding-top: 5px;
+  }
+
+  .left-panel__list__item__header {
   }
 }

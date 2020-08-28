@@ -9,14 +9,12 @@
     left: $leftPanelWidth;
   }
   overflow-x: hidden;
-  & > div {
-    padding: 20px;
-    padding-bottom: 0;
-    & > .card {
-      &.card {
-        margin-left: 0;
-        margin-right: 0;
-      }
+  & > .main-content {
+  }
+  & > .card {
+    &.card {
+      margin-left: 0;
+      margin-right: 0;
     }
   }
   animation: appear 0.5s linear;
@@ -28,4 +26,15 @@
   to {
     opacity: 1;
   }
+}
+
+.page--show > div {
+  background: black;
+}
+
+.page--builder .card {
+  margin-top: 0;
+}
+
+.page--without-padding {
 }

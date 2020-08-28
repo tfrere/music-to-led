@@ -15,6 +15,8 @@
   },
   "license": "MIT",
   "dependencies": {
+    "react-three-fiber": "^4.2.20",
+    "three": "^0.120.0",
     "zeromq": "^6.0.0-beta.6"
   }
 }

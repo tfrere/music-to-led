@@ -44,14 +44,14 @@ class MidiVisualizer extends React.Component {
       if (notes.length == 0) {
         toRender = (
           <div className="midi-logs">
-            <label>Midi logs</label>
+            <label className="label">Midi logs</label>
             No entry for the moment...
           </div>
         );
       } else {
         toRender = (
           <div className="midi-logs">
-            <label>
+            <label className="label">
               {/* <span>{this.props.channels}</span> */}
               Midi logs
             </label>

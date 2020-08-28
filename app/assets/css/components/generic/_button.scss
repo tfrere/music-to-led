@@ -73,7 +73,7 @@ input[type='button'] {
   white-space: nowrap;
   background: rgba(255, 255, 255, 0.05);
   border-radius: 4px;
-  border: 1px solid rgba(255, 255, 255, 0.3);
+  border: 1px solid rgba(255, 255, 255, 0.15);
   cursor: pointer;
   box-sizing: border-box;
   position: relative;
@@ -93,6 +93,11 @@ input[type='button'] {
 .button--stretched {
   width: 100%;
   display: flex;
+}
+
+.button--dashed {
+  border-style: dashed;
+  opacity: 0.5;
 }
 
 .button--danger {
@@ -169,24 +174,11 @@ input[type='button'] {
   text-align: left;
 }
 
-.button--has-type {
-  padding: 0 15px;
-
-  &.button--reverse {
-    background: rgba(255, 255, 255, 0.8);
-    color: black;
-    .button__type {
-      border-right: 1px solid white;
-      border-bottom: 1px solid white;
-      color: black;
-    }
-  }
-}
-
 .button__type {
   position: absolute;
   top: 0;
-  left: 0;
+  left: -100%;
+  overflow: hidden;
   border-right: 1px solid rgba(255, 255, 255, 0.2);
   border-bottom: 1px solid rgba(255, 255, 255, 0.2);
   color: rgba(255, 255, 255, 0.2);
@@ -194,6 +186,25 @@ input[type='button'] {
   font-size: 6px;
   line-height: 6px;
   padding: 2px 4px;
+}
+
+.button--has-type {
+  padding: 0 15px;
+
+  &.button--reverse {
+    background: rgba(255, 255, 255, 0.8);
+    color: black;
+    .button__type {
+      border-right: 1px solid rgba(0, 0, 0, 0.3);
+      border-bottom: 1px solid rgba(0, 0, 0, 0.3);
+      color: black;
+    }
+  }
+}
+
+.button.button--reverse .button__type,
+.button.button:hover .button__type {
+  left: 0%;
 }
 
 .button:hover,

@@ -3,7 +3,7 @@ $thumb-color: rgb(150, 150, 150) !default;
 
 $thumb-radius: 3px !default;
 $thumb-height: 18px !default;
-$thumb-width: 12px !default;
+$thumb-width: 18px !default;
 $thumb-border-width: 1px !default;
 $thumb-border-color: $primary-color-darken-1 !default;
 
@@ -35,13 +35,13 @@ $ie-bottom-track-color: darken($track-color, $contrast) !default;
   cursor: pointer;
   height: $thumb-height;
   width: $thumb-width;
-  position:relative;
+  position: relative;
   &:after {
-    content: "";
+    content: '';
     height: $thumb-height;
     width: 1px;
-    background:red;
-    position:absolute;
+    background: red;
+    position: absolute;
   }
 }
 

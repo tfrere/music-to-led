@@ -5,9 +5,19 @@
   left: 0;
   width: 100%;
   height: $topBarHeight;
-  z-index: 9999999;
+  z-index: $draggableBarZIndex;
   background-color: lighten($backgroundColor, 7%);
   border-bottom: 1px solid lighten($backgroundColor, 15%);
+  &:before {
+    content: '';
+    position: absolute;
+    left: 0px;
+    bottom: 0px;
+    height: 9px;
+    width: 100%;
+    background: linear-gradient(to bottom, transparent 0%, black 100%);
+    opacity: 0.1;
+  }
 }
 
 .software-version {

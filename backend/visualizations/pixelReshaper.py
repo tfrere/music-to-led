@@ -10,9 +10,12 @@ class PixelReshaper:
 
     @staticmethod
     def blurFrame(pixels, value=1.0):
-        pixels[0, :] = gaussian_filter1d(pixels[0, :], sigma=value)
-        pixels[1, :] = gaussian_filter1d(pixels[1, :], sigma=value)
-        pixels[2, :] = gaussian_filter1d(pixels[2, :], sigma=value)
+        pixels[0, :] = gaussian_filter1d(
+            pixels[0, :], sigma=value, mode="reflect")
+        pixels[1, :] = gaussian_filter1d(
+            pixels[1, :], sigma=value, mode="reflect")
+        pixels[2, :] = gaussian_filter1d(
+            pixels[2, :], sigma=value, mode="reflect")
         return pixels
 
     def initActiveShape(self):

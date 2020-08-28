@@ -66,7 +66,7 @@ class SizedPixelVisualizerCanvas extends React.Component {
     const shape_offsets = this.props.physical_shape._offsets;
     const number_of_chunks = this.props.physical_shape._offsets.length - 1;
     const number_of_pixels = this.props.pixels[0].length;
-    const gap_size = this.props.gap_size || 20;
+    const gap_size = this.props.gap_size || 10;
     const pixel_width =
       (this.props.width - number_of_chunks * gap_size) / number_of_pixels;
 
@@ -114,38 +114,40 @@ class SizedPixelVisualizerCanvas extends React.Component {
         this.props.pixels[2][pixel_index] * 5 +
         ')';
 
-      // ctx.fillRect(
-      //   pixel_index * this.state.pixel_width + gapIndex * this.state.gap_size,
-      //   0,
-      //   this.state.pixel_width,
-      //   this.state.height
-      // );
-
-      ctx.beginPath();
-      ctx.arc(
-        this.state.pixelSize / 2 +
-          4 +
-          pixel_index * this.state.pixel_width +
-          gapIndex * this.state.gap_size,
-        this.state.height / 2,
-        this.state.pixelSize,
-        0,
-        2 * Math.PI,
-        false
+      ctx.fillRect(
+        pixel_index * this.state.pixel_width + gapIndex * this.state.gap_size,
+        this.state.height / 4,
+        this.state.pixel_width,
+        this.state.height / 2
       );
-      ctx.fill();
+
+      // ctx.beginPath();
+      // ctx.arc(
+      //   this.state.pixelSize / 2 +
+      //     4 +
+      //     pixel_index * this.state.pixel_width +
+      //     gapIndex * this.state.gap_size,
+      //   this.state.height / 2,
+      //   this.state.pixelSize,
+      //   0,
+      //   2 * Math.PI,
+      //   false
+      // );
+      // ctx.fill();
     });
   };
 
   render() {
     return (
       <div className="pixel-visualizer">
-        <canvas
-          className="pixel-visualizer__canvas"
-          ref="canvas"
-          width={this.props.width}
-          height={this.state.height}
-        />
+        <div className="pixel-visualizer__canvas-holder">
+          <canvas
+            className="pixel-visualizer__canvas"
+            ref="canvas"
+            width={this.props.width}
+            height={this.state.height}
+          />
+        </div>
       </div>
     );
   }

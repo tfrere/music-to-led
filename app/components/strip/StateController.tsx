@@ -148,7 +148,7 @@ class StateController extends React.Component {
   render() {
     return (
       <div className="state-controller">
-        <label className="state-controller__title">Presets</label>
+        <label className="label">Presets</label>
         <div className="state-controller__states">
           {this.props.strip.states.map((state, index) => {
             return (
@@ -166,7 +166,7 @@ class StateController extends React.Component {
           })}
           <div className="button-group">
             <Button
-              className="button--square"
+              className="button--square button--dashed"
               onClick={() => {
                 this.setState({
                   hasToRenderNewStateInput: !this.state

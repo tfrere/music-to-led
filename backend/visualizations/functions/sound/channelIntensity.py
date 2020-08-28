@@ -77,6 +77,5 @@ class ChannelIntensity():
                         color_scheme) >= 2 else color_scheme[0][1]
                     strip[2][i] = color_scheme[1][2] if len(
                         color_scheme) >= 2 else color_scheme[0][2]
-                strip = self.blurFrame(strip, self.active_state.blur_value)
 
         return self.pixelReshaper.reshapeFromStrips(self.pixelReshaper._strips)

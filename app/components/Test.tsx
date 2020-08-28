@@ -24,7 +24,7 @@ class Test extends React.Component {
   render() {
     return (
       <div className="screen-size flex-center-wrapper">
-        <div style={{ width: '300px', textAlign: 'center' }}>
+        <div style={{ width: '100%', height: '100%', textAlign: 'center' }}>
           <InputRange
             maxValue={24}
             minValue={0}

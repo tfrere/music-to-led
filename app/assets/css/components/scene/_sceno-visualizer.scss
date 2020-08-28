@@ -1,26 +1,82 @@
+.sceno-visualizer-holder {
+  border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+  position: relative;
+  background: $visualizer-color;
+  margin-bottom: 20px;
+  &--full-screen {
+    width: 100% !important;
+    height: $pageHeight !important;
+    position: fixed !important;
+    left: 0;
+    top: $topBarHeight;
+    z-index: 5;
+  }
+
+  .loading-wrapper {
+    width: 100%;
+    height: 100%;
+    background: $visualizer-color;
+    z-index: 99;
+    position: absolute;
+    top: 0;
+    left: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  &:after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    height: 10px;
+    width: 100%;
+    background: linear-gradient(to bottom, transparent 0%, black 100%);
+    opacity: 0.1;
+  }
+}
+
 .sceno-visualizer {
   padding: 0;
-  margin-bottom: 10px;
   box-sizing: content-box;
   position: relative;
 }
 
+.sceno-visualizer-holder > div {
+}
+
 .sceno-visualizer__toolbar {
   position: absolute;
-  top: 5px;
-  right: 5px;
+  top: 35px;
+  left: 0px;
   padding: 0;
+  display: flex;
+  flex-direction: column;
+  opacity: 0.3;
+  z-index: $scenoVisualizerZIndex + 1;
 
   button {
-    border: 0;
     font-size: 20px;
     border-radius: 5px;
     margin-right: 0;
     margin-left: 5px;
+    background: transparent;
+    border: none;
   }
 }
 
+.sceno-visualizer__name {
+  position: absolute;
+  margin: 0;
+  top: 15px;
+  left: 15px;
+}
+
 .sceno-visualizer__canvas {
+  position: absolute;
+  top: 5px;
+  right: 5px;
+  padding: 0;
 }
 
 /* Settings */
@@ -31,7 +87,7 @@
   --baseline: 10%;
   --baseline-shift: calc(var(--baseline) / 2);
   --line-thickness: 1px;
-  --color: hsla(204, 80%, 72%, 0.05);
+  --color: rgba(35, 50, 60, 0.3);
   --media-query: 'base';
 }
 
@@ -64,6 +120,7 @@
   position: relative;
   overflow: hidden;
   height: 100%;
+  z-index: $scenoVisualizerZIndex;
 }
 
 .grid-overlay::before {
@@ -81,7 +138,7 @@
   background-image: var(--background-columns), var(--background-baseline);
   background-size: var(--background-width) 99%;
   background-position: 0 var(--baseline-shift);
-  z-index: 1000;
+  z-index: $scenoVisualizerZIndex;
   pointer-events: none;
 }
 
@@ -91,9 +148,9 @@
   top: calc(50% + 2px);
   left: calc(50% + 4px);
   max-width: var(--max_width);
-  color: rgba(255, 255, 255, 0.2);
+  color: rgba(0, 0, 0, 0.2);
   height: 0px;
-  z-index: 1000;
+  z-index: $scenoVisualizerZIndex;
   font-size: 10px;
   pointer-events: none;
 }
