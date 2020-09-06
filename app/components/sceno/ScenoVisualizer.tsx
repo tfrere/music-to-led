@@ -2,6 +2,7 @@ import React from 'react';
 import { SizeMe } from 'react-sizeme';
 import ScenoVisualizer2d from './ScenoVisualizer2d';
 import ScenoVisualizer3d from './ScenoVisualizer3d';
+// import ScenoVisualizer3d from './ScenoVisualizer3d2';
 
 class CoreScenoVisualizer extends React.Component {
   constructor(props) {
@@ -11,7 +12,7 @@ class CoreScenoVisualizer extends React.Component {
       hasDarkMode: this.props.hasDarkMode || false,
       hasGrid: true,
       isFullScreen: false,
-      is2d: true,
+      is2d: false,
       isChangingView: false,
       hasActiveBoundingBoxVisible:
         this.props.hasActiveBoundingBoxVisible || false

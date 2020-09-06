@@ -5,11 +5,12 @@
   width: 100%;
   left: 0;
   &.page--with-left-panel {
-    width: calc(100% - #{$leftPanelWidth});
-    left: $leftPanelWidth;
+    width: $pageWidth;
+    left: $leftPanelBaseWidth;
   }
   overflow-x: hidden;
   & > .main-content {
+    height: 300px;
   }
   & > .card {
     &.card {

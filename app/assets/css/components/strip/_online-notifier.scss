@@ -23,7 +23,7 @@
 }
 
 .online-notifier.online-notifier--offline {
-  color: rgba(255, 255, 255, 0.5);
+  color: rgba(255, 255, 255, 0.15);
 }
 
 .online-notifier.online-notifier--online .online-notifier__circle {
@@ -37,7 +37,7 @@
 }
 
 .online-notifier.online-notifier--offline .online-notifier__circle {
-  background-color: rgba(255, 255, 255, 0.5);
+  background-color: rgba(255, 255, 255, 0.15);
   border-radius: 0%;
 }
 

@@ -9,7 +9,7 @@
     position: fixed !important;
     left: 0;
     top: $topBarHeight;
-    z-index: 5;
+    z-index: $fullScreenscenoVisualizerZIndex;
   }
 
   .loading-wrapper {
@@ -74,8 +74,8 @@
 
 .sceno-visualizer__canvas {
   position: absolute;
-  top: 5px;
-  right: 5px;
+  top: 0px;
+  right: 0px;
   padding: 0;
 }
 

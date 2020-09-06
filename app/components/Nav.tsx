@@ -55,9 +55,9 @@ class Nav extends React.Component {
           <NavLink activeClassName="active" to={routes.BUILDER}>
             <i className="la la-pencil-ruler" /> BUILD
           </NavLink>
-          <NavLink activeClassName="active" to={routes.CONFIG_LOADER}>
+          {/* <NavLink activeClassName="active" to={routes.CONFIG_LOADER}>
             <i className="la la-satellite"></i> CONFIG
-          </NavLink>
+          </NavLink> */}
           {process.env.NODE_ENV === 'development' ? (
             <NavLink disabled activeClassName="active" to={routes.TEST}>
               <i className="la la-cog" /> TESTS
@@ -69,7 +69,9 @@ class Nav extends React.Component {
               className="button button--danger"
               onClick={() => {
                 this.apiCall('kill');
-                this.setState({ isConfigLoaderVisible: true }, () => {});
+                this.setState({ isConfigLoaderVisible: true }, () => {
+                  this.props.history.push(routes.CONFIG_LOADER);
+                });
               }}
             >
               SHUTDOWN

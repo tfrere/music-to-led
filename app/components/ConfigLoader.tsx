@@ -32,10 +32,7 @@ class ConfigLoader extends React.Component {
   }
 
   componentDidMount() {
-    let cacheElem = document.getElementById('preload-cache');
-    window.setTimeout(() => {
-      cacheElem.remove();
-    }, 1000);
+    this.resizeWindowCall(windowSize.small.width, windowSize.small.height);
   }
 
   apiCall = route => {
@@ -105,9 +102,9 @@ class ConfigLoader extends React.Component {
                 <>
                   <h3>Choose a config file to load</h3>
                   <div className="config-loader__content-wrapper">
-                    <div className="config-loader__content-wrapper__create">
+                    {/* <div className="config-loader__content-wrapper__create">
                       <span>Not implemented yet</span>
-                    </div>
+                    </div> */}
                     <div className="config-loader__content-wrapper__load">
                       <InputFile
                         onChange={filePath => {

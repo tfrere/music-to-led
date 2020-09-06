@@ -3,10 +3,10 @@
   left: 0;
   height: $pageHeight;
   width: $leftPanelWidth;
-  background: lighten($backgroundColor, 3%);
-  border-right: 1px solid lighten($backgroundColor, 8%);
+  background: transparent;
+  // border-right: 1px solid lighten($backgroundColor, 8%);
   padding-top: 0 !important;
-  padding: 0 20px;
+  padding: 0 40px 0 20px;
   z-index: $leftPanelZIndex;
   overflow: scroll;
   .strip-item {
@@ -20,10 +20,21 @@
     font-size: 13px;
     margin-left: -13px;
   }
+  &:before {
+    content: '';
+    background: lighten($backgroundColor, 3%);
+    border-right: 1px solid lighten($backgroundColor, 8%);
+    z-index: -1;
+    position: fixed;
+    left: 0px;
+    top: 0;
+    height: 100%;
+    width: 250px;
+  }
   &:after {
     content: '';
-    position: absolute;
-    right: -10px;
+    position: fixed;
+    right: -26px;
     top: 0;
     height: 100%;
     width: 6px;
@@ -52,6 +63,7 @@
     }
   }
 }
+$triangleSize: 12px;
 
 .left-panel__list.left-panel__list--strip .left-panel__list__item {
   margin-left: -20px;
@@ -74,6 +86,21 @@
   }
   canvas {
     display: block;
+    margin-bottom: 10px;
+  }
+  &:before {
+    content: '';
+    position: absolute;
+    right: 2px;
+    top: $triangleSize / 2;
+    width: $triangleSize;
+    height: $triangleSize;
+    clip-path: polygon(0% 0%, 100% 100%, 0% 100%);
+    transform: rotate(-135deg);
+    border-radius: 0 0 0 0.15em;
+    background: $leftNavActiveBackground;
+    border: 1px solid lighten($leftNavActiveBackground, 3%);
+    z-index: -1;
   }
 }
 
@@ -85,19 +112,7 @@
     border-top: 1px solid rgba(255, 255, 255, 0.04);
   }
   &:before {
-    content: '';
-    position: absolute;
-    left: calc(100% + -9px);
-    top: 7px;
-    width: 16px;
-    height: 16px;
-    clip-path: polygon(0% 0%, 100% 100%, 0% 100%);
-    transform: rotate(-135deg);
-    border-radius: 0 0 0 0.15em;
-    background: $leftNavActiveBackground;
-    border: 1px solid lighten($leftNavActiveBackground, 3%);
-    z-index: 99999;
-    clip-depth: 2;
+    right: -$triangleSize / 2;
   }
 }
 
@@ -132,13 +147,15 @@
   margin: 0 2px;
   margin-top: -5px;
   margin-bottom: 10px;
+  display: none;
   span {
     color: rgba(255, 255, 255, 0.5);
     margin: 0 5px;
   }
 }
 
-.left-panel__list__item__header__sub-title {
+.left-panel__list__item--active .left-panel__list__item__header__sub-title {
+  display: block;
 }
 
 .left-panel__list__item__live-view {

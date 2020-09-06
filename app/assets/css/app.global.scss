@@ -11,16 +11,19 @@ $leftNavActiveBackground: lighten($primary-color, 4%);
 $topBarHeight: 22px;
 $bottomBarHeight: 70px;
 
-$leftPanelWidth: 250px;
-
+$leftPanelArrowSize: 20px;
+$leftPanelBaseWidth: 250px;
+$leftPanelWidth: $leftPanelBaseWidth + $leftPanelArrowSize;
+$pageWidth: calc(100% - #{$leftPanelBaseWidth});
 $pageHeight: calc(100% - #{$topBarHeight + $bottomBarHeight});
 
-$draggableBarZIndex: 6;
-$leftPanelZIndex: 5;
-$fullScreenPortalZIndex: 6;
-$contentZIndex: 4;
-$scenoVisualizerZIndex: 4;
-$navZIndex: 6;
+$draggableBarZIndex: 603;
+$leftPanelZIndex: 500;
+$configLoaderZIndex: 602;
+$contentZIndex: 400;
+$scenoVisualizerZIndex: 400;
+$fullScreenscenoVisualizerZIndex: 600;
+$navZIndex: 600;
 
 @import 'const/_font.scss';
 @import 'const/_normalize.scss';
@@ -185,16 +188,6 @@ hr {
     bottom: 0;
     left: 0;
   }
-}
-
-#full-screen-portal {
-  z-index: $fullScreenPortalZIndex;
-  position: absolute;
-  top: $topBarHeight;
-  left: 0;
-  width: 100%;
-  height: $pageHeight;
-  background: $backgroundColor;
 }
 
 @import 'components/generic/input-range/_input-range.scss';

@@ -14,12 +14,14 @@ class AlternateColors():
         self.alternateColorsInterval = self._timeSinceStart.getMsIntervalFromBpm(
             self.active_state.time_interval)
 
-        if(self.active_state.chunk_size == 0):
-            self.active_state.chunk_size = 1
+        chunk_size = self._number_of_pixels // self.active_state.chunk_size
+
+        if(chunk_size == 0):
+            chunk_size = 1
 
         which_color = 0
         for i in range(self._number_of_pixels):
-            if(i % self.active_state.chunk_size == 0):
+            if(i % chunk_size == 0):
                 which_color += 1
                 if(which_color >= len(color_scheme)):
                     which_color = 0

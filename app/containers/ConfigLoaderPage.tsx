@@ -5,11 +5,7 @@ import Routes from '../Routes';
 
 class ConfigLoaderPage extends React.Component {
   render() {
-    return (
-      <div className="page page--config-loader">
-        <ConfigLoader history={this.props.history} />
-      </div>
-    );
+    return <ConfigLoader history={this.props.history} />;
   }
 }
 export default ConfigLoaderPage;

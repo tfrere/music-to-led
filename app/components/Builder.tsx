@@ -8,10 +8,9 @@ import { compareObjects } from '../utils/compareObjects';
 import Strip from './strip/Strip';
 import StripController from './strip/StripController';
 import ScenoVisualizer from './sceno/ScenoVisualizer';
-import ScenoVisualizer2d from './sceno/ScenoVisualizer2d';
 import RgbVisualizerCanvas from './strip/RgbVisualizerCanvas';
 import AudioVisualizerCanvas from './audio/AudioVisualizerCanvas';
-import SizedScenoVisualizerCanvas3d from './sceno/ScenoVisualizer3d';
+
 Object.compare = function(obj1, obj2) {
   //Loop through properties in object 1
   for (var p in obj1) {

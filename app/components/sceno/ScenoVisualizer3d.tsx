@@ -3,9 +3,37 @@ import React, { Component } from 'react';
 import { svgPathProperties } from 'svg-path-properties';
 import * as THREE from 'three';
 import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls';
+import { group } from 'console';
+import { Vector3 } from 'three';
 
-var size = 50;
-var divisions = 30;
+let size = 50;
+let divisions = 30;
+
+const centerObject = obj => {
+  let children = obj.children;
+  let minVector = { x: 0, y: 0, z: 0 };
+  let maxVector = { x: 0, y: 0, z: 0 };
+  for (let i = 0, j = children.length; i < j; i++) {
+    let box = new THREE.Box3().setFromObject(children[i]);
+    let sphere = box.getBoundingSphere(new THREE.Sphere());
+    let centerPoint = sphere.center;
+    if (centerPoint.x < minVector.x) minVector.x = centerPoint.x;
+    if (centerPoint.y < minVector.y) minVector.y = centerPoint.y;
+    if (centerPoint.z < minVector.z) minVector.z = centerPoint.z;
+    if (centerPoint.x > minVector.x) maxVector.x = centerPoint.x;
+    if (centerPoint.y > minVector.y) maxVector.y = centerPoint.y;
+    if (centerPoint.z > minVector.z) maxVector.z = centerPoint.z;
+  }
+  console.log('this is complete', minVector, maxVector);
+  // var objectCenter = completeBoundingBox.getCenter();
+  // console.log('This is the center of your Object3D:', objectCenter);
+  obj.position.set(
+    (maxVector.x - minVector.x) / 2,
+    (maxVector.y - minVector.y) / 2,
+    (maxVector.z - minVector.z) / 2
+  );
+  console.log('obj position', obj.position);
+};
 
 class ScenoVisualizer3d extends React.Component {
   constructor(props) {
@@ -20,6 +48,12 @@ class ScenoVisualizer3d extends React.Component {
       0.1,
       1000
     );
+    camera.position.x = 0;
+    camera.position.y = 0.05;
+    camera.position.z = -1.2;
+    camera.lookAt(0, 0, 0);
+
+    let light = new THREE.AmbientLight(0x404040, 100); // soft white light
 
     let backgroundColor = '#051824'; //'rgb(9,24,35)';
     let gridColor = 'rgb(35,50,60)';
@@ -37,6 +71,7 @@ class ScenoVisualizer3d extends React.Component {
       scene: new THREE.Scene(),
       scenes: scenes,
       camera: camera,
+      light: light,
       renderer: renderer,
       controls: new OrbitControls(camera, renderer.domElement),
       gridHelper: gridHelper,
@@ -60,7 +95,7 @@ class ScenoVisualizer3d extends React.Component {
     switch (event.keyCode) {
       case 32:
         event.preventDefault();
-        that.state.camera.position.set(0, 0.05, 1.2);
+        that.state.camera.position.set(0, 0.05, -1.2);
         that.state.camera.lookAt(new THREE.Vector3(0, 0, 0));
 
         break;
@@ -98,19 +133,16 @@ class ScenoVisualizer3d extends React.Component {
       fog,
       controls,
       gridHelper,
-      scenes
+      scenes,
+      light
     } = this.state;
-
-    camera.position.x = 0;
-    camera.position.y = 0.05;
-    camera.position.z = 1.2;
-    camera.lookAt(0, 0, 0);
 
     renderer.setClearColor(0x000000, 0); // the default
 
-    controls.enablePan = false;
-    controls.enableZoom = false;
+    // controls.enablePan = false;
+    // controls.enableZoom = false;
     scene.add(gridHelper);
+    scene.add(light);
     scene.fog = new THREE.Fog(this.state.backgroundColor, 5, 10);
 
     renderer.setSize(this.props.width, this.props.height);
@@ -147,6 +179,9 @@ class ScenoVisualizer3d extends React.Component {
           groupObject.add(object);
         });
         this.setState({ groupObject: groupObject });
+        centerObject(groupObject);
+        // groupObject.position.set(0.5, 0.5, 0.5);
+        console.log(groupObject);
         scene.add(groupObject);
 
         this.startLoop();
@@ -167,8 +202,6 @@ class ScenoVisualizer3d extends React.Component {
 
     const properties = new svgPathProperties(path);
 
-    const XCenterOffset = (size.width * size.scale) / 2;
-    const YCenterOffset = (size.height * size.scale) / 2;
     const length = properties.getTotalLength();
     const pixels_length = shape.pixel_range[1] - shape.pixel_range[0];
     const gap = length / pixels_length;
@@ -179,15 +212,15 @@ class ScenoVisualizer3d extends React.Component {
     while (++i < pixels_length) {
       const coords = properties.getPointAtLength(gap * i);
       var geometry = new THREE.SphereGeometry(0.02, 0.02, 0.02);
-      var material = new THREE.MeshBasicMaterial({
+      var material = new THREE.MeshPhongMaterial({
         color: 0x000000
       });
       var object = new THREE.Mesh(geometry, material);
       object.scene_index = sceneIndex;
       object.pixel_index = shape.pixel_range[0] + i;
       objects.push(object);
-      object.position.x = ((coords.x - XCenterOffset + offset[0]) / 100) * -1;
-      object.position.y = ((coords.y - YCenterOffset + offset[1]) / 100) * -1;
+      object.position.x = (coords.x / 130) * -1;
+      object.position.y = (coords.y / 130) * -1;
     }
 
     return objects;

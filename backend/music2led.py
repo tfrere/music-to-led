@@ -294,7 +294,8 @@ if __name__ == "__main__":
 
             for i in range(config._number_of_strips):
                 executor.submit(stripProcess, i, shared_list)
-                executor.submit(serialProcess, i, shared_list)
+                if(config.is_serial_enabled):
+                    executor.submit(serialProcess, i, shared_list)
 
             time.sleep(1)
             print("-- Program successfully launched !")

@@ -6,7 +6,7 @@ class StateConfig():
     def __init__(
         self,
         name="statename",
-        max_brightness=120,
+        max_brightness=255,
         active_visualizer_effect="clear_frame",
         division_value=0,
         active_audio_channel_index=0,
@@ -17,7 +17,7 @@ class StateConfig():
         is_reverse=False,
         time_interval=120,
         chunk_size=5,
-        blur_value=4.0,
+        blur_value=0.1,
         is_mirror=False,
         active_color_scheme_index=0,
         debug=False,

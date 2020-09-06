@@ -1,6 +1,7 @@
 desirated_framerate: 60
 display_shell_interface: true
 is_zmq_api_enabled: true
+is_serial_enabled: true
 color_schemes:
 - - red
   - green
@@ -38,13 +39,12 @@ audio_ports:
 strips:
 - name: Angles
   serial_port_name: /dev/tty.usbserial-A50285BI
-  active_state_index: 0
+  active_state_index: 3
   is_online: false
   midi_ports_for_changing_mode:
   - Audio2Led ChangeMod Center
   midi_ports_for_visualization:
   - Audio2Led Synth
-  - LPK25
   original_physical_shape:
   - 34
   - 52
@@ -104,7 +104,7 @@ strips:
       width: 305
   states:
   - name: Forevermore
-    active_visualizer_effect: energy
+    active_visualizer_effect: alternate_color_chunks
     active_color_scheme_index: 0
     active_audio_channel_index: 1
     audio_samples_filter_min: 0
@@ -113,13 +113,13 @@ strips:
     audio_decay: 0.5
     division_value: 0
     max_brightness: 255
-    time_interval: 1
-    chunk_size: 13
-    blur_value: 0.1
+    time_interval: 96
+    chunk_size: 10
+    blur_value: 4.8
     is_reverse: false
     is_mirror: false
   - name: HYPERVOID
-    active_visualizer_effect: energy
+    active_visualizer_effect: piano_note
     active_color_scheme_index: 0
     active_audio_channel_index: 1
     audio_samples_filter_min: 0
@@ -130,7 +130,7 @@ strips:
     max_brightness: 255
     time_interval: 1
     chunk_size: 24
-    blur_value: 2.7
+    blur_value: 0.1
     is_reverse: false
     is_mirror: false
   - name: PREDATOR
@@ -150,17 +150,17 @@ strips:
     is_mirror: false
   - name: predator 2
     active_visualizer_effect: scroll
-    active_color_scheme_index: 5
-    active_audio_channel_index: 0
+    active_color_scheme_index: 0
+    active_audio_channel_index: 1
     audio_samples_filter_min: 0
     audio_samples_filter_max: 24
-    audio_gain: 1
+    audio_gain: 0.4
     audio_decay: 0.5
     division_value: 0
-    max_brightness: 120
+    max_brightness: 255
     time_interval: 120
     chunk_size: 5
-    blur_value: 4.0
+    blur_value: 1.1
     is_reverse: true
     is_mirror: false
   - name: CLEAR

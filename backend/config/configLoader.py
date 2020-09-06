@@ -74,6 +74,7 @@ class Config():
         desirated_framerate=60,
         display_shell_interface=True,
         is_zmq_api_enabled=True,
+        is_serial_enabled=True,
         debug=False,
         verbose=False,
         scene=[],
@@ -104,6 +105,7 @@ class Config():
         self.desirated_framerate = desirated_framerate
         self.display_shell_interface = display_shell_interface
         self.is_zmq_api_enabled = is_zmq_api_enabled
+        self.is_serial_enabled = is_serial_enabled
         self._delay_between_frames = 1 / desirated_framerate
         self._timeSinceStart = TimeSinceStart()
 
@@ -171,6 +173,7 @@ class Config():
         print("desirated_framerate -> ", self.desirated_framerate)
         print("display_shell_interface -> ", self.display_shell_interface)
         print("is_zmq_api_enabled -> ", self.is_zmq_api_enabled)
+        print("is_serial_enabled -> ", self.is_serial_enabled)
         print("color_schemes -> ", self.color_schemes)
         print("delay_between_frames -> ", self._delay_between_frames)
         for audio_port in self._audio_ports:
@@ -198,6 +201,7 @@ class ConfigLoader():
                 if(not "desirated_framerate" in file
                    or not "display_shell_interface" in file
                    or not "is_zmq_api_enabled" in file
+                   or not "is_serial_enabled" in file
                    or not "audio_ports" in file
                    or not "strips" in file):
                     raise TypeError(
@@ -208,6 +212,7 @@ class ConfigLoader():
                     desirated_framerate=file["desirated_framerate"],
                     display_shell_interface=file["display_shell_interface"],
                     is_zmq_api_enabled=file["is_zmq_api_enabled"],
+                    is_serial_enabled=file["is_serial_enabled"],
                     color_schemes=file["color_schemes"],
                     audio_ports=file["audio_ports"],
                     strips=file["strips"],

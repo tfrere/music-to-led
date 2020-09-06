@@ -1,6 +1,7 @@
 desirated_framerate: 60
 display_shell_interface: true
 is_zmq_api_enabled: true
+is_serial_enabled: true
 color_schemes:
 - - red
   - green
@@ -67,21 +68,21 @@ strips:
       pixel_range:
       - 80
       - 160
-      svg_string: M0,0 T0,150
+      svg_string: M100,0 T100,150
     - offset:
       - 200
       - 0
       pixel_range:
       - 160
       - 240
-      svg_string: M0,0 T0,150
+      svg_string: M200,0 T200,150
     - offset:
       - 300
       - 30
       pixel_range:
       - 240
       - 320
-      svg_string: M0,0 T0,150
+      svg_string: M300,0 T300,150
     size:
       width: 300
       height: 180
@@ -112,7 +113,7 @@ strips:
     audio_decay: 0.1
     division_value: 0
     max_brightness: 255
-    time_interval: 500
+    time_interval: 1
     chunk_size: 30
     blur_value: 14.2
     is_reverse: true
