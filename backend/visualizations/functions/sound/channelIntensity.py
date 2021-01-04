@@ -24,7 +24,7 @@ class ChannelIntensity():
         self.gain.update(self.audio_data)
         self.audio_data /= self.gain.value
         # Scale by the width of the LED strip
-        self.audio_data *= float((self._number_of_pixels // 2) - 1)
+        self.audio_data *= float((self._number_of_pixels // 2) - 10)
         # Map color channels according to energy in the different freq bands
         scale = 0.9
 
@@ -42,7 +42,7 @@ class ChannelIntensity():
             if(intensity < 0):
                 intensity = 0
 
-            max_intensity = len(self.pixelReshaper._strips[i][0])
+            max_intensity = len(self.pixelReshaper._strips[i][0]) - 1
             if(self.active_state.is_mirror):
                 max_intensity = len(self.pixelReshaper._strips[i][0]) / 2
 

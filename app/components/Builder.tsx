@@ -10,6 +10,15 @@ import StripController from './strip/StripController';
 import ScenoVisualizer from './sceno/ScenoVisualizer';
 import RgbVisualizerCanvas from './strip/RgbVisualizerCanvas';
 import AudioVisualizerCanvas from './audio/AudioVisualizerCanvas';
+import { gamma_table } from '../constants/gamma_table';
+
+const applyGammaCorrection = pixels => {
+  for (let i = 0; i < pixels[0].length; i++) {
+    pixels[0][i] = gamma_table[pixels[0][i]];
+    pixels[1][i] = gamma_table[pixels[1][i]];
+    pixels[2][i] = gamma_table[pixels[2][i]];
+  }
+};
 
 Object.compare = function(obj1, obj2) {
   //Loop through properties in object 1
@@ -69,6 +78,11 @@ async function getZMQData() {
       .replace(trueRegex, '1')
       .replace(falseRegex, '0');
     object = JSON.parse(json_string);
+    // console.log(object.pixels[0][0]);
+    for (let i = 0; i < object.pixels.length; i++) {
+      applyGammaCorrection(object.pixels[i]);
+    }
+    // console.log(object.pixels[0][0][0]);
     // console.log('connected');
     const current_server_timestamp = Math.round(object.time * 1000);
 
@@ -184,9 +198,8 @@ class Builder extends React.Component {
           };
         }
         return (
-          <>
             <Strip
-              key={strip + index}
+              key={"strip" + index}
               framerate={framerate}
               physical_shape={strip._physical_shape}
               active_shape={active_shape}
@@ -211,23 +224,19 @@ class Builder extends React.Component {
                 this.setState({ active_strip_index: index });
               }}
             ></Strip>
-          </>
         );
       });
 
       audiosElem = audios.map((audio, index) => {
         return (
-          <div className="left-panel__list__item">
+          <div key={"audio" + index} className="left-panel__list__item">
             <div className="left-panel__list__item__header">
               <h4 className="left-panel__list__item__header__title">
                 {config._audio_ports[index].name}
               </h4>
-              <div className="online-notifier online-notifier--online online-notifier--no-blink">
-                <div className="online-notifier__circle"></div>
-              </div>
             </div>
             <div className="left-panel__list__item__content">
-              <AudioVisualizerCanvas audio={audio} width={100} height={55} />
+              <AudioVisualizerCanvas audio={audio} width={110} height={55} />
               {/* <div>
                 <span>
                   {config._audio_ports[index].number_of_audio_samples}{' '}
@@ -279,6 +288,9 @@ class Builder extends React.Component {
               {active_strip_data ? (
                 <div style={{ marginBottom: '20px' }}>
                   <div className="card">
+                    {/* <h5 className="label" style={{ marginTop: '0px' }}>
+                      RGB Visualizer
+                    </h5> */}
                     <RgbVisualizerCanvas
                       pixels={pixels[active_strip_data.strip_index]}
                       physical_shape={active_strip_data.strip._physical_shape}

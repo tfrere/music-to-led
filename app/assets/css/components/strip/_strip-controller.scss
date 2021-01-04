@@ -9,10 +9,6 @@
   .select {
     margin-bottom: 5px;
   }
-  label,
-  legend {
-    margin-bottom: 0.8rem;
-  }
 }
 
 .strip-block {
@@ -29,14 +25,6 @@
 
 .strip:last-child {
   margin-bottom: 0;
-}
-
-.strip__label {
-  opacity: 0.4;
-}
-
-.strip__label:not(:first-child) {
-  margin-left: 20px;
 }
 
 .strip-controller-group {
@@ -133,19 +121,26 @@
 .button.generic {
 }
 
-.slider-holder {
-  border-radius: 3px;
-  padding: 3px 5px;
-  margin-right: 5px;
-}
-
-.slider-holder label {
-  font-size: 10px;
-}
-
 .strip-controller__audio-block {
   display: flex;
   .slider-holder {
-    width: calc(33% - 5px);
+    width: calc(33%);
   }
+  .select {
+    margin-right: 0;
+  }
+}
+
+.strip-controller__audio-block__audio-vizualiser {
+  width: 125px;
+  margin-right: 10px;
+  display: inline-block;
+  .audio-visualizer {
+    margin-right: 0;
+  }
+}
+
+.strip-controller__audio-block__others {
+  width: calc(100% - 125px);
+  display: inline-block;
 }

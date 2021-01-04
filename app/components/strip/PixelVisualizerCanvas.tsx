@@ -49,7 +49,7 @@ class SizedPixelVisualizerCanvas extends React.Component {
     const pixelSize = baseSize > 5 ? baseSize : 5;
     const height = baseSize > 10 ? baseSize : 20;
 
-    console.log('height', height);
+    // console.log('height', height);
 
     this.state = {
       shape_offsets: shape_offsets,

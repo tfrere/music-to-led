@@ -3,11 +3,13 @@
   position: relative;
   background: $visualizer-color;
   margin-bottom: 20px;
+  width: 100%;
+  height: 300px;
   &--full-screen {
-    width: 100% !important;
+    width: calc(100% - 8px) !important;
     height: $pageHeight !important;
     position: fixed !important;
-    left: 0;
+    right: 8px;
     top: $topBarHeight;
     z-index: $fullScreenscenoVisualizerZIndex;
   }
@@ -15,7 +17,6 @@
   .loading-wrapper {
     width: 100%;
     height: 100%;
-    background: $visualizer-color;
     z-index: 99;
     position: absolute;
     top: 0;
@@ -23,6 +24,20 @@
     display: flex;
     align-items: center;
     justify-content: center;
+    pointer-events: none;
+    background-color: transparent;
+    transition: background-color 100ms linear;
+    .loading {
+      opacity: 0;
+      transition: opacity 100ms linear;
+    }
+    &--visible {
+      pointer-events: auto;
+      background-color: $visualizer-color;
+      .loading {
+        opacity: 1;
+      }
+    }
   }
   &:after {
     content: '';
@@ -47,8 +62,8 @@
 
 .sceno-visualizer__toolbar {
   position: absolute;
-  top: 35px;
-  left: 0px;
+  top: 10px;
+  right: 0;
   padding: 0;
   display: flex;
   flex-direction: column;

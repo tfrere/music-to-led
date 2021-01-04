@@ -103,6 +103,21 @@ input[type='button'] {
 .button--danger {
   background: red;
   color: white;
+
+  &:hover {
+    background: darken(red, 10%);
+    color: white;
+  }
+}
+
+.button--complement {
+  background: $complement-color;
+  color: white;
+
+  &:hover {
+    background: darken($complement-color, 10%);
+    color: white;
+  }
 }
 
 .button--disabled {
@@ -187,7 +202,6 @@ input[type='button'] {
   line-height: 6px;
   padding: 2px 4px;
 }
-
 .button--has-type {
   padding: 0 15px;
 
@@ -204,6 +218,10 @@ input[type='button'] {
 
 .button.button--reverse .button__type,
 .button.button:hover .button__type {
+  left: 0%;
+}
+
+.button.button--has-type--always-visible .button__type {
   left: 0%;
 }
 

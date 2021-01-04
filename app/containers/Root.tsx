@@ -8,8 +8,6 @@ import Routes from '../Routes';
 
 let WebMidi = require('webmidi');
 
-console.log(WebMidi);
-
 WebMidi.enable(function(err) {
   console.log('midi is enabled !');
 

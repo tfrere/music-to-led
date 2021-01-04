@@ -25,7 +25,7 @@ def fadeOutPixels(pixels, value):
 class PianoNote():
 
     def initPianoNote(self):
-        self.notes_on = []
+        self.piano_notes_on = []
         self.pitch = 0
         self.value = 0
 
@@ -38,36 +38,37 @@ class PianoNote():
         for midi_note in self.midi_datas:
             if(midi_note["type"] == "note_on" and midi_note["velocity"] > 0):
                 midi_note["time_since_apparation"] = 0
-                self.notes_on.append(midi_note)
+                self.piano_notes_on.append(midi_note)
                 midi_note["color"] = 0
             if(midi_note["type"] == "note_off" or (midi_note["type"] == "note_on" and midi_note["velocity"] == 0)):
-                for i, note_on in enumerate(self.notes_on):
+                for i, note_on in enumerate(self.piano_notes_on):
                     if(note_on["note"] == midi_note["note"]):
-                        del self.notes_on[i]
+                        del self.piano_notes_on[i]
 
             if(midi_note["type"] == "pitchwheel"):
                 self.pitch = midi_note["pitch"]
 
         value = self.clampToNewRange(self.pitch, -8191, 8191, 127, 255)
         roll_value = int(1 * (self.active_state.time_interval / 100)) + 1
+        fade_out_value = self.active_state.time_interval / 10
 
-        fadeOutPixels(self.pixels, 5)
+        for x, strip in enumerate(self.pixelReshaper._strips):
 
-        max_pixel_range = len(
-            self.pixels[0]) // 2 if self.strip_config.active_state.is_mirror else len(self.pixels[0])
+            strip_length = len(
+                strip[0]) // 2 if self.strip_config.active_state.is_mirror else len(strip[0])
 
-        for note in self.notes_on:
+            for note in self.piano_notes_on:
 
-            note["time_since_apparation"] += 1
+                note["time_since_apparation"] += 1
+                putPixel(
+                    strip,
+                    self.clampToNewIntRange(
+                        note["note"], self.strip_config.midi_range[0], self.strip_config.midi_range[1], 0, strip_length),
+                    color_scheme[note["color"]][0],
+                    color_scheme[note["color"]][1],
+                    color_scheme[note["color"]][2],
+                    value
+                )
+            fadeOutPixels(strip, fade_out_value)
 
-            putPixel(
-                self.pixels,
-                self.clampToNewRange(
-                    note["note"], self.strip_config.midi_range[0], self.strip_config.midi_range[1], 0, max_pixel_range),
-                color_scheme[note["color"]][0],
-                color_scheme[note["color"]][1],
-                color_scheme[note["color"]][2],
-                value
-            )
-
-        return self.pixelReshaper.reshapeFromPixels(self.pixels)
+        return self.pixelReshaper.reshapeFromStrips(self.pixelReshaper._strips)

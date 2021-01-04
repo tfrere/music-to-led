@@ -1,17 +1,30 @@
 <!--
 
-  # README AND DOC
+  # FOR V1
 
-    -
+    FEATURES
 
-    - Bel exemple réel en gif
-    - Belle photo packshot du truc déssasemblé et assemblé
+    - Create a configuration file creator
+    - - 3D Shape editor
+    - - Testeur de midi et de audio
 
-    # - audio input state limits
-    # - Faire une option pour tester rapidement si le setup marche
-    # - Rendre midi et audio inputs comme serial, si port non existant, tentative de connection permanente
+    FRONT
 
-    # Rendre le spectrum et fire generique à color ?
+    - Beautiful gif for GUI
+    - Fix cannot rename a state that is already taken
+    - Change "audio channels" by their log frequency reference
+    - Change "audio gain" by his real value
+    OK - Change spectrograph by having bass at bottom
+    - Fix AudioViz auto width sizeMe
+
+    BACK
+
+    - Piano note chunked has to be reverse / mirrorable
+    - Rendre le spectrum et fire generique à color ?
+
+    SERIAL TO LED
+    - Windows handling
+    - Packshot photo
 
  -->
 

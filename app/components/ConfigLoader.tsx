@@ -22,7 +22,7 @@ class ConfigLoader extends React.Component {
 
   componentDidUpdate(oldProps) {
     if (oldProps.isVisible != this.props.isVisible) {
-      console.log('didUpdate props isvisible', this.props.isVisible);
+      // console.log('didUpdate props isvisible', this.props.isVisible);
       if (this.props.isVisible) {
         this.setState({ configFile: null });
         this.resizeWindowCall(windowSize.small.width, windowSize.small.height);
@@ -37,7 +37,7 @@ class ConfigLoader extends React.Component {
 
   apiCall = route => {
     let response = fetch('http://localhost:8080/' + route).then(res => {
-      console.log(res);
+      // console.log(res);
       return res;
     });
     return response;
@@ -51,7 +51,7 @@ class ConfigLoader extends React.Component {
         height +
         ''
     ).then(res => {
-      console.log(res);
+      // console.log(res);
       return res;
     });
   };
@@ -90,8 +90,7 @@ class ConfigLoader extends React.Component {
       ? 'button--loading'
       : '';
     const buttonClassName =
-      'button button--danger button--large button--stretched ' +
-      isLoadingButtonClassName;
+      'button button--large button--stretched ' + isLoadingButtonClassName;
 
     return (
       <>
@@ -127,6 +126,17 @@ class ConfigLoader extends React.Component {
                       <span className="config-loader__content-wrapper__load__error-message">
                         {this.state.errorMessage}
                       </span>
+                      {process.env.NODE_ENV === 'development' ? (
+                        <Button
+                          className="button button--large button--stretched button--has-type button--has-type--always-visible"
+                          onClick={() => {
+                            this.props.history.push(routes.BUILDER);
+                          }}
+                        >
+                          <span className="button__type">DEV ONLY</span>
+                          Go to builder
+                        </Button>
+                      ) : null}
                     </div>
                   </div>
                 </>

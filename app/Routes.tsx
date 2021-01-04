@@ -11,14 +11,13 @@ import { useHistory } from 'react-router-dom';
 
 export default function Routes() {
   let history = useHistory();
-  console.log('history', history);
   return (
     <React.Fragment>
       {/* <div id="full-screen-portal"></div> */}
       <div className="draggable-bar">
         {process.env.npm_package_version ? (
           <small className="software-version">
-            <span>v{process.env.npm_package_version}</span>
+            <span>build {process.env.npm_package_version}</span>
           </small>
         ) : (
           ''

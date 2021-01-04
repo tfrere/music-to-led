@@ -11,7 +11,6 @@ class InputFile extends React.Component {
   }
 
   handleInputChange = e => {
-    console.log(e);
     this.setState(
       {
         fileName: e.target.files[0].path

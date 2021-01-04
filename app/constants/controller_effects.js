@@ -37,14 +37,14 @@ export const keyConfiguration = {
       type: 'midi'
     },
     {
-      name: 'piano_note',
-      label: 'Midi note',
+      name: 'piano_echo',
+      label: 'Midi scroll shape',
       note_int: 6,
       type: 'midi'
     },
     {
-      name: 'piano_echo',
-      label: 'Midi echo',
+      name: 'piano_note',
+      label: 'Midi note',
       note_int: 7,
       type: 'midi'
     },

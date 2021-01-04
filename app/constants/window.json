@@ -8,9 +8,9 @@
     },
     "big": {
       "width": 1450,
-      "height": 800,
+      "height": 870,
       "minWidth": 1450,
-      "minHeight": 800
+      "minHeight": 870
     }
   },
   "prod": {
@@ -22,9 +22,9 @@
     },
     "big": {
       "width": 1000,
-      "height": 800,
+      "height": 870,
       "minWidth": 1000,
-      "minHeight": 800
+      "minHeight": 870
     }
   }
 }

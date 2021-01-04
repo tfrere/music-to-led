@@ -8,7 +8,7 @@ class Scroll():
         self.audio_data = self.audio_data**2.0
         self.gain.update(self.audio_data)
         self.audio_data /= self.gain.value
-        self.audio_data *= 255.0
+        self.audio_data *= 50.0
 
         active_color_scheme = self.config._formatted_color_schemes[
             self.active_state.active_color_scheme_index]
@@ -34,13 +34,9 @@ class Scroll():
         # g = int(np.max(self.audio_data[len(self.audio_data) // 3: 2 * len(self.audio_data) // 3]))
         # b = int(np.max(self.audio_data[2 * len(self.audio_data) // 3:]))
 
-        # self.pixels[:, 2:] = self.pixels[:, :-2]
-
         roll_value = int(1 * (self.active_state.time_interval / 100)) + 1
         self.pixels = np.roll(self.pixels, roll_value, axis=1)
 
-        # self.pixels *= 0.98
-        # self.pixels = self.blurFrame(self.pixels, 1)
         for i in range(roll_value):
             self.pixels[0, i] = r
             self.pixels[1, i] = g

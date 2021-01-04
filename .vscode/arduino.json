@@ -1,0 +1,6 @@
+{
+    "programmer": "AVRISP mkII",
+    "board": "arduino:avr:micro",
+    "port": "/dev/tty.usbmodem1463301",
+    "sketch": "backend/outputs/serial/arduino/serial-case/serial-case.ino"
+}

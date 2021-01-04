@@ -14,7 +14,7 @@ import ColorPicker from '../generic/ColorPicker';
 import CircularSlider from '../generic/CircularSlider';
 import InputRange from 'react-input-range';
 import MidiVisualizer from '../midi/MidiVisualizer';
-import StateController from '../strip/StateController';
+import StatesController from '../states/StatesController';
 
 import AudioVisualizerCanvas from '../audio/AudioVisualizerCanvas';
 
@@ -121,12 +121,12 @@ class StripController extends React.Component {
     let blur_value = active_state.blur_value;
     let division_value = active_state.division_value;
 
-    let buttonHolder = types.map(e => {
+    let buttonHolder = types.map((e, typeIndex) => {
       let buttonGroup = keyConfiguration.effects
         .filter(elem => {
           return elem.type == e;
         })
-        .map(elem => {
+        .map((elem, index) => {
           let isActiveClass = 'strip-controller__button ';
           isActiveClass +=
             active_state.active_visualizer_effect === elem.name
@@ -136,23 +136,21 @@ class StripController extends React.Component {
           isActiveClass += ' ' + elem.type;
 
           return (
-            <>
-              <Button
-                alt={guessNoteFromNumber(elem.note_int)}
-                key={elem.name}
-                className={isActiveClass + ' button--has-type'}
-                onClick={() => {
-                  this.sendNote(elem.note_int);
-                }}
-              >
-                <span className="button__type">{elem.type}</span>
-                {elem.label}
-              </Button>
-            </>
+            <Button
+              alt={guessNoteFromNumber(elem.note_int)}
+              key={elem.name + index}
+              className={isActiveClass + ' button--has-type'}
+              onClick={() => {
+                this.sendNote(elem.note_int);
+              }}
+            >
+              <span className="button__type">{elem.type}</span>
+              {elem.label}
+            </Button> 
           );
         });
       return (
-        <div className="button-group button-group--stretched">
+        <div key={"type" + typeIndex} className="button-group button-group--stretched">
           {buttonGroup}
         </div>
       );
@@ -162,7 +160,7 @@ class StripController extends React.Component {
       <div className="strip-controller">
         {portalElem
           ? ReactDOM.createPortal(
-              <StateController
+              <StatesController
                 isStatePristine={this.state.isStatePristine}
                 sendText={this.sendText}
                 strip={strip}
@@ -197,8 +195,7 @@ class StripController extends React.Component {
                       alt={guessNoteFromNumber(26)}
                       options={[
                         { name: 1, prefix: 'divide ' },
-                        { name: 2, prefix: 'divide ' },
-                        { name: 3, prefix: 'divide ' }
+                        { name: 2, prefix: 'divide ' }
                       ]}
                       defaultValue={division_value + 1}
                       setValue={value => {
@@ -301,19 +298,19 @@ class StripController extends React.Component {
                         onChange={e => {
                           this.sendNote(
                             24,
-                            convertRange(e.target.value, [0, 50], [1, 127])
+                            convertRange(e.target.value, [0, 20], [1, 127])
                           );
                         }}
                         type="range"
                         name="chunk_size"
                         min="0"
-                        max="50"
+                        max="20"
                         value={chunk_size}
                       />
                     </div>
                     <div className="slider-holder">
                       <label htmlFor="blur_value">
-                        Blur <span>{blur_value}</span>
+                        Blur <span>{blur_value === 0.1 ? 0 : blur_value}</span>
                       </label>
                       <input
                         className="input"
@@ -335,6 +332,18 @@ class StripController extends React.Component {
                         step="0.1"
                         value={blur_value}
                       />
+                      {/* <InputRange
+                        minValue={0.1}
+                        maxValue={18}
+                        draggableTrack={false}
+                        onChange={value => {
+                          this.sendNote(
+                            25,
+                            convertRange(value, [0.1, 18], [1, 127], true)
+                          );
+                        }}
+                        value={blur_value}
+                      /> */}
                     </div>
 
                     {/* <CircularSlider
@@ -360,7 +369,7 @@ class StripController extends React.Component {
                         : 'strip-controller__audio-block strip-controller__sub-card strip-controller__sub-card--disabled '
                     }
                   >
-                    <div>
+                    <div className="strip-controller__audio-block__audio-vizualiser">
                       <AudioVisualizerCanvas
                         name={
                           config._audio_ports[
@@ -377,8 +386,8 @@ class StripController extends React.Component {
                           active_state.audio_samples_filter_max
                         }
                         audio_gain={active_state.audio_gain}
-                        width={120}
-                        height={60}
+                        width={125}
+                        height={75}
                       />
 
                       {/* <InputRange
@@ -402,7 +411,7 @@ class StripController extends React.Component {
                         }}
                       /> */}
                     </div>
-                    <div style={{ flexGrow: 1 }}>
+                    <div className="strip-controller__audio-block__others">
                       <div>
                         <Select
                           alt={guessNoteFromNumber(21)}

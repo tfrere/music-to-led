@@ -69,6 +69,11 @@ class ModSwitcher:
 
         # return new_value
 
+    @staticmethod
+    def swapListElemPositions(listAttribute, pos1, pos2):
+        listAttribute[pos1], listAttribute[pos2] = listAttribute[pos2], listAttribute[pos1]
+        return listAttribute
+
     def changeMod(self):
         if(self.midi_datas):
             for midi_data in self.midi_datas:
@@ -109,8 +114,10 @@ class ModSwitcher:
 
                             name = midi_data["data"]
 
-                            self.strip_config.states[self.strip_config.active_state_index] = (
-                                self.active_state)
+                            print("updating state with name -> " + name)
+                            print("name being  overrided  -> " + self.strip_config.active_state.name)
+
+                            self.strip_config.states[self.strip_config.active_state_index] = self.active_state
 
                             self.strip_config.active_state.name = name
                             self.config.saveToYmlFile()
@@ -119,6 +126,27 @@ class ModSwitcher:
                                         "is updating state named " + name)
                         except:
                             print("update error")
+
+                    if(midi_data["action"] == "swapstate"):
+                        try:
+
+                            orders = midi_data["data"].split(", ")
+                            # print(self.strip_config.states)
+                            # print(self.strip_config.active_state_index)
+                            if(self.strip_config.active_state_index == int(orders[0])):
+                                self.strip_config.active_state_index = int(orders[1])
+                            elif(self.strip_config.active_state_index == int(orders[1])):
+                                self.strip_config.active_state_index = int(orders[0])
+
+                            self.strip_config.states = self.swapListElemPositions(
+                                self.strip_config.states, int(orders[0]), int(orders[1]))
+                            # print(self.strip_config.states)
+                            self.config.saveToYmlFile()
+                            self.has_states_changed = True
+                            self.logger(self.strip_config.name,
+                                        "is updating states order " + midi_data["data"])
+                        except:
+                            print("swap error")
 
                     if(midi_data["action"] == "deletestate"):
                         try:
@@ -167,6 +195,8 @@ class ModSwitcher:
                     # performance improvements : json file to handle "scroll", "energy", ... values limked to mode numeric values
                     if(mode >= 0 and mode < 17):
 
+                        self.visualizer._timeSinceStart.restart()
+
                         # SOUND BASED
                         if(mode == 0):
                             self.visualizer.resetFrame()
@@ -187,10 +217,10 @@ class ModSwitcher:
                             self.active_state.active_visualizer_effect = "piano_scroll"
                         elif(mode == 6):
                             self.visualizer.resetFrame()
-                            self.active_state.active_visualizer_effect = "piano_note"
+                            self.active_state.active_visualizer_effect = "piano_echo"
                         elif(mode == 7):
                             self.visualizer.resetFrame()
-                            self.active_state.active_visualizer_effect = "piano_echo"
+                            self.active_state.active_visualizer_effect = "piano_note"
                         elif(mode == 8):
                             self.visualizer.resetFrame()
                             self.active_state.active_visualizer_effect = "pitchwheel_flash"
@@ -298,7 +328,7 @@ class ModSwitcher:
 
                         elif(mode == 24):
                             self.active_state.chunk_size = convertRange(
-                                velocity, [1, 127], [2, 50])
+                                velocity, [1, 127], [2, 20])
                             self.logger(
                                 self.strip_config.name, "is chunk size to " + str(self.active_state.chunk_size))
 
@@ -309,7 +339,6 @@ class ModSwitcher:
                                 self.strip_config.name, "is changing blur value to " + str(self.active_state.blur_value))
 
                         elif(mode == 26):
-                            # print(velocity)
                             self.active_state.division_value = convertRange(
                                 velocity, [1, 127], [0, 3], rounded=True)
                             self.visualizer.initVizualiser()
@@ -330,7 +359,8 @@ class ModSwitcher:
                             self.active_state = self.strip_config.active_state
                             self.visualizer.initVizualiser()
                             self.visualizer.resetFrame()
-                            self.visualizer.drawAlternateColorChunks()
+                            if(self.active_state.active_visualizer_effect == "alternate_color_chunks"):
+                                self.visualizer.drawAlternateColorChunks()
                             self.logger(self.strip_config.name, "is changing state for " +
                                         self.strip_config.states[self.strip_config.active_state_index].name)
 

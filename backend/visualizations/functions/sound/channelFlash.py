@@ -26,7 +26,7 @@ class ChannelFlash():
         # Scale by the width of the LED strip
         self.audio_data *= float((self._number_of_pixels // 2) - 1)
         # Map color channels according to energy in the different freq bands
-        scale = 0.9
+        scale = 0.6
 
         stripItensities = []
         maxStripItensities = []

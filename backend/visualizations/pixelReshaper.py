@@ -25,6 +25,7 @@ class PixelReshaper:
         self._number_of_strips = self.strip_config._shapes[
             self.division_value]._number_of_substrip
         self.strip_shape = self.strip_config._shapes[self.division_value].shape
+        self._strip_offsets = self.strip_config._shapes[self.division_value]._offsets
         self._strips = []
         for i, strip_length in enumerate(self.strip_shape):
             self._strips.append([])

@@ -23,7 +23,7 @@ class Nav extends React.Component {
 
   apiCall = route => {
     fetch('http://localhost:8080/' + route).then(res => {
-      console.log(res);
+      // console.log(res);
       return res;
     });
   };
@@ -31,7 +31,7 @@ class Nav extends React.Component {
   isBackendAlive = () => {
     fetch('http://localhost:8080/is-backend-alive').then(res => {
       res.json().then(res => {
-        console.log(res);
+        // console.log(res);
         if (res.success == true) {
           this.setState({ isConfigLoaderVisible: false });
         }
@@ -66,7 +66,7 @@ class Nav extends React.Component {
 
           <div className="nav__right">
             <Button
-              className="button button--danger"
+              className="button button--complement"
               onClick={() => {
                 this.apiCall('kill');
                 this.setState({ isConfigLoaderVisible: true }, () => {

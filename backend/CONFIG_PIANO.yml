@@ -39,17 +39,23 @@ audio_ports:
 strips:
 - name: Maven
   serial_port_name: /dev/tty.usbserial-A50285BI
-  active_state_index: 1
+  active_state_index: 0
   is_online: false
   midi_ports_for_changing_mode:
   - Audio2Led ChangeMod TopBar
   midi_ports_for_visualization:
   - Audio2Led Synth
   original_physical_shape:
-  - 80
-  - 80
-  - 80
-  - 80
+  - 50
+  - 50
+  - 50
+  - 50
+  - 50
+  - 50
+  - 50
+  - 50
+  - 50
+  - 50
   midi_range:
   - 47
   - 73
@@ -57,79 +63,106 @@ strips:
     shapes:
     - offset:
       - 0
-      - 30
+      - 15
       pixel_range:
       - 0
-      - 80
+      - 50
       svg_string: M0,0 T0,150
     - offset:
-      - 100
       - 0
-      pixel_range:
-      - 80
-      - 160
-      svg_string: M100,0 T100,150
-    - offset:
-      - 200
-      - 0
-      pixel_range:
-      - 160
-      - 240
-      svg_string: M200,0 T200,150
-    - offset:
-      - 300
       - 30
       pixel_range:
-      - 240
-      - 320
+      - 50
+      - 100
+      svg_string: M50,0 T50,150
+    - offset:
+      - 0
+      - 45
+      pixel_range:
+      - 100
+      - 150
+      svg_string: M100,0 T100,150
+    - offset:
+      - 0
+      - 60
+      pixel_range:
+      - 150
+      - 200
+      svg_string: M150,0 T150,150
+    - offset:
+      - 0
+      - 75
+      pixel_range:
+      - 200
+      - 250
+      svg_string: M200,0 T200,150
+    - offset:
+      - 0
+      - 90
+      pixel_range:
+      - 250
+      - 300
+      svg_string: M250,0 T250,150
+    - offset:
+      - 0
+      - 105
+      pixel_range:
+      - 300
+      - 350
       svg_string: M300,0 T300,150
+    - offset:
+      - 0
+      - 120
+      pixel_range:
+      - 350
+      - 400
+      svg_string: M350,0 T350,150
+    - offset:
+      - 0
+      - 135
+      pixel_range:
+      - 400
+      - 450
+      svg_string: M400,0 T400,150
+    - offset:
+      - 0
+      - 150
+      pixel_range:
+      - 450
+      - 500
+      svg_string: M450,0 T450,150
     size:
       width: 300
       height: 180
       scale: 1
   states:
   - name: Spectrum
-    active_visualizer_effect: spectrum
-    active_color_scheme_index: 10
+    active_visualizer_effect: channel_flash
+    active_color_scheme_index: 0
     active_audio_channel_index: 1
     audio_samples_filter_min: 0
     audio_samples_filter_max: 24
     audio_gain: 0.7
-    audio_decay: 0.5
+    audio_decay: 0.001
     division_value: 0
     max_brightness: 255
-    time_interval: 1
+    time_interval: 500
     chunk_size: 23
     blur_value: 0.1
     is_reverse: false
     is_mirror: false
-  - name: Scroll
+  - name: test2
     active_visualizer_effect: piano_echo
     active_color_scheme_index: 0
     active_audio_channel_index: 1
     audio_samples_filter_min: 0
     audio_samples_filter_max: 24
-    audio_gain: 0.1
-    audio_decay: 0.1
+    audio_gain: 0.6
+    audio_decay: 0.05
     division_value: 0
     max_brightness: 255
-    time_interval: 25
-    chunk_size: 6
-    blur_value: 0.1
-    is_reverse: false
-    is_mirror: false
-  - name: test2
-    active_visualizer_effect: channel_intensity
-    active_color_scheme_index: 0
-    active_audio_channel_index: 1
-    audio_samples_filter_min: 0
-    audio_samples_filter_max: 24
-    audio_gain: 0.1
-    audio_decay: 0.1
-    division_value: 0
-    max_brightness: 255
-    time_interval: 286
+    time_interval: 72
     chunk_size: 29
-    blur_value: 0.7
+    blur_value: 0.2
     is_reverse: false
     is_mirror: false

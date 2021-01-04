@@ -1,7 +1,13 @@
+$drag-handle-color-one: rgba(255, 255, 255, 0.16);
+$active-drag-handle-color-one: rgba(0, 0, 0, 0.16);
+$drag-handle-color-two: rgba(255, 255, 255, 0);
+
 .state-controller__states {
   display: flex;
   justify-content: stretch;
   flex-wrap: wrap;
+  position: relative;
+  overflow: hidden;
   .button-group {
     width: 100%;
     height: 42px;
@@ -11,16 +17,52 @@
       text-transform: initial;
       letter-spacing: 0.05rem;
     }
+    input {
+      z-index: 999999999999;
+    }
+  }
+  ul {
+    margin: 0;
+  }
+  ul,
+  li {
+    list-style-type: none;
+    padding-left: 0;
+    width: 100%;
+  }
+
+  .state-controller__states__loader {
+    position: absolute;
+    left: calc(50% - 10px);
+    top: calc(50% - 10px);
+    z-index: 9999999999999;
+  }
+  &.state-controller__states--loading {
+  }
+  &.state-controller__states--loading:before {
+    content: '';
+    width: 1000px;
+    height: 1000px;
+    background: $leftNavActiveBackground;
+    top: 0;
+    left: 0;
+    position: absolute;
+    z-index: 999999999999;
+    cursor: default;
   }
   input,
   .button:not(.button--square) {
-    width: calc(100% - 80px);
+    width: calc(100% - 40px);
     text-align: left !important;
     display: inline;
   }
 
   .button--square {
     width: 42px;
+  }
+  ul .button:first-child,
+  li .button-group .button:first-child {
+    padding-left: 30px;
   }
   .button:first-child:last-child {
     width: calc(100%);
@@ -37,4 +79,70 @@
   letter-spacing: 0.05rem;
   font-size: 10px;
   color: rgba(255, 255, 255, 0.1);
+}
+
+body > .drag-handle-element .drag-handle {
+  cursor: grabbing;
+}
+
+.drag-handle-element {
+  position: relative;
+  z-index: 99999999;
+  .button:first-child,
+  .button-group .button:first-child {
+    padding-left: 30px;
+  }
+}
+.drag-handle-element .drag-handle,
+.drag-handle {
+  position: absolute;
+  width: 30px;
+  height: 26px;
+  left: 0px;
+  top: 8px;
+  z-index: 99999999;
+  cursor: move;
+  cursor: grab;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 10px;
+  &__bars {
+    display: block;
+    width: 10px;
+    height: 6px;
+    background: linear-gradient(
+      180deg,
+      $drag-handle-color-one,
+      $drag-handle-color-one 20%,
+      $drag-handle-color-two 0,
+      $drag-handle-color-two 40%,
+      $drag-handle-color-one 0,
+      $drag-handle-color-one 60%,
+      $drag-handle-color-two 0,
+      $drag-handle-color-two 80%,
+      $drag-handle-color-one 0,
+      $drag-handle-color-one
+    );
+  }
+}
+.drag-handle-element--active {
+  .drag-handle__bars {
+    background: linear-gradient(
+      180deg,
+      $active-drag-handle-color-one,
+      $active-drag-handle-color-one 20%,
+      $drag-handle-color-two 0,
+      $drag-handle-color-two 40%,
+      $active-drag-handle-color-one 0,
+      $active-drag-handle-color-one 60%,
+      $drag-handle-color-two 0,
+      $drag-handle-color-two 80%,
+      $active-drag-handle-color-one 0,
+      $active-drag-handle-color-one
+    );
+  }
+}
+.hide-drag-handle .drag-handle {
+  display: none;
 }

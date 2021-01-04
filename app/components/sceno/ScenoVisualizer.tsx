@@ -1,8 +1,9 @@
 import React from 'react';
 import { SizeMe } from 'react-sizeme';
+// import ScenoVisualizer2d from './OldScenoVisualizer2d';
 import ScenoVisualizer2d from './ScenoVisualizer2d';
 import ScenoVisualizer3d from './ScenoVisualizer3d';
-// import ScenoVisualizer3d from './ScenoVisualizer3d2';
+import ThreeVisualizer from './ThreeVisualizer';
 
 class CoreScenoVisualizer extends React.Component {
   constructor(props) {
@@ -25,7 +26,7 @@ class CoreScenoVisualizer extends React.Component {
     const hasGridClass = this.state.hasGrid ? 'grid-overlay' : '';
 
     const visualizerToRender = this.state.is2d ? (
-      <ScenoVisualizer2d
+      <ThreeVisualizer
         width={this.props.width}
         height={this.props.height}
         config={this.props.config}
@@ -36,7 +37,7 @@ class CoreScenoVisualizer extends React.Component {
         hasActiveBoundingBoxVisible={true}
       />
     ) : (
-      <ScenoVisualizer3d
+      <ScenoVisualizer2d
         width={this.props.width}
         height={this.props.height}
         config={this.props.config}
@@ -48,13 +49,15 @@ class CoreScenoVisualizer extends React.Component {
       />
     );
 
+    const isLoadingWrapperVisible = this.state.isChangingView
+      ? ' loading-wrapper--visible'
+      : '';
+
     const visualizerWithLoader = (
       <>
-        {this.state.isChangingView ? (
-          <div className="loading-wrapper">
-            {/* <div className="loading"></div> */}
-          </div>
-        ) : null}
+        <div className={'loading-wrapper' + isLoadingWrapperVisible}>
+          {/* <div className="loading"></div> */}
+        </div>
         {visualizerToRender}
       </>
     );
@@ -84,7 +87,7 @@ class CoreScenoVisualizer extends React.Component {
                 Visualizer
               </label>
               <div className="sceno-visualizer__toolbar">
-                <button
+                {/* <button
                   onClick={() => {
                     this.setState({
                       is2d: !this.state.is2d
@@ -97,7 +100,7 @@ class CoreScenoVisualizer extends React.Component {
                   ) : (
                     <i className="la la-cube"></i>
                   )}
-                </button>
+                </button> */}
                 <button
                   onClick={() => {
                     this.setState({

@@ -93,12 +93,6 @@ class SizedRgbVisualizerCanvas extends React.Component {
     }
   }
 
-  componentDidUpdate(prevProps) {
-    if (!isShallowEqual(this.props.active_shape, prevProps.active_shape)) {
-      this.updateVisualizer();
-    }
-  }
-
   drawLine(ctx, line, start, end, offset, color) {
     ctx.lineCap = 'round';
 
@@ -174,7 +168,7 @@ class RgbVisualizerCanvas extends React.Component {
       <SizeMe>
         {({ size }) => {
           return (
-            <SizedRgbVisualizerCanvas {...this.props} width={size.width} />
+            <SizedRgbVisualizerCanvas {...this.props} width={size.width || 100} />
           );
         }}
       </SizeMe>

@@ -50,11 +50,13 @@ class Visualizer(Spectrum, FullColor, FadeOut, Clear, AlternateColors, Transitio
         self.initVizualiser()
 
     def initVizualiser(self):
+        print("initvizualizer")
         self.active_state = self.strip_config.active_state
         self._number_of_pixels = self.strip_config._shapes[
             self.active_state.division_value]._number_of_pixels
 
         self._timeSinceStart = self.config._timeSinceStart
+        self._timeSinceStart.restart()
         self.number_of_audio_samples = self.config._audio_ports[
             self.active_state.active_audio_channel_index].number_of_audio_samples
 
@@ -85,7 +87,7 @@ class Visualizer(Spectrum, FullColor, FadeOut, Clear, AlternateColors, Transitio
         self.resetFrame()
 
         self.pixelReshaper.initActiveShape()
-        self.drawAlternateColorChunks()
+        # self.drawAlternateColorChunks()
 
     def smoothDecay(self, audio_data, decay_value):
 
@@ -124,6 +126,13 @@ class Visualizer(Spectrum, FullColor, FadeOut, Clear, AlternateColors, Transitio
     @staticmethod
     def clampToNewRange(value, old_min, old_max, new_min, new_max):
         # performance improvements : dupplicate convertRange(value, [old_min, old_max], [new_min, new_max], False)
+        new_value = (((value - old_min) * (new_max - new_min)) /
+                     (old_max - old_min)) + new_min
+        return new_value
+
+    @staticmethod
+    def clampToNewIntRange(value, old_min, old_max, new_min, new_max):
+        # performance improvements : dupplicate convertRange(value, [old_min, old_max], [new_min, new_max], False)
         new_value = (((value - old_min) * (new_max - new_min)) //
                      (old_max - old_min)) + new_min
         return new_value
@@ -136,6 +145,7 @@ class Visualizer(Spectrum, FullColor, FadeOut, Clear, AlternateColors, Transitio
     def resetFrame(self):
         """ Reset current pixels """
         self.pixels = np.tile(0., (3, self._number_of_pixels))
+        self.pixelReshaper.resetStrips()
 
     def blurFrame(self, pixels, value=1.0):
         pixels[0, :] = gaussian_filter1d(pixels[0, :], sigma=value)
@@ -144,8 +154,17 @@ class Visualizer(Spectrum, FullColor, FadeOut, Clear, AlternateColors, Transitio
         return pixels
 
     def applyMaxBrightness(self, pixels, max_brightness):
-        # performance improvements : test numpy perf
-        return np.clip(pixels, 0, max_brightness)
+        new_pixels = np.tile(0., (3, self._number_of_pixels))
+        multiply_factor = self.clampToNewRange(
+            max_brightness, 1, 255, 0.01, 1.0)
+        for i, color_channel in enumerate(pixels):
+            for y, value in enumerate(color_channel):
+                new_pixels[i][y] = value * multiply_factor
+        return np.clip(new_pixels, 0, max_brightness).astype(int)
+
+    # def applyMaxBrightness(self, pixels, max_brightness):
+    #     # performance improvements : test numpy perf
+    #     return np.clip(pixels, 0, max_brightness)
 
     def drawFrame(self):
         """ Return current pixels """

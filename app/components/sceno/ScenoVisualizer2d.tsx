@@ -1,43 +1,121 @@
-import React from 'react';
-
+import ReactDOM from 'react-dom';
+import React, { Component } from 'react';
 import { svgPathProperties } from 'svg-path-properties';
+import * as THREE from 'three';
+import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls';
+import { group } from 'console';
+import { Vector3 } from 'three';
 
-const minHeight = 300;
+let size = 50;
+let divisions = 30;
+
+const centerObject = obj => {
+  let children = obj.children;
+  let minVector = { x: 0, y: 0, z: 0 };
+  let maxVector = { x: 0, y: 0, z: 0 };
+  for (let i = 0, j = children.length; i < j; i++) {
+    let box = new THREE.Box3().setFromObject(children[i]);
+    let sphere = box.getBoundingSphere(new THREE.Sphere());
+    let centerPoint = sphere.center;
+    if (centerPoint.x < minVector.x) minVector.x = centerPoint.x;
+    if (centerPoint.y < minVector.y) minVector.y = centerPoint.y;
+    if (centerPoint.z < minVector.z) minVector.z = centerPoint.z;
+    if (centerPoint.x > minVector.x) maxVector.x = centerPoint.x;
+    if (centerPoint.y > minVector.y) maxVector.y = centerPoint.y;
+    if (centerPoint.z > minVector.z) maxVector.z = centerPoint.z;
+  }
+  // console.log('this is complete', minVector, maxVector);
+  // var objectCenter = completeBoundingBox.getCenter();
+  // console.log('This is the center of your Object3D:', objectCenter);
+  obj.position.set(
+    (maxVector.x - minVector.x) / 2,
+    (maxVector.y - minVector.y) / 2,
+    (maxVector.z - minVector.z) / 2
+  );
+  // console.log('obj position', obj.position);
+};
 
 class ScenoVisualizer2d extends React.Component {
   constructor(props) {
     super(props);
-
     const scenes = this.props.config._strips.map(strip => {
       return strip.scene;
     });
+    let renderer = new THREE.WebGLRenderer({ alpha: true, antialias: true });
+    let camera = new THREE.PerspectiveCamera(
+      45,
+      this.props.width / this.props.height,
+      0.1,
+      1000
+    );
+    // let camera = new THREE.OrthographicCamera(
+    //   this.props.width / -2,
+    //   this.props.width / 2,
+    //   this.props.height / 2,
+    //   this.props.height / -2,
+    //   0.1,
+    //   1000
+    // );
+    camera.position.x = 0;
+    camera.position.y = 0.05;
+    camera.position.z = -5.2;
+    camera.lookAt(0, 0, 0);
 
-    const maxHeight = this.props.config._strips.reduce(function(prev, current) {
-      return prev.scene.size.height > current.scene.size.height
-        ? prev
-        : current;
-    }).scene.size.height;
+    let light = new THREE.AmbientLight(0x404040, 100); // soft white light
+
+    let backgroundColor = '#051824'; //'rgb(9,24,35)';
+    let gridColor = 'rgb(35,50,60)';
+    let centerGridColor = 'rgb(25,40,50)';
+    let gridHelper = new THREE.GridHelper(
+      size,
+      divisions,
+      gridColor,
+      centerGridColor
+    );
+    gridHelper.position.set(0, -5, 0);
 
     this.state = {
-      ctx: null,
+      hasDarkMode: false,
+      scene: new THREE.Scene(),
       scenes: scenes,
-      hasControls: this.props.hasControls || false,
-      height: this.props.height,
-      hasDarkMode: this.props.hasDarkMode || false,
-      hasGrid: true,
-      hasActiveBoundingBoxVisible:
-        this.props.hasActiveBoundingBoxVisible || false
+      camera: camera,
+      light: light,
+      renderer: renderer,
+      controls: new OrbitControls(camera, renderer.domElement),
+      gridHelper: gridHelper,
+      backgroundColor: backgroundColor,
+      shapesObjects: [],
+      groupObject: null
     };
+    // console.log(props);
 
-    this.initVisualizer();
+    document.addEventListener('keydown', this.handleKeyDown);
   }
 
-  componentDidMount() {
-    this.startLoop();
-  }
+  onWindowResize = () => {
+    this.state.camera.aspect = this.props.width / this.props.height;
+    this.state.camera.updateProjectionMatrix();
+    this.state.renderer.setSize(this.props.width, this.props.height);
+  };
+
+  handleKeyDown = event => {
+    let that = this;
+    switch (event.keyCode) {
+      case 32:
+        event.preventDefault();
+        that.state.camera.position.set(0, 0.05, -1.2);
+        that.state.camera.lookAt(new THREE.Vector3(0, 0, 0));
+
+        break;
+      default:
+        break;
+    }
+  };
 
   componentWillUnmount() {
     this.stopLoop();
+    document.removeEventListener('keydown', this.handleKeyDown);
+    window.addEventListener('resize', this.onWindowResize, false);
   }
 
   startLoop = () => {
@@ -48,139 +126,165 @@ class ScenoVisualizer2d extends React.Component {
 
   stopLoop = () => {
     window.cancelAnimationFrame(this._frameId);
-    // Note: no need to worry if the loop has already been cancelled
-    // cancelAnimationFrame() won't throw an error
   };
 
   loop = () => {
-    // perform loop work here
-    if (this.refs.canvas && !this.state.ctx) {
-      this.setState({ ctx: this.refs.canvas.getContext('2d') });
-    }
-    if (this.state.ctx) {
-      this.updateCanvas();
-    }
-
-    // Set up next iteration of the loop
+    this.animate();
     this._frameId = window.requestAnimationFrame(this.loop);
   };
 
-  initVisualizer = () => {};
+  componentDidMount() {
+    let {
+      scene,
+      camera,
+      renderer,
+      fog,
+      controls,
+      gridHelper,
+      scenes,
+      light
+    } = this.state;
 
-  updateVisualizer = () => {};
+    renderer.setClearColor(0x000000, 0); // the default
 
-  updateCanvas = () => {
-    const { ctx, scenes } = this.state;
-    const strip = this.props.config._strips[0];
-    ctx.clearRect(0, 0, this.props.width, this.props.height);
-    ctx.moveTo(0, 0.5);
-    scenes.map((scene, index) => {
-      if (scene.backgrounds) {
-        ctx.strokeWidth = '2';
-        ctx.strokeStyle = 'rgba(255,255,255, 1)';
+    // controls.enablePan = false;
+    // controls.enableZoom = false;
+    scene.add(gridHelper);
+    scene.add(light);
+    scene.fog = new THREE.Fog(this.state.backgroundColor, 5, 10);
 
-        scene.backgrounds.map(elem => {
-          var path = new Path2D(elem.svg_string);
-          // var path = new Path2D('M 100,100 h 50 v 50 h 50');
+    renderer.setSize(this.props.width, this.props.height);
+    renderer.toneMapping = THREE.ReinhardToneMapping;
 
-          ctx.stroke(path);
-        });
-      }
-      scene.shapes.map(elem => {
-        ctx.strokeWidth = '9.5';
-        ctx.strokeStyle = 'rgba(255,255,255, 0.03)';
+    // https://threejs.org/examples/#webgl_postprocessing_unreal_bloom
 
-        if (
-          this.props.hasActiveBoundingBoxVisible &&
-          !this.props.hasDarkMode &&
-          index == this.props.activeStripIndex
-        ) {
-          ctx.setLineDash([5, 5]);
-          ctx.strokeRect(
-            this.props.width / 2 - this.state.scenes[index].size.width / 2 - 10,
-            this.props.height / 2 -
-              this.state.scenes[index].size.height / 2 -
-              10,
-            this.state.scenes[index].size.width + 15,
-            this.state.scenes[index].size.height + 15
-          );
-        }
+    this.mount.appendChild(renderer.domElement);
 
-        this.printShape(
-          ctx,
-          elem.svg_string,
-          this.state.scenes[index].size,
-          elem.offset,
-          this.props.pixels[index][0].slice(
-            elem.pixel_range[0],
-            elem.pixel_range[1]
-          ),
-          this.props.pixels[index][1].slice(
-            elem.pixel_range[0],
-            elem.pixel_range[1]
-          ),
-          this.props.pixels[index][2].slice(
-            elem.pixel_range[0],
-            elem.pixel_range[1]
+    let shapesObjects = [];
+    var groupObject = new THREE.Group();
+
+    scenes.map((scene, sceneIndex) => {
+      scene.shapes.map(shape => {
+        shapesObjects.push(
+          this.createShape(
+            shape.svg_string,
+            scenes[sceneIndex].size,
+            shape.offset,
+            shape,
+            sceneIndex
           )
         );
       });
     });
-  };
+    var mergedShapesObjects = [].concat.apply([], shapesObjects);
 
-  printShape = (ctx, path, size, offset, r, g, b) => {
+    this.setState(
+      {
+        shapesObjects: mergedShapesObjects
+      },
+      () => {
+        mergedShapesObjects.map(object => {
+          groupObject.add(object);
+        });
+        this.setState({ groupObject: groupObject });
+        centerObject(groupObject);
+        // groupObject.position.set(0.5, 0.5, 0.5);
+        scene.add(groupObject);
+
+        this.startLoop();
+      }
+    );
+  }
+
+  createShape = (path, size, offset, shape, sceneIndex) => {
+    let {
+      scene,
+      camera,
+      renderer,
+      fog,
+      controls,
+      gridHelper,
+      scenes
+    } = this.state;
+
     const properties = new svgPathProperties(path);
 
-    const XCenterOffset = this.props.width / 2 - (size.width * size.scale) / 2;
-    const YCenterOffset =
-      this.props.height / 2 - (size.height * size.scale) / 2;
     const length = properties.getTotalLength();
-    const pixels_length = r.length;
+    const pixels_length = shape.pixel_range[1] - shape.pixel_range[0];
     const gap = length / pixels_length;
 
     let i = 0;
+    let objects = [];
 
-    while (i < pixels_length) {
+    while (++i < pixels_length) {
       const coords = properties.getPointAtLength(gap * i);
-
-      ctx.fillStyle = 'rgb(' + r[i] * 5 + ',' + g[i] * 5 + ',' + b[i] * 5 + ')';
-
-      ctx.beginPath();
-      ctx.arc(
-        size.scale * coords.x + XCenterOffset + offset[0],
-        size.scale * coords.y + YCenterOffset + offset[1],
-        2,
-        0,
-        2 * Math.PI,
-        false
-      );
-      ctx.fill();
-
-      i++;
+      var geometry = new THREE.SphereGeometry(0.02, 0.02, 0.02);
+      var material = new THREE.MeshPhongMaterial({
+        color: 0x000000
+      });
+      var object = new THREE.Mesh(geometry, material);
+      object.scene_index = sceneIndex;
+      object.pixel_index = shape.pixel_range[0] + i;
+      objects.push(object);
+      object.position.x = (coords.x / 130) * -1;
+      object.position.y = (coords.y / 130) * -1;
     }
+
+    return objects;
+  };
+
+  animate = () => {
+    let {
+      scene,
+      camera,
+      renderer,
+      fog,
+      controls,
+      gridHelper,
+      shapesObjects
+    } = this.state;
+    let that = this;
+
+    shapesObjects.map((elem, elem_index) => {
+      if (that.props.pixels[elem.scene_index]) {
+        elem.material.color.setStyle(
+          `rgb(${Math.round(
+            that.props.pixels[elem.scene_index][0][elem.pixel_index]
+          )},
+                      ${Math.round(
+                        that.props.pixels[elem.scene_index][1][elem.pixel_index]
+                      )},
+                      ${Math.round(
+                        that.props.pixels[elem.scene_index][2][elem.pixel_index]
+                      )})
+                      `
+        );
+      }
+    });
+
+    if (this.props.hasDarkMode) {
+      scene.remove(gridHelper);
+    } else {
+      scene.add(gridHelper);
+    }
+
+    this.onWindowResize();
+
+    renderer.render(scene, camera);
   };
 
   render() {
-    const hasGridClass = this.props.hasGrid ? 'grid-overlay' : '';
     return (
       <div
         style={{
-          height: this.props.height + 2
+          width: this.props.width,
+          height: this.props.height
         }}
-      >
-        {this.props.pixels ? (
-          <div className={'sceno-visualizer ' + hasGridClass}>
-            <canvas
-              className="sceno-visualizer__canvas"
-              ref="canvas"
-              width={this.props.width}
-              height={this.props.height}
-            />
-          </div>
-        ) : (
-          <div className="loading"></div>
-        )}
-      </div>
+        ref={mount => {
+          this.mount = mount;
+        }}
+        className="sceno-visualizer"
+      ></div>
     );
   }
 }

@@ -1,32 +1,39 @@
 import React from 'react';
 
 import convertRange from '../../utils/convertRange';
+import { SizeMe } from 'react-sizeme';
 
 const spectrogram_single_frames = 40;
+const channels = 24;
 
-class AudioVisualizerCanvas extends React.Component {
+class SizedAudioVisualizerCanvas extends React.Component {
   constructor(props) {
     super(props);
 
-    const channels = 24;
     this.state = {
-      channels: channels,
+      channels: 24,
       gap: 2,
       mode: 'bar',
-      bar_channel_size: this.props.width / channels,
-      spectrogram_channel_size: this.props.height / channels,
       spectrogram_data: [],
-      spectrogram_single_frame_width:
-        this.props.width / spectrogram_single_frames,
       ctx: null
     };
   }
 
   componentDidMount() {
     let ctx = this.refs.canvas.getContext('2d');
-    this.setState({ ctx: ctx }, () => {
-      this.startLoop();
-    });
+
+    this.setState(
+      {
+        ctx: ctx,
+        channels: channels,
+        gap: 2,
+        mode: 'bar',
+        spectrogram_data: []
+      },
+      () => {
+        this.startLoop();
+      }
+    );
   }
 
   componentWillUnmount() {
@@ -46,6 +53,7 @@ class AudioVisualizerCanvas extends React.Component {
   };
 
   loop = () => {
+    // console.log(this.props.width, this.props.height);
     // perform loop work here
     if (this.state.mode == 'bar') this.updateBarCanvas();
     else this.updateSpectrogramCanvas();
@@ -54,9 +62,13 @@ class AudioVisualizerCanvas extends React.Component {
     this._frameId = window.requestAnimationFrame(this.loop);
   };
 
+  clearCanvas = () => {
+    this.state.ctx.clearRect(0, 0, this.props.width, this.props.height);
+  };
+
   updateBarCanvas = () => {
     if (this.refs.canvas) {
-      this.state.ctx.clearRect(0, 0, 150, this.props.height);
+      this.clearCanvas();
       if (!this.props.hasModifiers) {
         this.drawBar(1, 0.8);
       } else {
@@ -68,12 +80,14 @@ class AudioVisualizerCanvas extends React.Component {
 
   updateSpectrogramCanvas = () => {
     if (this.refs.canvas) {
-      this.state.ctx.clearRect(0, 0, 150, this.props.height);
+      this.clearCanvas();
       this.drawSpectrogram();
     }
   };
 
   drawBar = (gain, opacity_offset) => {
+    const bar_channel_size = this.props.width / channels;
+
     this.props.audio.map((audio_atom, index) => {
       const opacity = opacity_offset;
       const audio_channel = audio_atom * gain;
@@ -86,9 +100,9 @@ class AudioVisualizerCanvas extends React.Component {
         this.state.ctx.fillStyle = 'rgba(255,255,255,' + opacity + ')';
       }
       this.state.ctx.fillRect(
-        index * this.state.bar_channel_size,
+        index * bar_channel_size,
         this.props.height - audio_channel * this.props.height,
-        this.state.bar_channel_size - this.state.gap,
+        bar_channel_size - this.state.gap,
         audio_channel * this.props.height
       );
     });
@@ -100,6 +114,10 @@ class AudioVisualizerCanvas extends React.Component {
     if (data.length > spectrogram_single_frames) {
       data.pop();
     }
+
+    const spectrogram_channel_size = this.props.height / channels;
+    const spectrogram_single_frame_width =
+      this.props.width / spectrogram_single_frames;
 
     this.setState(
       {
@@ -119,10 +137,10 @@ class AudioVisualizerCanvas extends React.Component {
                 this.state.ctx.fillStyle = 'rgba(255,255,255,' + opacity + ')';
               }
               this.state.ctx.fillRect(
-                this.state.spectrogram_single_frame_width * spectrogram_index,
-                index * this.state.spectrogram_channel_size,
-                this.state.spectrogram_single_frame_width,
-                this.state.spectrogram_channel_size
+                spectrogram_single_frame_width * spectrogram_index,
+                (spectogram_line.length - index) * spectrogram_channel_size,
+                spectrogram_single_frame_width,
+                spectrogram_channel_size
               );
             });
           }
@@ -146,14 +164,34 @@ class AudioVisualizerCanvas extends React.Component {
             : 'audio-visualizer'
         }
         onClick={this.changeMod}
+        style={{ width: this.props.width + 20, height: this.props.height + 20 }}
       >
         <canvas
           className="audio-visualizer__canvas"
           ref="canvas"
-          width="100%"
+          width={this.props.width}
           height={this.props.height}
         />
       </div>
+    );
+  }
+}
+
+class AudioVisualizerCanvas extends React.Component {
+  render() {
+    return (
+      <SizeMe>
+        {({ size }) => {
+      // console.log("width", size.width);
+      return (
+              <SizedAudioVisualizerCanvas
+              {...this.props}
+              width={this.props.width - 20}
+              height={this.props.height - 20}
+            />
+          );
+        }}
+      </SizeMe>
     );
   }
 }
