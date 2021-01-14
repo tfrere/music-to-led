@@ -3,283 +3,285 @@ display_shell_interface: false
 is_zmq_api_enabled: true
 is_serial_enabled: false
 color_schemes:
-- - red
-  - green
-  - blue
-- - '#2a04ff'
-  - '#ff9604'
-- - '#02e6ff'
-  - '#ff4a02'
-- - '#2bff01'
-  - '#ff0127'
-- - '#fff700'
-  - '#f700ff'
-- - red
-- - green
-- - blue
-- - yellow
-- - pink
-- - '#ee00ac'
-  - blue
+  - - red
+    - green
+    - blue
+  - - '#2a04ff'
+    - '#ff9604'
+  - - '#02e6ff'
+    - '#ff4a02'
+  - - '#2bff01'
+    - '#ff0127'
+  - - '#fff700'
+    - '#f700ff'
+  - - '#ee00ac'
+    - blue
+  - - red
+  - - green
+  - - blue
+  - - yellow
+  - - pink
+  - - '#ee00ac'
+    - blue
 audio_ports:
-- max_frequency: 12000
-  min_frequency: 200
-  min_volume_threshold: 1.0e-07
-  n_rolling_history: 4
-  name: Built-in Microphone
-  number_of_audio_samples: 24
-  sampling_rate: 44000
-- max_frequency: 12000
-  min_frequency: 200
-  min_volume_threshold: 1.0e-07
-  n_rolling_history: 4
-  name: Loopback Audio
-  number_of_audio_samples: 24
-  sampling_rate: 44000
+  - max_frequency: 12000
+    min_frequency: 200
+    min_volume_threshold: 1.0e-07
+    n_rolling_history: 4
+    name: Built-in Microphone
+    number_of_audio_samples: 24
+    sampling_rate: 44000
+  - max_frequency: 12000
+    min_frequency: 200
+    min_volume_threshold: 1.0e-07
+    n_rolling_history: 4
+    name: Loopback Audio
+    number_of_audio_samples: 24
+    sampling_rate: 44000
 strips:
-- name: Angles
-  serial_port_name: /dev/tty.usbserial-A50285BI
-  active_state_index: 0
-  is_online: false
-  midi_ports_for_changing_mode:
-  - Audio2Led ChangeMod Center
-  midi_ports_for_visualization:
-  - Audio2Led Synth
-  original_physical_shape:
-  - 34
-  - 52
-  - 50
-  midi_range:
-  - 48
-  - 72
-  scene:
-    backgrounds:
-    - svg_string: M1904.22,1322.37L7541.24,1322.37L8819.27,9345.21L590.679,9345.21L1904.22,1322.37ZM7870.32,8513.7L7553.6,6436.27L5803.03,8532.86L7870.32,8513.7ZM5257.8,2072.17L5483.42,5909.79L4074.51,7682.6L2827.52,7685.84L4955.68,5298.43L4882.28,2065.25L5257.8,2072.17ZM4305.1,2078.95L4341.55,4981.69L1768.95,7680.52L1666.29,7683.6L1924.02,6019.25L3961.09,4177.93L3991.01,2075.41L4305.1,2078.95ZM6906.38,2078.99L7457.78,5746.52L5772.16,7680.57L5001.22,7680.57L6230.6,6127.66L5901.42,2078.99L6906.38,2078.99ZM2511.91,2056.86L3450.56,2052.75L3376.48,3794.77L2092.17,4920.42L2511.91,2056.86Z
-    shapes:
-    - offset:
-      - 0
-      - 0
-      pixel_range:
-      - 86
-      - 136
-      svg_string: M0,0 0,100 T75,175
-    - offset:
-      - 0
-      - 0
-      pixel_range:
+  - name: Angles
+    serial_port_name: /dev/tty.usbserial-A50285BI
+    active_state_index: 0
+    is_online: false
+    midi_ports_for_changing_mode:
+      - Audio2Led ChangeMod Center
+    midi_ports_for_visualization:
+      - Audio2Led Synth
+    original_physical_shape:
       - 34
-      - 86
-      svg_string: M50,0 50,75 T100,125
-    - offset:
-      - 0
-      - 0
-      pixel_range:
-      - 0
-      - 34
-      svg_string: M100,0 100,50 T125,75
-    - offset:
-      - 0
-      - 0
-      pixel_range:
-      - 86
-      - 136
-      svg_string: M300,0 300,100 T225,175
-    - offset:
-      - 0
-      - 0
-      pixel_range:
-      - 34
-      - 86
-      svg_string: M250,0 250,75 T200,125
-    - offset:
-      - 0
-      - 0
-      pixel_range:
-      - 0
-      - 34
-      svg_string: M200,0 200,50 T175,75
-    size:
-      height: 175
-      scale: 1
-      width: 305
-  states:
-  - name: sound-scroll
-    active_visualizer_effect: scroll
-    active_color_scheme_index: 0
-    active_audio_channel_index: 1
-    audio_samples_filter_min: 0
-    audio_samples_filter_max: 24
-    audio_gain: 0.2
-    audio_decay: 0.1
-    division_value: 0
-    max_brightness: 255
-    time_interval: 1
-    chunk_size: 5
-    blur_value: 1.0
-    is_reverse: false
-    is_mirror: false
-  - name: sound-energy
-    active_visualizer_effect: energy
-    active_color_scheme_index: 0
-    active_audio_channel_index: 1
-    audio_samples_filter_min: 0
-    audio_samples_filter_max: 24
-    audio_gain: 0.3
-    audio_decay: 0.5
-    division_value: 0
-    max_brightness: 255
-    time_interval: 1
-    chunk_size: 2
-    blur_value: 0.1
-    is_reverse: false
-    is_mirror: false
-  - name: sound-flash
-    active_visualizer_effect: channel_flash
-    active_color_scheme_index: 10
-    active_audio_channel_index: 1
-    audio_samples_filter_min: 0
-    audio_samples_filter_max: 24
-    audio_gain: 1
-    audio_decay: 0.1
-    division_value: 0
-    max_brightness: 255
-    time_interval: 120
-    chunk_size: 5
-    blur_value: 4.8
-    is_reverse: true
-    is_mirror: false
-  - name: sound-itensity
-    active_visualizer_effect: channel_intensity
-    active_color_scheme_index: 10
-    active_audio_channel_index: 1
-    audio_samples_filter_min: 0
-    audio_samples_filter_max: 24
-    audio_gain: 1
-    audio_decay: 0.1
-    division_value: 0
-    max_brightness: 255
-    time_interval: 120
-    chunk_size: 5
-    blur_value: 0.1
-    is_reverse: true
-    is_mirror: false
-  - name: sound-spectrum
-    active_visualizer_effect: spectrum
-    active_color_scheme_index: 10
-    active_audio_channel_index: 1
-    audio_samples_filter_min: 0
-    audio_samples_filter_max: 24
-    audio_gain: 1
-    audio_decay: 0.1
-    division_value: 0
-    max_brightness: 255
-    time_interval: 120
-    chunk_size: 5
-    blur_value: 0.1
-    is_reverse: false
-    is_mirror: false
-  - name: midi-scroll
-    active_visualizer_effect: piano_scroll
-    active_color_scheme_index: 10
-    active_audio_channel_index: 0
-    audio_samples_filter_min: 0
-    audio_samples_filter_max: 24
-    audio_gain: 1
-    audio_decay: 0.1
-    division_value: 0
-    max_brightness: 255
-    time_interval: 1
-    chunk_size: 5
-    blur_value: 5.5
-    is_reverse: false
-    is_mirror: false
-  - name: midi-scroll-shape
-    active_visualizer_effect: piano_echo
-    active_color_scheme_index: 10
-    active_audio_channel_index: 1
-    audio_samples_filter_min: 0
-    audio_samples_filter_max: 24
-    audio_gain: 1
-    audio_decay: 0.1
-    division_value: 0
-    max_brightness: 255
-    time_interval: 1
-    chunk_size: 5
-    blur_value: 0.7
-    is_reverse: false
-    is_mirror: false
-  - name: midi-note
-    active_visualizer_effect: piano_note
-    active_color_scheme_index: 0
-    active_audio_channel_index: 0
-    audio_samples_filter_min: 0
-    audio_samples_filter_max: 24
-    audio_gain: 1
-    audio_decay: 0.1
-    division_value: 0
-    max_brightness: 255
-    time_interval: 68
-    chunk_size: 5
-    blur_value: 0.8
-    is_reverse: false
-    is_mirror: false
-  - name: time-alt-chunks
-    active_visualizer_effect: alternate_color_chunks
-    active_color_scheme_index: 0
-    active_audio_channel_index: 0
-    audio_samples_filter_min: 0
-    audio_samples_filter_max: 24
-    audio_gain: 1
-    audio_decay: 0.1
-    division_value: 0
-    max_brightness: 255
-    time_interval: 203
-    chunk_size: 12
-    blur_value: 6.3
-    is_reverse: false
-    is_mirror: false
-  - name: time-alt-shapes
-    active_visualizer_effect: alternate_color_shapes
-    active_color_scheme_index: 0
-    active_audio_channel_index: 0
-    audio_samples_filter_min: 0
-    audio_samples_filter_max: 24
-    audio_gain: 1
-    audio_decay: 0.1
-    division_value: 0
-    max_brightness: 255
-    time_interval: 163
-    chunk_size: 5
-    blur_value: 0.1
-    is_reverse: false
-    is_mirror: false
-  - name: time-fade-colors
-    active_visualizer_effect: transition_color_shapes
-    active_color_scheme_index: 0
-    active_audio_channel_index: 0
-    audio_samples_filter_min: 0
-    audio_samples_filter_max: 24
-    audio_gain: 1
-    audio_decay: 0.1
-    division_value: 0
-    max_brightness: 255
-    time_interval: 120
-    chunk_size: 5
-    blur_value: 0.1
-    is_reverse: false
-    is_mirror: false
-  - name: generic-fire
-    active_visualizer_effect: fire
-    active_color_scheme_index: 4
-    active_audio_channel_index: 1
-    audio_samples_filter_min: 0
-    audio_samples_filter_max: 24
-    audio_gain: 1
-    audio_decay: 0.1
-    division_value: 0
-    max_brightness: 255
-    time_interval: 282
-    chunk_size: 5
-    blur_value: 2.7
-    is_reverse: true
-    is_mirror: false
+      - 52
+      - 50
+    midi_range:
+      - 48
+      - 72
+    scene:
+      backgrounds:
+        - svg_string: M1904.22,1322.37L7541.24,1322.37L8819.27,9345.21L590.679,9345.21L1904.22,1322.37ZM7870.32,8513.7L7553.6,6436.27L5803.03,8532.86L7870.32,8513.7ZM5257.8,2072.17L5483.42,5909.79L4074.51,7682.6L2827.52,7685.84L4955.68,5298.43L4882.28,2065.25L5257.8,2072.17ZM4305.1,2078.95L4341.55,4981.69L1768.95,7680.52L1666.29,7683.6L1924.02,6019.25L3961.09,4177.93L3991.01,2075.41L4305.1,2078.95ZM6906.38,2078.99L7457.78,5746.52L5772.16,7680.57L5001.22,7680.57L6230.6,6127.66L5901.42,2078.99L6906.38,2078.99ZM2511.91,2056.86L3450.56,2052.75L3376.48,3794.77L2092.17,4920.42L2511.91,2056.86Z
+      shapes:
+        - offset:
+            - 0
+            - 0
+          pixel_range:
+            - 86
+            - 136
+          svg_string: M0,0 0,100 T75,175
+        - offset:
+            - 0
+            - 0
+          pixel_range:
+            - 34
+            - 86
+          svg_string: M50,0 50,75 T100,125
+        - offset:
+            - 0
+            - 0
+          pixel_range:
+            - 0
+            - 34
+          svg_string: M100,0 100,50 T125,75
+        - offset:
+            - 0
+            - 0
+          pixel_range:
+            - 86
+            - 136
+          svg_string: M300,0 300,100 T225,175
+        - offset:
+            - 0
+            - 0
+          pixel_range:
+            - 34
+            - 86
+          svg_string: M250,0 250,75 T200,125
+        - offset:
+            - 0
+            - 0
+          pixel_range:
+            - 0
+            - 34
+          svg_string: M200,0 200,50 T175,75
+      size:
+        height: 175
+        scale: 1
+        width: 305
+    states:
+      - name: sound-scroll
+        active_visualizer_effect: scroll
+        active_color_scheme_index: 0
+        active_audio_channel_index: 1
+        audio_samples_filter_min: 0
+        audio_samples_filter_max: 24
+        audio_gain: 0.2
+        audio_decay: 0.1
+        division_value: 0
+        max_brightness: 255
+        time_interval: 1
+        chunk_size: 5
+        blur_value: 1.0
+        is_reverse: false
+        is_mirror: false
+      - name: sound-energy
+        active_visualizer_effect: energy
+        active_color_scheme_index: 0
+        active_audio_channel_index: 1
+        audio_samples_filter_min: 0
+        audio_samples_filter_max: 24
+        audio_gain: 0.3
+        audio_decay: 0.5
+        division_value: 0
+        max_brightness: 255
+        time_interval: 1
+        chunk_size: 2
+        blur_value: 0.1
+        is_reverse: false
+        is_mirror: false
+      - name: sound-flash
+        active_visualizer_effect: channel_flash
+        active_color_scheme_index: 10
+        active_audio_channel_index: 1
+        audio_samples_filter_min: 0
+        audio_samples_filter_max: 24
+        audio_gain: 1
+        audio_decay: 0.1
+        division_value: 0
+        max_brightness: 255
+        time_interval: 120
+        chunk_size: 5
+        blur_value: 4.8
+        is_reverse: true
+        is_mirror: false
+      - name: sound-itensity
+        active_visualizer_effect: channel_intensity
+        active_color_scheme_index: 10
+        active_audio_channel_index: 1
+        audio_samples_filter_min: 0
+        audio_samples_filter_max: 24
+        audio_gain: 1
+        audio_decay: 0.1
+        division_value: 0
+        max_brightness: 255
+        time_interval: 120
+        chunk_size: 5
+        blur_value: 0.1
+        is_reverse: true
+        is_mirror: false
+      - name: sound-spectrum
+        active_visualizer_effect: spectrum
+        active_color_scheme_index: 10
+        active_audio_channel_index: 1
+        audio_samples_filter_min: 0
+        audio_samples_filter_max: 24
+        audio_gain: 1
+        audio_decay: 0.1
+        division_value: 0
+        max_brightness: 255
+        time_interval: 120
+        chunk_size: 5
+        blur_value: 0.1
+        is_reverse: false
+        is_mirror: false
+      - name: midi-scroll
+        active_visualizer_effect: piano_scroll
+        active_color_scheme_index: 10
+        active_audio_channel_index: 0
+        audio_samples_filter_min: 0
+        audio_samples_filter_max: 24
+        audio_gain: 1
+        audio_decay: 0.1
+        division_value: 0
+        max_brightness: 255
+        time_interval: 1
+        chunk_size: 5
+        blur_value: 5.5
+        is_reverse: false
+        is_mirror: false
+      - name: midi-scroll-shape
+        active_visualizer_effect: piano_echo
+        active_color_scheme_index: 10
+        active_audio_channel_index: 1
+        audio_samples_filter_min: 0
+        audio_samples_filter_max: 24
+        audio_gain: 1
+        audio_decay: 0.1
+        division_value: 0
+        max_brightness: 255
+        time_interval: 1
+        chunk_size: 5
+        blur_value: 0.7
+        is_reverse: false
+        is_mirror: false
+      - name: midi-note
+        active_visualizer_effect: piano_note
+        active_color_scheme_index: 0
+        active_audio_channel_index: 0
+        audio_samples_filter_min: 0
+        audio_samples_filter_max: 24
+        audio_gain: 1
+        audio_decay: 0.1
+        division_value: 0
+        max_brightness: 255
+        time_interval: 68
+        chunk_size: 5
+        blur_value: 0.8
+        is_reverse: false
+        is_mirror: false
+      - name: time-alt-chunks
+        active_visualizer_effect: alternate_color_chunks
+        active_color_scheme_index: 0
+        active_audio_channel_index: 0
+        audio_samples_filter_min: 0
+        audio_samples_filter_max: 24
+        audio_gain: 1
+        audio_decay: 0.1
+        division_value: 0
+        max_brightness: 255
+        time_interval: 203
+        chunk_size: 12
+        blur_value: 6.3
+        is_reverse: false
+        is_mirror: false
+      - name: time-alt-shapes
+        active_visualizer_effect: alternate_color_shapes
+        active_color_scheme_index: 0
+        active_audio_channel_index: 0
+        audio_samples_filter_min: 0
+        audio_samples_filter_max: 24
+        audio_gain: 1
+        audio_decay: 0.1
+        division_value: 0
+        max_brightness: 255
+        time_interval: 163
+        chunk_size: 5
+        blur_value: 0.1
+        is_reverse: false
+        is_mirror: false
+      - name: time-fade-colors
+        active_visualizer_effect: transition_color_shapes
+        active_color_scheme_index: 0
+        active_audio_channel_index: 0
+        audio_samples_filter_min: 0
+        audio_samples_filter_max: 24
+        audio_gain: 1
+        audio_decay: 0.1
+        division_value: 0
+        max_brightness: 255
+        time_interval: 120
+        chunk_size: 5
+        blur_value: 0.1
+        is_reverse: false
+        is_mirror: false
+      - name: generic-fire
+        active_visualizer_effect: fire
+        active_color_scheme_index: 4
+        active_audio_channel_index: 1
+        audio_samples_filter_min: 0
+        audio_samples_filter_max: 24
+        audio_gain: 1
+        audio_decay: 0.1
+        division_value: 0
+        max_brightness: 255
+        time_interval: 282
+        chunk_size: 5
+        blur_value: 2.7
+        is_reverse: true
+        is_mirror: false

@@ -3,161 +3,163 @@ display_shell_interface: true
 is_zmq_api_enabled: true
 is_serial_enabled: true
 color_schemes:
-- - red
-  - green
-  - blue
-- - red
-- - green
-- - blue
-- - '#2a04ff'
-  - '#ff9604'
-- - '#02e6ff'
-  - '#ff4a02'
-- - '#2bff01'
-  - '#ff0127'
-- - '#fff700'
-  - '#f700ff'
+  - - red
+    - green
+    - blue
+  - - red
+  - - green
+  - - blue
+  - - '#2a04ff'
+    - '#ff9604'
+  - - '#02e6ff'
+    - '#ff4a02'
+  - - '#2bff01'
+    - '#ff0127'
+  - - '#fff700'
+    - '#f700ff'
+  - - '#ee00ac'
+    - blue
 audio_ports:
-- max_frequency: 12000
-  min_frequency: 200
-  min_volume_threshold: 1.0e-07
-  n_rolling_history: 4
-  name: Built-in Microphone
-  number_of_audio_samples: 24
-  sampling_rate: 44000
-- max_frequency: 12000
-  min_frequency: 200
-  min_volume_threshold: 1.0e-07
-  n_rolling_history: 4
-  name: Loopback Audio
-  number_of_audio_samples: 24
-  sampling_rate: 44000
+  - max_frequency: 12000
+    min_frequency: 200
+    min_volume_threshold: 1.0e-07
+    n_rolling_history: 4
+    name: Built-in Microphone
+    number_of_audio_samples: 24
+    sampling_rate: 44000
+  - max_frequency: 12000
+    min_frequency: 200
+    min_volume_threshold: 1.0e-07
+    n_rolling_history: 4
+    name: Loopback Audio
+    number_of_audio_samples: 24
+    sampling_rate: 44000
 strips:
-- name: Umbrella
-  serial_port_name: /dev/tty.usbserial-A50285BI
-  active_state_index: 0
-  is_online: false
-  midi_ports_for_changing_mode:
-  - Audio2Led ChangeMod TopBar
-  midi_ports_for_visualization:
-  - Audio2Led Synth
-  original_physical_shape:
-  - 80
-  - 80
-  - 80
-  - 80
-  - 80
-  - 80
-  - 80
-  - 80
-  midi_range:
-  - 47
-  - 73
-  scene:
-    shapes:
-    - offset:
-      - 0
-      - 0
-      pixel_range:
-      - 0
+  - name: Umbrella
+    serial_port_name: /dev/tty.usbserial-A50285BI
+    active_state_index: 0
+    is_online: false
+    midi_ports_for_changing_mode:
+      - Audio2Led ChangeMod TopBar
+    midi_ports_for_visualization:
+      - Audio2Led Synth
+    original_physical_shape:
       - 80
-      svg_string: m193.03611,156.14591l0,-152.26621
-    - offset:
-      - 0
-      - 0
-      pixel_range:
       - 80
-      - 160
-      svg_string: m219.84703,167.84703l107.66847,-107.66847
-    - offset:
-      - 0
-      - 0
-      pixel_range:
-      - 160
-      - 240
-      svg_string: m219.84703,222.56566l89.24742,89.24742
-    - offset:
-      - 0
-      - 0
-      pixel_range:
-      - 240
-      - 320
-      svg_string: m231.12878,196.36763l152.26621,0
-    - offset:
-      - 0
-      - 0
-      pixel_range:
-      - 320
-      - 400
-      svg_string: m192.3876,234.49266l0,152.26621
-    - offset:
-      - 0
-      - 0
-      pixel_range:
-      - 400
-      - 480
-      svg_string: m168.27093,225.79148l-90.82637,90.82637
-    - offset:
-      - 0
-      - 0
-      pixel_range:
-      - 480
-      - 560
-      svg_string: m153.18271,196.92158l-152.26621,0
-    - offset:
-      - 0
-      - 0
-      pixel_range:
-      - 560
-      - 640
-      svg_string: m163.24979,168.49217l-107.66847,-107.66847
-    size:
-      width: 400
-      height: 350
-      scale: 1
-  states:
-  - name: Scroll
-    active_visualizer_effect: scroll
-    active_color_scheme_index: 0
-    active_audio_channel_index: 1
-    audio_samples_filter_min: 0
-    audio_samples_filter_max: 24
-    audio_gain: 1.0
-    audio_decay: 0.1
-    division_value: 0
-    max_brightness: 255
-    time_interval: 262
-    chunk_size: 5
-    blur_value: 1.8
-    is_reverse: false
-    is_mirror: false
-  - name: Energy
-    active_visualizer_effect: energy
-    active_color_scheme_index: 0
-    active_audio_channel_index: 1
-    audio_samples_filter_min: 0
-    audio_samples_filter_max: 12
-    audio_gain: 0.1
-    audio_decay: 0.1
-    division_value: 0
-    max_brightness: 255
-    time_interval: 148
-    chunk_size: 8
-    blur_value: 0.7
-    is_reverse: false
-    is_mirror: false
-  - name: AltShapes
-    active_visualizer_effect: scroll
-    active_color_scheme_index: 7
-    active_audio_channel_index: 1
-    audio_samples_filter_min: 0
-    audio_samples_filter_max: 24
-    audio_gain: 1
-    audio_decay: 0.1
-    division_value: 0
-    max_brightness: 255
-    time_interval: 1
-    chunk_size: 5
-    blur_value: 0.1
-    is_reverse: false
-    is_mirror: false
+      - 80
+      - 80
+      - 80
+      - 80
+      - 80
+      - 80
+    midi_range:
+      - 47
+      - 73
+    scene:
+      shapes:
+        - offset:
+            - 0
+            - 0
+          pixel_range:
+            - 0
+            - 80
+          svg_string: m193.03611,156.14591l0,-152.26621
+        - offset:
+            - 0
+            - 0
+          pixel_range:
+            - 80
+            - 160
+          svg_string: m219.84703,167.84703l107.66847,-107.66847
+        - offset:
+            - 0
+            - 0
+          pixel_range:
+            - 160
+            - 240
+          svg_string: m219.84703,222.56566l89.24742,89.24742
+        - offset:
+            - 0
+            - 0
+          pixel_range:
+            - 240
+            - 320
+          svg_string: m231.12878,196.36763l152.26621,0
+        - offset:
+            - 0
+            - 0
+          pixel_range:
+            - 320
+            - 400
+          svg_string: m192.3876,234.49266l0,152.26621
+        - offset:
+            - 0
+            - 0
+          pixel_range:
+            - 400
+            - 480
+          svg_string: m168.27093,225.79148l-90.82637,90.82637
+        - offset:
+            - 0
+            - 0
+          pixel_range:
+            - 480
+            - 560
+          svg_string: m153.18271,196.92158l-152.26621,0
+        - offset:
+            - 0
+            - 0
+          pixel_range:
+            - 560
+            - 640
+          svg_string: m163.24979,168.49217l-107.66847,-107.66847
+      size:
+        width: 400
+        height: 350
+        scale: 1
+    states:
+      - name: Scroll
+        active_visualizer_effect: scroll
+        active_color_scheme_index: 0
+        active_audio_channel_index: 1
+        audio_samples_filter_min: 0
+        audio_samples_filter_max: 24
+        audio_gain: 1.0
+        audio_decay: 0.1
+        division_value: 0
+        max_brightness: 255
+        time_interval: 262
+        chunk_size: 5
+        blur_value: 1.8
+        is_reverse: false
+        is_mirror: false
+      - name: Energy
+        active_visualizer_effect: energy
+        active_color_scheme_index: 0
+        active_audio_channel_index: 1
+        audio_samples_filter_min: 0
+        audio_samples_filter_max: 12
+        audio_gain: 0.1
+        audio_decay: 0.1
+        division_value: 0
+        max_brightness: 255
+        time_interval: 148
+        chunk_size: 8
+        blur_value: 0.7
+        is_reverse: false
+        is_mirror: false
+      - name: AltShapes
+        active_visualizer_effect: scroll
+        active_color_scheme_index: 7
+        active_audio_channel_index: 1
+        audio_samples_filter_min: 0
+        audio_samples_filter_max: 24
+        audio_gain: 1
+        audio_decay: 0.1
+        division_value: 0
+        max_brightness: 255
+        time_interval: 1
+        chunk_size: 5
+        blur_value: 0.1
+        is_reverse: false
+        is_mirror: false
