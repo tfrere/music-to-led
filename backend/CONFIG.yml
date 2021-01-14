@@ -41,7 +41,7 @@ audio_ports:
 strips:
 - name: Horizontal Bar
   serial_port_name: /dev/tty.usbserial-A50285BI
-  active_state_index: 1
+  active_state_index: 0
   is_online: false
   midi_ports_for_changing_mode:
   - Audio2Led ChangeMod TopBar
@@ -67,18 +67,18 @@ strips:
       scale: 1
   states:
   - name: Flash23
-    active_visualizer_effect: energy
-    active_color_scheme_index: 0
+    active_visualizer_effect: alternate_color_chunks
+    active_color_scheme_index: 3
     active_audio_channel_index: 1
     audio_samples_filter_min: 0
     audio_samples_filter_max: 24
     audio_gain: 1
     audio_decay: 0.1
     division_value: 0
-    max_brightness: 201
+    max_brightness: 255
     time_interval: 1
-    chunk_size: 2
-    blur_value: 2.1
+    chunk_size: 7
+    blur_value: 0.1
     is_reverse: false
     is_mirror: false
   - name: test123
@@ -95,7 +95,7 @@ strips:
     chunk_size: 5
     blur_value: 0.1
     is_reverse: false
-    is_mirror: false
+    is_mirror: true
 - name: Horizontal Bar2
   serial_port_name: /dev/tty.usbserial-A50285BI2
   active_state_index: 0

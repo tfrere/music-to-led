@@ -39,7 +39,7 @@ audio_ports:
 strips:
 - name: Maven
   serial_port_name: /dev/tty.usbserial-A50285BI
-  active_state_index: 1
+  active_state_index: 2
   is_online: false
   midi_ports_for_changing_mode:
   - Audio2Led ChangeMod TopBar
@@ -89,7 +89,7 @@ strips:
       scale: 1
   states:
   - name: Spectrum
-    active_visualizer_effect: spectrum
+    active_visualizer_effect: energy
     active_color_scheme_index: 10
     active_audio_channel_index: 1
     audio_samples_filter_min: 0
@@ -104,7 +104,7 @@ strips:
     is_reverse: false
     is_mirror: false
   - name: Scroll
-    active_visualizer_effect: piano_echo
+    active_visualizer_effect: energy
     active_color_scheme_index: 0
     active_audio_channel_index: 1
     audio_samples_filter_min: 0
@@ -118,18 +118,18 @@ strips:
     blur_value: 0.1
     is_reverse: false
     is_mirror: false
-  - name: test2
-    active_visualizer_effect: channel_intensity
+  - name: sdsa
+    active_visualizer_effect: piano_echo
     active_color_scheme_index: 0
-    active_audio_channel_index: 1
+    active_audio_channel_index: 0
     audio_samples_filter_min: 0
     audio_samples_filter_max: 24
-    audio_gain: 0.1
+    audio_gain: 1
     audio_decay: 0.1
     division_value: 0
     max_brightness: 255
-    time_interval: 286
-    chunk_size: 29
-    blur_value: 0.7
+    time_interval: 120
+    chunk_size: 5
+    blur_value: 0.1
     is_reverse: false
     is_mirror: false

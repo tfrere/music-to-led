@@ -60,10 +60,11 @@ class PianoNote():
             for note in self.piano_notes_on:
 
                 note["time_since_apparation"] += 1
+                pixel_index = self.clampToNewIntRange(
+                        note["note"], self.strip_config.midi_range[0], self.strip_config.midi_range[1], 0, strip_length - 1)
                 putPixel(
                     strip,
-                    self.clampToNewIntRange(
-                        note["note"], self.strip_config.midi_range[0], self.strip_config.midi_range[1], 0, strip_length),
+                    pixel_index,
                     color_scheme[note["color"]][0],
                     color_scheme[note["color"]][1],
                     color_scheme[note["color"]][2],

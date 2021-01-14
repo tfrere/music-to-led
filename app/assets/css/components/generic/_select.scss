@@ -84,7 +84,7 @@ select option {
   padding: 0.6em 0.8em 0.5em 1.4em;
 }
 
-select:disabled:hover,
-select[aria-disabled='true'] {
-  border-color: #aaa;
+.select[disabled] {
+  opacity: 0.5;
+  cursor: default;
 }

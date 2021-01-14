@@ -14,7 +14,7 @@ const sysexMessage = note => {
 const standardMessage = note => {
   return (
     <>
-      <span>{note.port}</span> :<span> {guessNoteFromNumber(note.note)}</span>{' '}
+      <span>{note.port}</span> :<span> {guessNoteFromNumber(note.note)}</span> ({note.note}){' '}
       at velocity <span>{note.velocity}</span>
     </>
   );

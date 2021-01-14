@@ -46,7 +46,7 @@ All you need is a **computer** _( works on Raspi 4 )_, an **arduino** and a **le
 
 ### Showcase
 
-...
+![showcase-abstract-one](images/showcase-abstract-one.gif)
 
 ### How it works ?
 

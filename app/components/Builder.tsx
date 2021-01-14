@@ -79,8 +79,10 @@ async function getZMQData() {
       .replace(falseRegex, '0');
     object = JSON.parse(json_string);
     // console.log(object.pixels[0][0]);
-    for (let i = 0; i < object.pixels.length; i++) {
-      applyGammaCorrection(object.pixels[i]);
+    if(object.pixels && object.pixels[0][0]) {
+      for (let i = 0; i < object.pixels.length; i++) {
+        applyGammaCorrection(object.pixels[i]);
+      }
     }
     // console.log(object.pixels[0][0][0]);
     // console.log('connected');

@@ -96,13 +96,21 @@ class PixelReshaper:
 
         return self.concatenatePixels(strips)
 
-    def reversePixels(self, pixels):
+    def reversePixels(self, pixels, number_of_pixels):
         """Reverse pixels"""
-        # performance improvements : only reversed ? // To check if list() is required pixels[i][::-1] or pixels[i].reverse()
-        pixels[0] = list(reversed(pixels[0]))
-        pixels[1] = list(reversed(pixels[1]))
-        pixels[2] = list(reversed(pixels[2]))
-        return pixels
+        # # performance improvements : only reversed ? // To check if list() is required pixels[i][::-1] or pixels[i].reverse()
+        # # pixels[0] = list(reversed(pixels[0]))
+        # pixels[0] = pixels[0][::-1]
+        # # pixels[1] = list(reversed(pixels[1]))
+        # pixels[1] = pixels[1][::-1]
+        # # pixels[2] = list(reversed(pixels[2]))
+        # pixels[2] = pixels[2][::-1]
+        # return pixels
+        tmp = []
+        tmp = pixels[:, :number_of_pixels]
+
+        return tmp[:, ::-1]
+
 
     def mirrorPixels(self, pixels, number_of_pixels):
         """Mirror pixels"""
@@ -111,9 +119,9 @@ class PixelReshaper:
         # performance improvements : nu;py return new array // As we are in functionm args are passed as value, so the result is always a new object ==> manipulate object with pythons only
         tmp = []
         if(self.strip_config.active_state.is_reverse):
-            tmp = np.copy(pixels[:, number_of_pixels // 2:])
+            tmp = pixels[:, number_of_pixels // 2:]
         else:
-            tmp = np.copy(pixels[:, :number_of_pixels // 2])
+            tmp = pixels[:, :number_of_pixels // 2]
 
         return np.concatenate((tmp[:, ::-1], tmp), axis=1)
 
@@ -126,7 +134,7 @@ class PixelReshaper:
                 strip, self.strip_config.active_state.blur_value)
 
             if(self.strip_config.active_state.is_reverse):
-                strip = self.reversePixels(strip)
+                strip = self.reversePixels(strip, self._number_of_pixels)
             if(self.strip_config.active_state.is_mirror):
                 strip = self.mirrorPixels(strip, len(strip[0]))
             tmp_s.append(np.copy(strip))
@@ -137,7 +145,7 @@ class PixelReshaper:
 
         tmp_p = np.copy(pixels)
         if(self.strip_config.active_state.is_reverse):
-            tmp_p = self.reversePixels(tmp_p)
+            tmp_p = self.reversePixels(tmp_p, self._number_of_pixels)
         if(self.strip_config.active_state.is_mirror):
             tmp_p = self.mirrorPixels(tmp_p, self._number_of_pixels)
 

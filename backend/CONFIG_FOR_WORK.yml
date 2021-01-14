@@ -44,7 +44,7 @@ strips:
     active_state_index: 0
     is_online: false
     midi_ports_for_changing_mode:
-      - Audio2Led ChangeMod Horizontal Bar 1
+      - Audio2Led ChangeMod Bar 1
     midi_ports_for_visualization:
       - Audio2Led Synth
     original_physical_shape:
@@ -83,10 +83,10 @@ strips:
         is_mirror: true
   - name: Horizontal Bar 2
     serial_port_name: /dev/tty.usbserial-A50285BI2
-    active_state_index: 1
+    active_state_index: 0
     is_online: false
     midi_ports_for_changing_mode:
-      - Audio2Led ChangeMod Horizontal Bar 2
+      - Audio2Led ChangeMod Bar 2
     midi_ports_for_visualization:
       - Audio2Led Synth
     original_physical_shape:
@@ -122,28 +122,13 @@ strips:
         chunk_size: 16
         blur_value: 0.7
         is_reverse: false
-        is_mirror: true
-      - name: tesg
-        active_visualizer_effect: scroll
-        active_color_scheme_index: 0
-        active_audio_channel_index: 0
-        audio_samples_filter_min: 0
-        audio_samples_filter_max: 24
-        audio_gain: 1
-        audio_decay: 0.1
-        division_value: 0
-        max_brightness: 255
-        time_interval: 120
-        chunk_size: 5
-        blur_value: 0.1
-        is_reverse: false
         is_mirror: false
   - name: Horizontal Bar 3
     serial_port_name: /dev/tty.usbserial-A50285BI3
     active_state_index: 0
     is_online: false
     midi_ports_for_changing_mode:
-      - Audio2Led ChangeMod Horizontal Bar 3
+      - Audio2Led ChangeMod Bar 3
     midi_ports_for_visualization:
       - Audio2Led Synth
     original_physical_shape:
@@ -185,7 +170,7 @@ strips:
     active_state_index: 0
     is_online: false
     midi_ports_for_changing_mode:
-      - Audio2Led ChangeMod Horizontal Bar 4
+      - Audio2Led ChangeMod Bar 4
     midi_ports_for_visualization:
       - Audio2Led Synth
     original_physical_shape:
@@ -227,7 +212,7 @@ strips:
     active_state_index: 0
     is_online: false
     midi_ports_for_changing_mode:
-      - Audio2Led ChangeMod Horizontal Bar 5
+      - Audio2Led ChangeMod Bar 5
     midi_ports_for_visualization:
       - Audio2Led Synth
     original_physical_shape:
@@ -269,7 +254,7 @@ strips:
     active_state_index: 0
     is_online: false
     midi_ports_for_changing_mode:
-      - Audio2Led ChangeMod Horizontal Bar 6
+      - Audio2Led ChangeMod Bar 6
     midi_ports_for_visualization:
       - Audio2Led Synth
     original_physical_shape:
@@ -311,7 +296,7 @@ strips:
     active_state_index: 0
     is_online: false
     midi_ports_for_changing_mode:
-      - Audio2Led ChangeMod Horizontal Bar 7
+      - Audio2Led ChangeMod Bar 7
     midi_ports_for_visualization:
       - Audio2Led Synth
     original_physical_shape:
@@ -343,9 +328,9 @@ strips:
         audio_decay: 0.5
         division_value: 0
         max_brightness: 255
-        time_interval: 1
+        time_interval: 270
         chunk_size: 16
-        blur_value: 2.5
+        blur_value: 1.2
         is_reverse: false
         is_mirror: false
   - name: Horizontal Bar 8
@@ -353,7 +338,7 @@ strips:
     active_state_index: 0
     is_online: false
     midi_ports_for_changing_mode:
-      - Audio2Led ChangeMod Horizontal Bar 8
+      - Audio2Led ChangeMod Bar 8
     midi_ports_for_visualization:
       - Audio2Led Synth
     original_physical_shape:
@@ -395,7 +380,7 @@ strips:
     active_state_index: 0
     is_online: false
     midi_ports_for_changing_mode:
-      - Audio2Led ChangeMod Horizontal Bar 9
+      - Audio2Led ChangeMod Bar 9
     midi_ports_for_visualization:
       - Audio2Led Synth
     original_physical_shape:
@@ -437,7 +422,7 @@ strips:
     active_state_index: 0
     is_online: false
     midi_ports_for_changing_mode:
-      - Audio2Led ChangeMod Horizontal Bar 10
+      - Audio2Led ChangeMod Bar 10
     midi_ports_for_visualization:
       - Audio2Led Synth
     original_physical_shape:
@@ -479,7 +464,7 @@ strips:
     active_state_index: 0
     is_online: false
     midi_ports_for_changing_mode:
-      - Audio2Led ChangeMod Horizontal Bar 11
+      - Audio2Led ChangeMod Bar 11
     midi_ports_for_visualization:
       - Audio2Led Synth
     original_physical_shape:
@@ -521,7 +506,7 @@ strips:
     active_state_index: 0
     is_online: false
     midi_ports_for_changing_mode:
-      - Audio2Led ChangeMod Horizontal Bar 12
+      - Audio2Led ChangeMod Bar 12
     midi_ports_for_visualization:
       - Audio2Led Synth
     original_physical_shape:

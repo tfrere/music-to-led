@@ -197,7 +197,7 @@ class StatesController extends React.Component {
                       that.setState({
                         hasToRenderNewStateInput: false
                       });
-                    }, 150);
+                    }, 250);
                   }}
                 ></input>
                 <Button
@@ -209,7 +209,7 @@ class StatesController extends React.Component {
                       : false
                   }
                   onClick={() => {
-                    console.log('adding ->' + this.props.name);
+                    console.log('adding ->' + this.state.newStateName);
                     this.props.sendText(
                       'newstate : ' + this.state.newStateName
                     );

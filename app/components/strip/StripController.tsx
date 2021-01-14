@@ -198,6 +198,7 @@ class StripController extends React.Component {
                         { name: 2, prefix: 'divide ' }
                       ]}
                       defaultValue={division_value + 1}
+                      disabled={true}
                       setValue={value => {
                         this.convertRangeAndSendNote(
                           26,

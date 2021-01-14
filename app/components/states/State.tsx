@@ -10,7 +10,8 @@ class State extends React.Component {
       isStatePristine: this.props.isStatePristine,
       isUpdateInputDisplayed: false,
       hasToRenderNewStateInput: false,
-      updateStateName: this.props.strip.states[this.props.index].name
+      updateStateName: this.props.strip.states[this.props.index].name,
+      originalStateName: this.props.strip.states[this.props.index].name
     };
     this.newNameInputRef = React.createRef();
   }
@@ -25,7 +26,8 @@ class State extends React.Component {
       this.props.strip.states[this.props.index].name
     ) {
       this.setState({
-        updateStateName: this.props.strip.states[this.props.index].name
+        updateStateName: this.props.strip.states[this.props.index].name,
+        originalStateName: this.props.strip.states[this.props.index].name
       });
     }
     if (this.props.strip.states[this.props.index].name)
@@ -94,8 +96,18 @@ class State extends React.Component {
               }
               onBlur={() => {
                 this.setState({
-                  isUpdateInputDisplayed: -1
+                  isUpdateInputDisplayed: -1,
                 });
+                if (!isNameAlreadyTaken) {
+                  this.props.sendText(
+                    'updatestate : ' + this.state.updateStateName
+                  );
+                }
+                else {
+                  this.setState({
+                    updateStateName: this.state.originalStateName
+                  });
+                }
               }}
               type="text"
               ref={this.newNameInputRef}
@@ -119,21 +131,21 @@ class State extends React.Component {
           <Button
             alt={guessNoteFromNumber(27)}
             className={'button--large button--has-type'}
-            // onDoubleClick={() => {
-            //   this.setState(
-            //     {
-            //       isUpdateInputDisplayed:
-            //         this.state.isUpdateInputDisplayed !== this.props.index
-            //           ? this.props.index
-            //           : -1
-            //     },
-            //     () => {
-            //       if (this.state.isUpdateInputDisplayed) {
-            //         this.focusNewNameInputRef();
-            //       }
-            //     }
-            //   );
-            // }}  
+            onDoubleClick={() => {
+              this.setState(
+                {
+                  isUpdateInputDisplayed:
+                    this.state.isUpdateInputDisplayed !== this.props.index
+                      ? this.props.index
+                      : -1
+                },
+                () => {
+                  if (this.state.isUpdateInputDisplayed) {
+                    this.focusNewNameInputRef();
+                  }
+                }
+              );
+            }}  
             onClick={() => {
               this.props.sendNote(27, this.props.index + 1);
             }}
@@ -147,7 +159,7 @@ class State extends React.Component {
           <>
             <Button
               className="button--square"
-              disabled={canUpdateStateName}
+              disabled={canUpdateStateName || isNameAlreadyTaken}
               onClick={() => {
                 console.log('updating state -> ' + this.state.updateStateName);
                 console.log("with index -> ", this.props.index);
@@ -155,6 +167,7 @@ class State extends React.Component {
                   isStatePristine: true,
                   isUpdateInputDisplayed: false
                 });
+
                 this.props.sendText(
                   'updatestate : ' + this.state.updateStateName
                 );

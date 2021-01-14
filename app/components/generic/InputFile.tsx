@@ -11,15 +11,20 @@ class InputFile extends React.Component {
   }
 
   handleInputChange = e => {
-    this.setState(
-      {
-        fileName: e.target.files[0].path
-      },
-      () => {
-        this.props.onChange(this.state.fileName);
-      }
-    );
-  };
+    console.log(e.target.files);
+    let path = this.state.fileName || null;
+    if(e.target.files.length) {
+      path = e.target.files[0].path;
+      this.setState(
+        {
+          fileName: path
+        },
+        () => {
+          this.props.onChange(this.state.fileName);
+        }
+      );
+    }
+};
 
   render() {
     return (

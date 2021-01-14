@@ -1,0 +1,319 @@
+desirated_framerate: 60
+display_shell_interface: false
+is_zmq_api_enabled: true
+is_serial_enabled: false
+color_schemes:
+- - red
+  - green
+  - blue
+- - red
+- - green
+- - blue
+- - '#2a04ff'
+  - '#ff9604'
+- - '#02e6ff'
+  - '#ff4a02'
+- - '#2bff01'
+  - '#ff0127'
+- - '#fff700'
+  - '#f700ff'
+audio_ports:
+- max_frequency: 12000
+  min_frequency: 200
+  min_volume_threshold: 1.0e-07
+  n_rolling_history: 4
+  name: Built-in Microphone
+  number_of_audio_samples: 24
+  sampling_rate: 44000
+- max_frequency: 12000
+  min_frequency: 200
+  min_volume_threshold: 1.0e-07
+  n_rolling_history: 4
+  name: Loopback Audio
+  number_of_audio_samples: 24
+  sampling_rate: 44000
+strips:
+- name: Circle
+  serial_port_name: /dev/tty.usbserial-A50285BI
+  active_state_index: 0
+  is_online: false
+  midi_ports_for_changing_mode:
+  - Audio2Led ChangeMod Bar 1
+  midi_ports_for_visualization:
+  - Audio2Led Synth
+  original_physical_shape:
+  - 40
+  midi_range:
+  - 47
+  - 73
+  scene:
+    shapes:
+    - offset:
+      - 0
+      - 0
+      pixel_range:
+      - 0
+      - 40
+      svg_string: M274.999368,71.780398 C290.573801,71.780398 303.219539,84.4257956
+        303.219539,100.000063 C303.219539,115.574305 290.573827,128.219602 274.999368,128.219602
+        C259.425164,128.219602 246.780461,115.57456 246.780461,100.000063 C246.780461,84.4255414
+        259.425189,71.780398 274.999368,71.780398 Z
+    size:
+      width: 300
+      height: 300
+      scale: 1
+  states:
+  - name: Scroll
+    active_visualizer_effect: scroll
+    active_color_scheme_index: 4
+    active_audio_channel_index: 1
+    audio_samples_filter_min: 0
+    audio_samples_filter_max: 1
+    audio_gain: 1.0
+    audio_decay: 0.1
+    division_value: 0
+    max_brightness: 255
+    time_interval: 500
+    chunk_size: 2
+    blur_value: 14.2
+    is_reverse: false
+    is_mirror: true
+- name: SideBars
+  serial_port_name: /dev/tty.usbserial-A50285BI2
+  active_state_index: 0
+  is_online: false
+  midi_ports_for_changing_mode:
+  - Audio2Led ChangeMod Bar 2
+  midi_ports_for_visualization:
+  - Audio2Led Synth
+  original_physical_shape:
+  - 10
+  - 20
+  - 10
+  - 20
+  - 10
+  - 20
+  midi_range:
+  - 47
+  - 73
+  scene:
+    shapes:
+    - offset:
+      - 0
+      - 0
+      pixel_range:
+      - 0
+      - 10
+      svg_string: M212.402914 78.4066831 195.399307 100.085492 212.239892 121.593317
+    - offset:
+      - 0
+      - 0
+      pixel_range:
+      - 10
+      - 30
+      svg_string: M196.104474 50.3143995 156.979118 100.196575 195.729143 149.685601
+    - offset:
+      - 0
+      - 0
+      pixel_range:
+      - 30
+      - 40
+      svg_string: M133.031266 78.4066831 116.026901 100.085492 132.868243 121.593317
+    - offset:
+      - 0
+      - 0
+      pixel_range:
+      - 40
+      - 60
+      svg_string: M116.732193 50.3143995 77.6070899 100.196575 116.356989 149.685601
+    - offset:
+      - 0
+      - 0
+      pixel_range:
+      - 60
+      - 70
+      svg_string: M55.4236702 78.4066831 38.4198106 100.085492 55.2605215 121.593317
+    - offset:
+      - 0
+      - 0
+      pixel_range:
+      - 70
+      - 90
+      svg_string: M39.1251033 50.3143995 22.3248002 71.7337847 -3.55271368e-15 100.196575
+        38.7498992 149.685601
+    - offset:
+      - 0
+      - 0
+      pixel_range:
+      - 0
+      - 10
+      svg_string: M336.879931 78.4066831 353.883538 100.085492 337.042953 121.593317
+    - offset:
+      - 0
+      - 0
+      pixel_range:
+      - 10
+      - 30
+      svg_string: M353.178372 50.3143995 392.303728 100.196575 353.553702 149.685601
+    - offset:
+      - 0
+      - 0
+      pixel_range:
+      - 30
+      - 40
+      svg_string: M416.25158 78.4066831 433.25645 100.085492 416.415866 121.593317
+    - offset:
+      - 0
+      - 0
+      pixel_range:
+      - 40
+      - 60
+      svg_string: M432.551284 50.3143995 471.675376 100.196575 432.925351 149.685601
+    - offset:
+      - 0
+      - 0
+      pixel_range:
+      - 60
+      - 70
+      svg_string: M493.859049 78.4066831 510.862655 100.085492 494.022071 121.593317
+    - offset:
+      - 0
+      - 0
+      pixel_range:
+      - 70
+      - 90
+      svg_string: M510.157489 50.3143995 549.282845 100.196575 510.53282 149.685601
+    size:
+      width: 300
+      height: 300
+      scale: 1
+  states:
+  - name: Scroll
+    active_visualizer_effect: scroll
+    active_color_scheme_index: 0
+    active_audio_channel_index: 1
+    audio_samples_filter_min: 0
+    audio_samples_filter_max: 24
+    audio_gain: 1.0
+    audio_decay: 0.1
+    division_value: 0
+    max_brightness: 255
+    time_interval: 92
+    chunk_size: 5
+    blur_value: 1.8
+    is_reverse: false
+    is_mirror: true
+- name: TopBottomBar
+  serial_port_name: /dev/tty.usbserial-A50285BI3
+  active_state_index: 0
+  is_online: false
+  midi_ports_for_changing_mode:
+  - Audio2Led ChangeMod Bar 3
+  midi_ports_for_visualization:
+  - Audio2Led Synth
+  original_physical_shape:
+  - 80
+  midi_range:
+  - 47
+  - 73
+  scene:
+    shapes:
+    - offset:
+      - 0
+      - 0
+      pixel_range:
+      - 0
+      - 80
+      svg_string: M49.486881 32.2301064 253.504572 32.2301064 275.097889 6.03254734
+        297.042209 32.2301064 500.708896 32.2301064
+    - offset:
+      - 0
+      - 0
+      pixel_range:
+      - 0
+      - 80
+      svg_string: M49 168 253.504572 168 275.097889 194.197559 297.042209 168 501
+        168
+    size:
+      width: 300
+      height: 300
+      scale: 1
+  states:
+  - name: Scroll
+    active_visualizer_effect: scroll
+    active_color_scheme_index: 0
+    active_audio_channel_index: 1
+    audio_samples_filter_min: 0
+    audio_samples_filter_max: 24
+    audio_gain: 1.0
+    audio_decay: 0.1
+    division_value: 0
+    max_brightness: 255
+    time_interval: 1
+    chunk_size: 5
+    blur_value: 0.1
+    is_reverse: false
+    is_mirror: true
+- name: BorderBars
+  serial_port_name: /dev/tty.usbserial-A50285BI4
+  active_state_index: 0
+  is_online: false
+  midi_ports_for_changing_mode:
+  - Audio2Led ChangeMod Bar 4
+  midi_ports_for_visualization:
+  - Audio2Led Synth
+  original_physical_shape:
+  - 40
+  midi_range:
+  - 47
+  - 73
+  scene:
+    shapes:
+    - offset:
+      - 0
+      - 0
+      pixel_range:
+      - 0
+      - 20
+      svg_string: M145 12.445 245 12.445
+    - offset:
+      - 0
+      - 0
+      pixel_range:
+      - 20
+      - 40
+      svg_string: M305 12.445 405 12.445
+    - offset:
+      - 0
+      - 0
+      pixel_range:
+      - 0
+      - 20
+      svg_string: M145 185 245 185
+    - offset:
+      - 0
+      - 0
+      pixel_range:
+      - 20
+      - 40
+      svg_string: M305 185 405 185
+    size:
+      width: 300
+      height: 300
+      scale: 1
+  states:
+  - name: Scroll
+    active_visualizer_effect: scroll
+    active_color_scheme_index: 0
+    active_audio_channel_index: 1
+    audio_samples_filter_min: 0
+    audio_samples_filter_max: 24
+    audio_gain: 1.0
+    audio_decay: 0.1
+    division_value: 0
+    max_brightness: 255
+    time_interval: 1
+    chunk_size: 5
+    blur_value: 0.1
+    is_reverse: false
+    is_mirror: true

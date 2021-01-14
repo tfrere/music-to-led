@@ -31,9 +31,12 @@ class AlternateColors():
 
     def visualizeAlternateColorChunks(self):
         """Effect that alternate two colors moving forward"""
-
+        self.drawAlternateColorChunks()
+        relative_speed = self.active_state.time_interval / 50
+        if (relative_speed < 2):
+            relative_speed = 2
         self.pixels = np.roll(
-            self.pixels, int(1 * (self.active_state.time_interval / 100)) + 1, axis=1)
+            self.pixels, int(1 * (self._timeSinceStart.getMs() / 100) * relative_speed) + 1, axis=1)
         return self.pixelReshaper.reshapeFromPixels(self.pixels)
 
     def visualizeAlternateColorShapes(self):

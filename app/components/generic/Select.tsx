@@ -37,10 +37,11 @@ class Select extends React.Component {
 
     return (
       <div
+        disabled={this.props.disabled}
         className={'select ' + this.props.className}
         style={this.props.style}
       >
-        <select value={this.state.value} onChange={this.handleChange}>
+        <select disabled={this.props.disabled} value={this.state.value} onChange={this.handleChange}>
           {options}
         </select>
       </div>

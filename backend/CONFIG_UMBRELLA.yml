@@ -6,6 +6,9 @@ color_schemes:
 - - red
   - green
   - blue
+- - red
+- - green
+- - blue
 - - '#2a04ff'
   - '#ff9604'
 - - '#02e6ff'
@@ -14,13 +17,6 @@ color_schemes:
   - '#ff0127'
 - - '#fff700'
   - '#f700ff'
-- - red
-- - green
-- - blue
-- - yellow
-- - pink
-- - black
-  - '#ee00ac'
 audio_ports:
 - max_frequency: 12000
   min_frequency: 200
@@ -126,22 +122,22 @@ strips:
     active_audio_channel_index: 1
     audio_samples_filter_min: 0
     audio_samples_filter_max: 24
-    audio_gain: 0.1
+    audio_gain: 1.0
     audio_decay: 0.1
     division_value: 0
     max_brightness: 255
     time_interval: 262
     chunk_size: 5
-    blur_value: 0.1
+    blur_value: 1.8
     is_reverse: false
     is_mirror: false
-  - name: test2
-    active_visualizer_effect: transition_color_shapes
-    active_color_scheme_index: 3
-    active_audio_channel_index: 0
+  - name: Energy
+    active_visualizer_effect: energy
+    active_color_scheme_index: 0
+    active_audio_channel_index: 1
     audio_samples_filter_min: 0
-    audio_samples_filter_max: 24
-    audio_gain: 1
+    audio_samples_filter_max: 12
+    audio_gain: 0.1
     audio_decay: 0.1
     division_value: 0
     max_brightness: 255
@@ -152,14 +148,14 @@ strips:
     is_mirror: false
   - name: AltShapes
     active_visualizer_effect: scroll
-    active_color_scheme_index: 0
-    active_audio_channel_index: 0
+    active_color_scheme_index: 7
+    active_audio_channel_index: 1
     audio_samples_filter_min: 0
     audio_samples_filter_max: 24
     audio_gain: 1
     audio_decay: 0.1
     division_value: 0
-    max_brightness: 7
+    max_brightness: 255
     time_interval: 1
     chunk_size: 5
     blur_value: 0.1

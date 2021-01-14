@@ -87,7 +87,6 @@ class Visualizer(Spectrum, FullColor, FadeOut, Clear, AlternateColors, Transitio
         self.resetFrame()
 
         self.pixelReshaper.initActiveShape()
-        # self.drawAlternateColorChunks()
 
     def smoothDecay(self, audio_data, decay_value):
 
@@ -122,6 +121,18 @@ class Visualizer(Spectrum, FullColor, FadeOut, Clear, AlternateColors, Transitio
         self.old_audio_data = audio_data
 
         return new_audio_data
+
+    @staticmethod
+    def rgbLerp(a, b, t):
+        return [
+            a[0]*(1 - t) + b[0]*t,
+            a[1]*(1 - t) + b[1]*t,
+            a[2]*(1 - t) + b[2]*t
+        ]
+
+    @staticmethod
+    def getColorIndexes(index, len):
+        return [index % len, (index + 1) % len]
 
     @staticmethod
     def clampToNewRange(value, old_min, old_max, new_min, new_max):

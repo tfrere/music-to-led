@@ -73,6 +73,13 @@ class ModSwitcher:
     def swapListElemPositions(listAttribute, pos1, pos2):
         listAttribute[pos1], listAttribute[pos2] = listAttribute[pos2], listAttribute[pos1]
         return listAttribute
+    
+    @staticmethod
+    def moveListElemPosition(listAttribute, pos1, pos2):
+        elemToMove = listAttribute[pos1]
+        listAttribute.pop(pos1)
+        listAttribute.insert(pos2, elemToMove)
+        return listAttribute
 
     def changeMod(self):
         if(self.midi_datas):
@@ -96,13 +103,13 @@ class ModSwitcher:
                                 self.strip_config.states[new_active_state_index])
                             self.active_state = self.strip_config.active_state
                             self.config._strips[self.strip_index].active_state_index = new_active_state_index
-
+   
                             self.config.saveToYmlFile()
 
                             self.has_states_changed = True
 
                             self.visualizer.initVizualiser()
-
+                             
                             self.logger(self.strip_config.name,
                                         "is adding new state named " + midi_data["data"])
 
@@ -138,7 +145,7 @@ class ModSwitcher:
                             elif(self.strip_config.active_state_index == int(orders[1])):
                                 self.strip_config.active_state_index = int(orders[0])
 
-                            self.strip_config.states = self.swapListElemPositions(
+                            self.strip_config.states = self.moveListElemPosition(
                                 self.strip_config.states, int(orders[0]), int(orders[1]))
                             # print(self.strip_config.states)
                             self.config.saveToYmlFile()
@@ -155,28 +162,21 @@ class ModSwitcher:
                             if(len(self.strip_config.states) > 1):
 
                                 for i, state in enumerate(self.strip_config.states):
-                                    print(i, state.name, name)
+                                    # print(i, state.name, name)
 
                                     if(state.name == name):
-                                        print("removing",
-                                              self.strip_config.states)
+                                        # print("removing", self.strip_config.states)
                                         del self.strip_config.states[i]
 
-                                        new_active_state_index = len(
-                                            self.strip_config.states) - 1
-                                        print(new_active_state_index)
+                                        new_active_state_index = i - 1 if i - 1 > 0 else 0
+
                                         self.strip_config.active_state_index = new_active_state_index
-                                        self.strip_config._number_of_states = len(
-                                            self.strip_config.states)
                                         self.strip_config.active_state = deepcopy(
-                                            self.strip_config.states[new_active_state_index])
-
+                                            self.strip_config.states[self.strip_config.active_state_index])
                                         self.active_state = self.strip_config.active_state
-                                        self.config._strips[self.strip_index].active_state_index = new_active_state_index
-
-                                        self.config._strips[self.strip_index]
 
                                         self.config.saveToYmlFile()
+                                        self.visualizer.initVizualiser()
                                         self.has_states_changed = True
                                         self.logger(self.strip_config.name,
                                                     "is deleting state named " + name)
@@ -227,7 +227,6 @@ class ModSwitcher:
 
                         # TIME BASED
                         elif(mode == 9):
-                            self.visualizer.drawAlternateColorChunks()
                             self.active_state.active_visualizer_effect = "alternate_color_chunks"
                         elif(mode == 10):
                             self.active_state.active_visualizer_effect = "alternate_color_shapes"
@@ -358,9 +357,6 @@ class ModSwitcher:
                                 self.strip_config.states[self.strip_config.active_state_index])
                             self.active_state = self.strip_config.active_state
                             self.visualizer.initVizualiser()
-                            self.visualizer.resetFrame()
-                            if(self.active_state.active_visualizer_effect == "alternate_color_chunks"):
-                                self.visualizer.drawAlternateColorChunks()
                             self.logger(self.strip_config.name, "is changing state for " +
                                         self.strip_config.states[self.strip_config.active_state_index].name)
 
