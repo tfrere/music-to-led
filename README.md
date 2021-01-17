@@ -48,6 +48,10 @@ All you need is a **computer** _( works on Raspi 4 )_, an **arduino** and a **ws
 
 ![showcase-abstract-one](images/showcase-grid.gif)
 
+### UI
+
+![showcase-ui](images/showcase-ui.gif)
+
 ### How it works ?
 
 ![software-architecture](images/archi.png)
@@ -57,7 +61,7 @@ All you need is a **computer** _( works on Raspi 4 )_, an **arduino** and a **ws
 1. [Install the program](#python-program)
 2. [Build an arduino case](#arduino-part)
 3. [Update the CONFIG.yml](#configuration)
-4. [Setup your show with the effects and mods documentation](#effects---modes)
+4. [Setup custom effects to prepare your show](#effects---modes)
 5. Enjoy !
 
 # License
