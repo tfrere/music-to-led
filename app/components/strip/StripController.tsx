@@ -478,7 +478,7 @@ class StripController extends React.Component {
 
                       <div className="slider-holder">
                         <label htmlFor="audio_gain">
-                          gain <span>{audio_gain}</span>
+                          vol. <span>{audio_gain}</span>
                         </label>
                         <input
                           className="input"

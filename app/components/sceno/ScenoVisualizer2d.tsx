@@ -6,34 +6,12 @@ import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls';
 import { group } from 'console';
 import { Vector3 } from 'three';
 
+import { transformSVGPath } from "../../utils/transformSVGPath.js";
+
+import { computeGroupCenter } from "../../utils/computeGroupCenter.js";
+
 let size = 50;
 let divisions = 30;
-
-const centerObject = obj => {
-  let children = obj.children;
-  let minVector = { x: 0, y: 0, z: 0 };
-  let maxVector = { x: 0, y: 0, z: 0 };
-  for (let i = 0, j = children.length; i < j; i++) {
-    let box = new THREE.Box3().setFromObject(children[i]);
-    let sphere = box.getBoundingSphere(new THREE.Sphere());
-    let centerPoint = sphere.center;
-    if (centerPoint.x < minVector.x) minVector.x = centerPoint.x;
-    if (centerPoint.y < minVector.y) minVector.y = centerPoint.y;
-    if (centerPoint.z < minVector.z) minVector.z = centerPoint.z;
-    if (centerPoint.x > minVector.x) maxVector.x = centerPoint.x;
-    if (centerPoint.y > minVector.y) maxVector.y = centerPoint.y;
-    if (centerPoint.z > minVector.z) maxVector.z = centerPoint.z;
-  }
-  // console.log('this is complete', minVector, maxVector);
-  // var objectCenter = completeBoundingBox.getCenter();
-  // console.log('This is the center of your Object3D:', objectCenter);
-  obj.position.set(
-    (maxVector.x - minVector.x) / 2,
-    (maxVector.y - minVector.y) / 2,
-    (maxVector.z - minVector.z) / 2
-  );
-  // console.log('obj position', obj.position);
-};
 
 class ScenoVisualizer2d extends React.Component {
   constructor(props) {
@@ -41,6 +19,7 @@ class ScenoVisualizer2d extends React.Component {
     const scenes = this.props.config._strips.map(strip => {
       return strip.scene;
     });
+
     let renderer = new THREE.WebGLRenderer({ alpha: true, antialias: true });
     let camera = new THREE.PerspectiveCamera(
       45,
@@ -58,7 +37,7 @@ class ScenoVisualizer2d extends React.Component {
     // );
     camera.position.x = 0;
     camera.position.y = 0.05;
-    camera.position.z = -5.2;
+    camera.position.z = -6.2;
     camera.lookAt(0, 0, 0);
 
     let light = new THREE.AmbientLight(0x404040, 100); // soft white light
@@ -66,21 +45,30 @@ class ScenoVisualizer2d extends React.Component {
     let backgroundColor = '#051824'; //'rgb(9,24,35)';
     let gridColor = 'rgb(35,50,60)';
     let centerGridColor = 'rgb(25,40,50)';
+    let lineColor = 'rgb(55,70,80)';
+    let fog = new THREE.Fog(backgroundColor, 5, 15);
+    let lineMaterial = new THREE.LineBasicMaterial({linewidth:10, color:lineColor});
     let gridHelper = new THREE.GridHelper(
       size,
       divisions,
       gridColor,
       centerGridColor
     );
-    gridHelper.position.set(0, -5, 0);
+    gridHelper.position.set(0, -3, 0);
+    let axis = new THREE.AxisHelper(10);
+
 
     this.state = {
       hasDarkMode: false,
       scene: new THREE.Scene(),
       scenes: scenes,
+      axis:axis,
+      fog:fog,
       camera: camera,
       light: light,
       renderer: renderer,
+      lineMaterial: lineMaterial,
+      lineColor: lineColor,
       controls: new OrbitControls(camera, renderer.domElement),
       gridHelper: gridHelper,
       backgroundColor: backgroundColor,
@@ -99,17 +87,17 @@ class ScenoVisualizer2d extends React.Component {
   };
 
   handleKeyDown = event => {
-    let that = this;
-    switch (event.keyCode) {
-      case 32:
-        event.preventDefault();
-        that.state.camera.position.set(0, 0.05, -1.2);
-        that.state.camera.lookAt(new THREE.Vector3(0, 0, 0));
+    // let that = this;
+    // switch (event.keyCode) {
+    //   case 32:
+    //     // event.preventDefault();
+    //     that.state.camera.position.set(0, 0.05, -6.2);
+    //     that.state.camera.lookAt(new THREE.Vector3(0, 0, 0));
 
-        break;
-      default:
-        break;
-    }
+    //     break;
+    //   default:
+    //     break;
+    // }
   };
 
   componentWillUnmount() {
@@ -140,6 +128,7 @@ class ScenoVisualizer2d extends React.Component {
       renderer,
       fog,
       controls,
+      axis,
       gridHelper,
       scenes,
       light
@@ -151,7 +140,8 @@ class ScenoVisualizer2d extends React.Component {
     // controls.enableZoom = false;
     scene.add(gridHelper);
     scene.add(light);
-    scene.fog = new THREE.Fog(this.state.backgroundColor, 5, 10);
+    // scene.add(axis);
+    scene.fog = fog;
 
     renderer.setSize(this.props.width, this.props.height);
     renderer.toneMapping = THREE.ReinhardToneMapping;
@@ -161,6 +151,7 @@ class ScenoVisualizer2d extends React.Component {
     this.mount.appendChild(renderer.domElement);
 
     let shapesObjects = [];
+    let backgroundObjects = [];
     var groupObject = new THREE.Group();
 
     scenes.map((scene, sceneIndex) => {
@@ -168,15 +159,22 @@ class ScenoVisualizer2d extends React.Component {
         shapesObjects.push(
           this.createShape(
             shape.svg_string,
-            scenes[sceneIndex].size,
-            shape.offset,
             shape,
             sceneIndex
           )
         );
       });
+      if(scene.backgrounds) {
+        scene.backgrounds.map(background => {
+          backgroundObjects.push(
+            this.createBackground(background.svg_string)
+          );
+        });
+      }
+      
     });
     var mergedShapesObjects = [].concat.apply([], shapesObjects);
+    var mergedBackgroundObjects = [].concat.apply([], backgroundObjects);
 
     this.setState(
       {
@@ -186,9 +184,14 @@ class ScenoVisualizer2d extends React.Component {
         mergedShapesObjects.map(object => {
           groupObject.add(object);
         });
+        mergedBackgroundObjects.map(object => {
+          groupObject.add(object);
+        });
         this.setState({ groupObject: groupObject });
-        centerObject(groupObject);
-        // groupObject.position.set(0.5, 0.5, 0.5);
+
+        const groupCenter = computeGroupCenter(groupObject);
+        groupObject.position.copy(groupCenter).negate(); 
+
         scene.add(groupObject);
 
         this.startLoop();
@@ -196,16 +199,29 @@ class ScenoVisualizer2d extends React.Component {
     );
   }
 
-  createShape = (path, size, offset, shape, sceneIndex) => {
-    let {
-      scene,
-      camera,
-      renderer,
-      fog,
-      controls,
-      gridHelper,
-      scenes
-    } = this.state;
+  createBackground = (background) => {
+
+    var shapepath = transformSVGPath(background);
+    var objects = [];
+    if(shapepath != -1) {
+      var simpleShape = shapepath.toShapes(true);
+      for (var i = 0; i < simpleShape.length; i++){
+        let shape3d = new THREE.BufferGeometry().setFromPoints(simpleShape[i].getPoints());
+        let line = new THREE.Line(shape3d, this.state.lineMaterial);
+        line.scale.set(-.01,-.01,.01);
+        objects.push(line);
+      }
+    }
+    else {
+      console.log("wierd shape detected !");
+    }
+    return objects;
+  };
+
+
+  createShape = (path, shape, sceneIndex) => {
+
+    console.log(shape);
 
     const properties = new svgPathProperties(path);
 
@@ -218,7 +234,7 @@ class ScenoVisualizer2d extends React.Component {
 
     while (++i < pixels_length) {
       const coords = properties.getPointAtLength(gap * i);
-      var geometry = new THREE.SphereGeometry(0.02, 0.02, 0.02);
+      var geometry = new THREE.SphereGeometry(.04, .04, .04);
       var material = new THREE.MeshPhongMaterial({
         color: 0x000000
       });
@@ -226,8 +242,11 @@ class ScenoVisualizer2d extends React.Component {
       object.scene_index = sceneIndex;
       object.pixel_index = shape.pixel_range[0] + i;
       objects.push(object);
-      object.position.x = (coords.x / 130) * -1;
-      object.position.y = (coords.y / 130) * -1;
+      object.position.x = (coords.x / 100) * -1;
+      object.position.y = (coords.y / 100) * -1;
+      if(shape.z_index) {
+        object.position.z = shape.z_index;
+      }
     }
 
     return objects;
@@ -264,8 +283,10 @@ class ScenoVisualizer2d extends React.Component {
 
     if (this.props.hasDarkMode) {
       scene.remove(gridHelper);
+      this.state.lineMaterial.color.setHex(0x000000);
     } else {
       scene.add(gridHelper);
+      this.state.lineMaterial.color.setStyle(this.state.lineColor);
     }
 
     this.onWindowResize();

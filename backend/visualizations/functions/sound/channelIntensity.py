@@ -47,7 +47,7 @@ class ChannelIntensity():
                 max_intensity = len(self.pixelReshaper._strips[i][0]) / 2
 
             if(intensity > max_intensity):
-                intensity = max_intensity - 0.5
+                intensity = max_intensity - 1
 
             stripItensities.append(intensity)
             maxStripItensities.append(intensity)

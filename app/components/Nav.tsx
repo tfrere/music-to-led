@@ -58,11 +58,11 @@ class Nav extends React.Component {
           {/* <NavLink activeClassName="active" to={routes.CONFIG_LOADER}>
             <i className="la la-satellite"></i> CONFIG
           </NavLink> */}
-          {process.env.NODE_ENV === 'development' ? (
+          {/* {process.env.NODE_ENV === 'development' ? (
             <NavLink disabled activeClassName="active" to={routes.TEST}>
               <i className="la la-cog" /> TESTS
             </NavLink>
-          ) : null}
+          ) : null} */}
 
           <div className="nav__right">
             <Button

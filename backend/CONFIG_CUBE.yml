@@ -1,0 +1,197 @@
+desirated_framerate: 60
+display_shell_interface: false
+is_zmq_api_enabled: true
+is_serial_enabled: false
+color_schemes:
+- - red
+  - green
+  - blue
+- - '#2a04ff'
+  - '#ff9604'
+- - '#02e6ff'
+  - '#ff4a02'
+- - '#2bff01'
+  - '#ff0127'
+- - '#fff700'
+  - '#f700ff'
+- - '#ee00ac'
+  - blue
+- - red
+- - green
+- - blue
+- - yellow
+- - pink
+- - '#ee00ac'
+  - blue
+audio_ports:
+- max_frequency: 12000
+  min_frequency: 200
+  min_volume_threshold: 1.0e-07
+  n_rolling_history: 4
+  name: Built-in Microphone
+  number_of_audio_samples: 24
+  sampling_rate: 44000
+- max_frequency: 12000
+  min_frequency: 200
+  min_volume_threshold: 1.0e-07
+  n_rolling_history: 4
+  name: Loopback Audio
+  number_of_audio_samples: 24
+  sampling_rate: 44000
+strips:
+- name: Maven
+  serial_port_name: /dev/tty.usbserial-A50285BI
+  active_state_index: 0
+  is_online: false
+  midi_ports_for_changing_mode:
+  - Audio2Led ChangeMod TopBar
+  midi_ports_for_visualization:
+  - Audio2Led Synth
+  original_physical_shape:
+  - 40
+  - 40
+  - 40
+  - 40
+  - 40
+  - 40
+  - 40
+  - 40
+  - 40
+  - 40
+  - 40
+  - 40
+  - 40
+  - 40
+  - 40
+  - 40
+  midi_range:
+  - 47
+  - 73
+  scene:
+    shapes:
+    - pixel_range:
+      - 0
+      - 40
+      svg_string: M0,0 T0,300
+      z_index: 0
+    - pixel_range:
+      - 40
+      - 80
+      svg_string: M100,0 T100,300
+      z_index: 0
+    - pixel_range:
+      - 80
+      - 120
+      svg_string: M200,0 T200,300
+      z_index: 0
+    - pixel_range:
+      - 120
+      - 160
+      svg_string: M300,0 T300,300
+      z_index: 0
+    - pixel_range:
+      - 160
+      - 200
+      svg_string: M0,0 T0,300
+      z_index: 1
+    - pixel_range:
+      - 200
+      - 240
+      svg_string: M100,0 T100,300
+      z_index: 1
+    - pixel_range:
+      - 240
+      - 280
+      svg_string: M200,0 T200,300
+      z_index: 1
+    - pixel_range:
+      - 280
+      - 320
+      svg_string: M300,0 T300,300
+      z_index: 1
+    - pixel_range:
+      - 320
+      - 360
+      svg_string: M0,0 T0,300
+      z_index: 2
+    - pixel_range:
+      - 360
+      - 400
+      svg_string: M100,0 T100,300
+      z_index: 2
+    - pixel_range:
+      - 400
+      - 440
+      svg_string: M200,0 T200,300
+      z_index: 2
+    - pixel_range:
+      - 440
+      - 480
+      svg_string: M300,0 T300,300
+      z_index: 2
+    - pixel_range:
+      - 480
+      - 520
+      svg_string: M0,0 T0,300
+      z_index: 3
+    - pixel_range:
+      - 520
+      - 560
+      svg_string: M100,0 T100,300
+      z_index: 3
+    - pixel_range:
+      - 560
+      - 600
+      svg_string: M200,0 T200,300
+      z_index: 3
+    - pixel_range:
+      - 600
+      - 640
+      svg_string: M300,0 T300,300
+      z_index: 3
+  states:
+  - name: Intensity
+    active_visualizer_effect: channel_intensity
+    active_color_scheme_index: 5
+    active_audio_channel_index: 1
+    audio_samples_filter_min: 0
+    audio_samples_filter_max: 24
+    audio_gain: 0.7
+    audio_decay: 0.5
+    division_value: 0
+    max_brightness: 255
+    time_interval: 1
+    chunk_size: 23
+    blur_value: 0.1
+    is_reverse: true
+    is_mirror: false
+  - name: Flash
+    active_visualizer_effect: channel_flash
+    active_color_scheme_index: 8
+    active_audio_channel_index: 1
+    audio_samples_filter_min: 0
+    audio_samples_filter_max: 24
+    audio_gain: 0.1
+    audio_decay: 0.1
+    division_value: 0
+    max_brightness: 255
+    time_interval: 25
+    chunk_size: 6
+    blur_value: 0.1
+    is_reverse: false
+    is_mirror: false
+  - name: Midi scroll shape
+    active_visualizer_effect: piano_echo
+    active_color_scheme_index: 11
+    active_audio_channel_index: 0
+    audio_samples_filter_min: 0
+    audio_samples_filter_max: 24
+    audio_gain: 1
+    audio_decay: 0.1
+    division_value: 0
+    max_brightness: 255
+    time_interval: 120
+    chunk_size: 5
+    blur_value: 0.1
+    is_reverse: false
+    is_mirror: false

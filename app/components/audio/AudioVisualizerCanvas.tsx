@@ -86,11 +86,12 @@ class SizedAudioVisualizerCanvas extends React.Component {
   };
 
   drawBar = (gain, opacity_offset) => {
-    const bar_channel_size = this.props.width / channels;
+    const bar_channel_width = this.props.width / channels;
 
     this.props.audio.map((audio_atom, index) => {
       const opacity = opacity_offset;
-      const audio_channel = audio_atom * gain;
+      let audio_channel = audio_atom * gain;
+      audio_channel = audio_channel > .03 ? audio_channel : .03;
       if (
         index < this.props.audio_samples_filter_min ||
         index > this.props.audio_samples_filter_max
@@ -100,12 +101,29 @@ class SizedAudioVisualizerCanvas extends React.Component {
         this.state.ctx.fillStyle = 'rgba(255,255,255,' + opacity + ')';
       }
       this.state.ctx.fillRect(
-        index * bar_channel_size,
+        index * bar_channel_width,
         this.props.height - audio_channel * this.props.height,
-        bar_channel_size - this.state.gap,
+        bar_channel_width - this.state.gap,
         audio_channel * this.props.height
       );
     });
+
+    // feature that adds strokes to delimitate the audio authorized frame
+    // this.state.ctx.fillStyle = 'rgba(255,255,255,.1)';
+    // this.state.ctx.fillRect(
+    //   this.props.audio_samples_filter_min * bar_channel_width,
+    //   0,
+    //   .3,
+    //   this.props.height
+    // );
+
+    // this.state.ctx.fillRect(
+    //   this.props.audio_samples_filter_max * bar_channel_width + bar_channel_width,
+    //   0,
+    //   .3,
+    //   this.props.height
+    // );
+
   };
 
   drawSpectrogram = () => {

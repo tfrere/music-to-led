@@ -42,13 +42,11 @@
 
 **Music 2 Led** is an **open source program** that allows you to create **real-time audio and midi visualizations on led strips** using Arduino and Python. It was designed for **DJ**'s, **music groups** or **artists** who want to add some **automated lighting effects** to their shows.
 
-All you need is a **computer** _( works on Raspi 4 )_, an **arduino** and a **led strip**.
+All you need is a **computer** _( works on Raspi 4 )_, an **arduino** and a **ws2812b led strip**.
 
 ### Showcase
 
-![showcase-abstract-one](images/showcase-abstract-one.gif)
-![showcase-abstract-one](images/showcase-flower.gif)
-![showcase-abstract-one](images/showcase-typeface.gif)
+![showcase-abstract-one](images/showcase-grid.gif)
 
 ### How it works ?
 
