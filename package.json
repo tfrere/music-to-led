@@ -1,7 +1,7 @@
 {
-  "name": "music-2-led",
-  "productName": "Music 2 led",
-  "version": "1.1.0",
+  "name": "music-to-led",
+  "productName": "Music To Led",
+  "version": "1.0.0-alpha",
   "description": "Electron application boilerplate based on React, React Router, Webpack, React Hot Loader for rapid application development",
   "scripts": {
     "build": "concurrently \"yarn build-main\" \"yarn build-renderer\"",
@@ -59,8 +59,8 @@
     ]
   },
   "build": {
-    "productName": "Music2Led",
-    "appId": "org.develar.Music2Led",
+    "productName": "MusicToLed",
+    "appId": "org.develar.MusicToLed",
     "files": [
       "dist/",
       "node_modules/",
@@ -110,7 +110,7 @@
     },
     "extraFiles": [
       {
-        "from": "backend/bin/music2led",
+        "from": "backend/bin/musicToLedServer",
         "to": "Resources/bin",
         "filter": [
           "**/*"

@@ -72,7 +72,7 @@ class Nav extends React.Component {
                 });
               }}
             >
-              SHUTDOWN
+              SHUTDOWN SERVER
             </Button>
           </div>
         </nav>

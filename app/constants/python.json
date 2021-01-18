@@ -1,5 +1,5 @@
 {
-  "execName": "music2led",
+  "execName": "musicToLedServer",
   "connString": "tcp://127.0.0.1:8000",
-  "devUsePackaged": true
+  "devUsePackaged": false
 }

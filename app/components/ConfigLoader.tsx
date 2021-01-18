@@ -121,7 +121,7 @@ class ConfigLoader extends React.Component {
                         className={buttonClassName}
                         onClick={this.launchBackend}
                       >
-                        LOAD
+                        START SERVER
                       </Button>
                       <span className="config-loader__content-wrapper__load__error-message">
                         {this.state.errorMessage}
