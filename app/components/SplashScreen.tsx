@@ -39,8 +39,8 @@ class SplashScreen extends React.Component {
       <div id="splashscreen" className={classes}>
         <div>
           <img className="splash-screen__logo" src={logoSrc} />
-          <h1>MUSIC 2 LED</h1>
-          <span>build 1.1.0</span>
+          <h1>MUSIC TO LED</h1>
+          <span>1.0.0-alpha</span>
           <p>{this.state.sentences[this.state.current_step]}</p>
         </div>
       </div>
