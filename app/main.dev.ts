@@ -12,7 +12,8 @@ import MenuBuilder from './menu';
 import pythonConfig from './constants/python.json';
 import windowConfig from './constants/window.json';
 
-import { getPythonProcessPath } from './server/getPythonProcessPath';
+import { getPythonProcessPath, } from './server/getPythonProcessPath';
+
 import {
   initializeHttpServer,
   launchHttpServer,
@@ -165,7 +166,6 @@ const createWindow = async () => {
 
 process.on('exit', function() {
   killHttpServer(globals);
-  // killPythonBackendProcess();
 });
 
 // /*************************************************************
@@ -175,6 +175,7 @@ process.on('exit', function() {
 app.on('window-all-closed', () => {
   // Respect the OSX convention of having the application in memory even
   // after all windows have been closed
+  killHttpServer(globals);
   if (process.platform !== 'darwin') {
     app.quit();
   }

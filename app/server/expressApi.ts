@@ -85,6 +85,7 @@ export const killHttpServer = globals => {
   if (globals.httpServerInstance) {
     globals.httpServerInstance.close(function() {
       console.log('HTTP API killed.');
+      killPythonBackendProcess(globals);
     });
   }
 };
