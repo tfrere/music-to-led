@@ -1,9 +1,7 @@
 import React, { ReactNode } from 'react';
 import { NavLink } from 'react-router-dom';
 import routes from '../constants/routes.json';
-import Select from './generic/Select';
 import Button from './generic/Button';
-import ConfigLoader from './ConfigLoader';
 
 class Nav extends React.Component {
   constructor(props) {

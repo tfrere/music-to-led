@@ -7,7 +7,7 @@ import {
   sortableContainer,
   sortableElement,
   sortableHandle
-} from 'react-sortable-hoc';
+} from '../../lib/react-sortable-hoc.js';
 
 const swapElementsInList = (input, index_A, index_B) => {
   let temp = input[index_A];
@@ -17,7 +17,7 @@ const swapElementsInList = (input, index_A, index_B) => {
 };
 
 const NOTE_ON = 0x90;
-const NOTE_OFF = 0x80;
+const NOTE_OFF = 0x80; 
 const META_TEXT = 0xff;
 
 const DragHandle = sortableHandle(() => (

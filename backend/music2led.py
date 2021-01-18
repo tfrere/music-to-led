@@ -13,6 +13,7 @@ import numpy as np
 from copy import deepcopy
 
 from config.configLoader import ConfigLoader
+from config.helpers import autoKill
 
 from gui.shellInterface import ShellInterface
 
@@ -252,6 +253,13 @@ if __name__ == "__main__":
         print("- Launching with : " + args.with_config_file)
 
         print("- Parsing and testing config file...", "")
+
+        try:
+            f = open(args.with_config_file)
+            f.close()
+        except IOError:
+            print("File not found. Exit.")
+            autoKill()
 
         configLoader = ConfigLoader(args.with_config_file, debug=False)
 

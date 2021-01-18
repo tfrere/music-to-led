@@ -221,8 +221,6 @@ class ScenoVisualizer2d extends React.Component {
 
   createShape = (path, shape, sceneIndex) => {
 
-    console.log(shape);
-
     const properties = new svgPathProperties(path);
 
     const length = properties.getTotalLength();

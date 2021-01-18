@@ -10,16 +10,10 @@
 
     FRONT
 
-    - Beautiful gif for GUI
-    - Fix cannot rename a state that is already taken
     - Change "audio channels" by their log frequency reference
-    - Change "audio gain" by his real value
-    OK - Change spectrograph by having bass at bottom
-    - Fix AudioViz auto width sizeMe
 
     BACK
 
-    - Piano note chunked has to be reverse / mirrorable
     - Rendre le spectrum et fire generique à color ?
 
     SERIAL TO LED
@@ -40,7 +34,7 @@
 
 #
 
-**Music 2 Led** is an **open source program** that allows you to create **real-time audio and midi visualizations on led strips** using Arduino and Python. It was designed for **DJ**'s, **music groups** or **artists** who want to add some **automated lighting effects** to their shows.
+**Music 2 Led** is an **open source program** that allows you to create **real-time audio and midi visualizations on led strips** using Arduino and Python. It was designed for **DJ**'s, **music groups** or **artists** who want to add **automated lighting effects** to their shows.
 
 All you need is a **computer** _( works on Raspi 4 )_, an **arduino** and a **ws2812b led strip**.
 
@@ -48,22 +42,27 @@ All you need is a **computer** _( works on Raspi 4 )_, an **arduino** and a **ws
 
 ![showcase-abstract-one](images/showcase-grid.gif)
 
-### UI
-
-![showcase-ui](images/showcase-ui.gif)
-
 ### How it works ?
 
 ![software-architecture](images/archi.png)
 
+### Computer user interface
+
+![showcase-ui](images/showcase-ui.gif)
+
 ### What do i need to do to use it ?
 
 1. [Install the program](#python-program)
-2. [Build an arduino case](#arduino-part)
+2. [Build an arduino case](https://github.com/tfrere/python-to-led-strip)
 3. [Update the CONFIG.yml](#configuration)
 4. [Setup custom effects to prepare your show](#effects---modes)
 5. Enjoy !
 
+### Standalone server
+
+A standalone server version is available to allow you to run projects on raspberry pi. ( Tested with a raspberry pi 4 )
+[It can be found here](https://github.com/tfrere/music-to-led-server)
+
 # License
 
-This project was developed by Thibaud FRERE and is released without any licence for the moment.
+This project was developed by Thibaud FRERE under MIT Licence.
