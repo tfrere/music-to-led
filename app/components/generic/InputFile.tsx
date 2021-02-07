@@ -6,21 +6,25 @@ class InputFile extends React.Component {
     super(props);
 
     this.state = {
-      fileName: ''
+      fileName: '',
+      filePath: ''
     };
   }
 
   handleInputChange = e => {
     console.log(e.target.files);
-    let path = this.state.fileName || null;
+    let path = this.state.filePath || null;
+    let name = this.state.fileName || null;
     if(e.target.files.length) {
       path = e.target.files[0].path;
+      name = e.target.files[0].name;
       this.setState(
         {
-          fileName: path
+          filePath: path,
+          fileName: name
         },
         () => {
-          this.props.onChange(this.state.fileName);
+          this.props.onChange(this.state.filePath);
         }
       );
     }
@@ -31,7 +35,7 @@ class InputFile extends React.Component {
       <div className="input-file">
         <div className="input-file__button-wrapper">
           <Button className="button--big button--large button--stretched">
-            Select your file
+            {this.state.fileName || "Select your file"}
           </Button>
           <input
             type="file"
@@ -40,13 +44,13 @@ class InputFile extends React.Component {
             className="form-control"
           />
         </div>
-        <h6>
-          {this.state.fileName ? (
-            <span>{this.state.fileName}</span>
+        {/* <h6>
+          {this.state.filePath ? (
+            <span>{this.state.filePath}</span>
           ) : (
             <span>No file selected</span>
           )}
-        </h6>
+        </h6> */}
         <br />
       </div>
     );

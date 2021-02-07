@@ -1,5 +1,9 @@
 desirated_framerate: 60
 display_shell_interface: false
+scene_camera:
+  x: .8
+  y: .3
+  z: -3
 is_zmq_api_enabled: true
 is_serial_enabled: false
 color_schemes:
@@ -74,7 +78,7 @@ strips:
         audio_samples_filter_min: 0
         audio_samples_filter_max: 24
         audio_gain: 1.0
-        audio_decay: 0.1
+        audio_decay: 0.2
         division_value: 0
         max_brightness: 255
         time_interval: 21
@@ -83,19 +87,19 @@ strips:
         is_reverse: true
         is_mirror: false
       - name: Scroll-mirror-reverse
-        active_visualizer_effect: transition_color_shapes
+        active_visualizer_effect: alternate_color_chunks
         active_color_scheme_index: 8
         active_audio_channel_index: 1
         audio_samples_filter_min: 0
         audio_samples_filter_max: 24
         audio_gain: 0.4
-        audio_decay: 0.1
+        audio_decay: 0.2
         division_value: 0
         max_brightness: 255
         time_interval: 80
-        chunk_size: 5
+        chunk_size: 20
         blur_value: 0.7
-        is_reverse: true
+        is_reverse: false
         is_mirror: false
       - name: Spectrum
         active_visualizer_effect: spectrum
@@ -104,7 +108,7 @@ strips:
         audio_samples_filter_min: 0
         audio_samples_filter_max: 24
         audio_gain: 0.3
-        audio_decay: 0.1
+        audio_decay: 0.2
         division_value: 0
         max_brightness: 255
         time_interval: 148
@@ -119,7 +123,7 @@ strips:
         audio_samples_filter_min: 0
         audio_samples_filter_max: 24
         audio_gain: 1
-        audio_decay: 0.1
+        audio_decay: 0.2
         division_value: 0
         max_brightness: 255
         time_interval: 151
@@ -134,7 +138,7 @@ strips:
         audio_samples_filter_min: 0
         audio_samples_filter_max: 24
         audio_gain: 1
-        audio_decay: 0.1
+        audio_decay: 0.2
         division_value: 0
         max_brightness: 255
         time_interval: 120
@@ -149,7 +153,7 @@ strips:
         audio_samples_filter_min: 0
         audio_samples_filter_max: 24
         audio_gain: 1
-        audio_decay: 0.1
+        audio_decay: 0.2
         division_value: 0
         max_brightness: 255
         time_interval: 96
@@ -239,11 +243,11 @@ strips:
         audio_samples_filter_min: 0
         audio_samples_filter_max: 24
         audio_gain: 1.0
-        audio_decay: 0.1
+        audio_decay: 0.2
         division_value: 0
         max_brightness: 255
         time_interval: 167
-        chunk_size: 20
+        chunk_size: 16
         blur_value: 0.1
         is_reverse: false
         is_mirror: false
@@ -254,7 +258,7 @@ strips:
         audio_samples_filter_min: 0
         audio_samples_filter_max: 24
         audio_gain: 0.4
-        audio_decay: 0.1
+        audio_decay: 0.2
         division_value: 0
         max_brightness: 255
         time_interval: 1
@@ -269,7 +273,7 @@ strips:
         audio_samples_filter_min: 0
         audio_samples_filter_max: 24
         audio_gain: 0.3
-        audio_decay: 0.1
+        audio_decay: 0.2
         division_value: 0
         max_brightness: 255
         time_interval: 148
@@ -284,7 +288,7 @@ strips:
         audio_samples_filter_min: 0
         audio_samples_filter_max: 24
         audio_gain: 1
-        audio_decay: 0.1
+        audio_decay: 0.2
         division_value: 0
         max_brightness: 255
         time_interval: 151
@@ -299,7 +303,7 @@ strips:
         audio_samples_filter_min: 0
         audio_samples_filter_max: 24
         audio_gain: 1
-        audio_decay: 0.1
+        audio_decay: 0.2
         division_value: 0
         max_brightness: 255
         time_interval: 120
@@ -314,7 +318,7 @@ strips:
         audio_samples_filter_min: 0
         audio_samples_filter_max: 24
         audio_gain: 1
-        audio_decay: 0.1
+        audio_decay: 0.2
         division_value: 0
         max_brightness: 255
         time_interval: 96

@@ -1,5 +1,9 @@
 desirated_framerate: 60
 display_shell_interface: false
+scene_camera:
+  x: 3.1
+  y: 0.9
+  z: -4.6
 is_zmq_api_enabled: true
 is_serial_enabled: false
 color_schemes:
@@ -83,11 +87,11 @@ strips:
   - name: Scroll
     active_visualizer_effect: scroll
     active_color_scheme_index: 0
-    active_audio_channel_index: 1
+    active_audio_channel_index: 0
     audio_samples_filter_min: 0
     audio_samples_filter_max: 24
     audio_gain: 1.0
-    audio_decay: 0.1
+    audio_decay: 0.2
     division_value: 0
     max_brightness: 255
     time_interval: 120
@@ -102,7 +106,7 @@ strips:
     audio_samples_filter_min: 0
     audio_samples_filter_max: 24
     audio_gain: 0.4
-    audio_decay: 0.1
+    audio_decay: 0.2
     division_value: 0
     max_brightness: 255
     time_interval: 1
@@ -117,7 +121,7 @@ strips:
     audio_samples_filter_min: 0
     audio_samples_filter_max: 24
     audio_gain: 0.3
-    audio_decay: 0.1
+    audio_decay: 0.2
     division_value: 0
     max_brightness: 255
     time_interval: 148
@@ -132,7 +136,7 @@ strips:
     audio_samples_filter_min: 0
     audio_samples_filter_max: 24
     audio_gain: 1
-    audio_decay: 0.1
+    audio_decay: 0.2
     division_value: 0
     max_brightness: 255
     time_interval: 151
@@ -147,7 +151,7 @@ strips:
     audio_samples_filter_min: 0
     audio_samples_filter_max: 24
     audio_gain: 1
-    audio_decay: 0.1
+    audio_decay: 0.2
     division_value: 0
     max_brightness: 255
     time_interval: 120
@@ -162,7 +166,7 @@ strips:
     audio_samples_filter_min: 0
     audio_samples_filter_max: 24
     audio_gain: 1
-    audio_decay: 0.1
+    audio_decay: 0.2
     division_value: 0
     max_brightness: 255
     time_interval: 96

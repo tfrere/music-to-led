@@ -20,38 +20,6 @@ const applyGammaCorrection = pixels => {
   }
 };
 
-Object.compare = function(obj1, obj2) {
-  //Loop through properties in object 1
-  for (var p in obj1) {
-    //Check property exists on both objects
-    if (obj1.hasOwnProperty(p) !== obj2.hasOwnProperty(p)) return false;
-
-    switch (typeof obj1[p]) {
-      //Deep compare objects
-      case 'object':
-        if (!Object.compare(obj1[p], obj2[p])) return false;
-        break;
-      //Compare function code
-      case 'function':
-        if (
-          typeof obj2[p] == 'undefined' ||
-          (p != 'compare' && obj1[p].toString() != obj2[p].toString())
-        )
-          return false;
-        break;
-      //Compare values
-      default:
-        if (obj1[p] != obj2[p]) return false;
-    }
-  }
-
-  //Check object 2 for any extra properties
-  for (var p in obj2) {
-    if (typeof obj1[p] == 'undefined') return false;
-  }
-  return true;
-};
-
 let client_time = new Date().getTime();
 let server_time = 0;
 let object = null;
@@ -77,15 +45,13 @@ async function getZMQData() {
       .replace(quoteRegex, '"')
       .replace(trueRegex, '1')
       .replace(falseRegex, '0');
+
     object = JSON.parse(json_string);
-    // console.log(object.pixels[0][0]);
-    if(object.pixels && object.pixels[0][0]) {
+    if(object.pixels && object.pixels[0].length == 3 && object.pixels[0][0]) {
       for (let i = 0; i < object.pixels.length; i++) {
         applyGammaCorrection(object.pixels[i]);
-      }
+      } 
     }
-    // console.log(object.pixels[0][0][0]);
-    // console.log('connected');
     const current_server_timestamp = Math.round(object.time * 1000);
 
     server_time = timestamp;
@@ -104,18 +70,22 @@ class Builder extends React.Component {
       active_states: [],
       are_strips_online: [],
       active_strip_index: 0,
-      isZMQConnected: false
+      isZMQConnected: false,
+      isReallyReadyToLaunch: false
     };
   }
   componentDidMount() {
     let that = this;
     that._intervalId = setInterval(() => that.computeTime(), 50);
+    window.setTimeout(()=>{
+      that.setState({isReallyReadyToLaunch:true});
+    }, 1500);
   }
 
   computeTime() {
     client_time = new Date().getTime();
     let is_connected = server_time - client_time;
-    if (is_connected > -400) {
+    if (is_connected > -800 && object) {
       this.setState({
         config: object.config,
         audios: object.audios,
@@ -124,7 +94,7 @@ class Builder extends React.Component {
         active_states: object.active_states,
         are_strips_online: object.are_strips_online,
         framerates: object.framerates,
-        has_config_changed: !Object.compare(
+        has_config_changed: !compareObjects(
           this.state.active_states,
           object.active_states
         ),
@@ -239,16 +209,6 @@ class Builder extends React.Component {
             </div>
             <div className="left-panel__list__item__content">
               <AudioVisualizerCanvas audio={audio} width={110} height={55} />
-              {/* <div>
-                <span>
-                  {config._audio_ports[index].number_of_audio_samples}{' '}
-                  <span>samples</span>
-                </span>
-                <span>
-                  {config._audio_ports[index].min_frequency} <span>-</span>{' '}
-                  {config._audio_ports[index].max_frequency} <span>hz</span>
-                </span>
-              </div> */}
             </div>
           </div>
         );
@@ -278,6 +238,7 @@ class Builder extends React.Component {
               </div>
             </div>
             <div className="main-content">
+              {this.state.isReallyReadyToLaunch ?
               <ScenoVisualizer
                 config={config}
                 pixels={pixels}
@@ -287,25 +248,32 @@ class Builder extends React.Component {
                 activeStripIndex={active_strip_data.strip_index}
                 hasActiveBoundingBoxVisible={true}
               />
-              {active_strip_data ? (
-                <div style={{ marginBottom: '20px' }}>
+              : <div className="flex-center-wrapper" style={{ height: '300px', width:"100%", marginBottom:"0px", background:"#051824" }}><span className="loading"></span></div>
+            }
+            <div style={{ height: '1px', width:"100%", margin:"0px", background:"rgba(255,255,255,0.05)"}}></div>
+              
+                <div style={{ margin: '20px 0 ' }}>
                   <div className="card">
-                    {/* <h5 className="label" style={{ marginTop: '0px' }}>
-                      RGB Visualizer
-                    </h5> */}
-                    <RgbVisualizerCanvas
-                      pixels={pixels[active_strip_data.strip_index]}
-                      physical_shape={active_strip_data.strip._physical_shape}
-                      active_shape={
-                        active_strip_data.strip._shapes[
-                          active_strip_data.active_state.division_value
-                        ]
-                      }
-                    />
+                    {active_strip_data ? (
+                      <div style={{height:"76px"}}>
+                        <RgbVisualizerCanvas
+                          pixels={pixels[active_strip_data.strip_index]}
+                          physical_shape={active_strip_data.strip._physical_shape}
+                          active_shape={
+                            active_strip_data.strip._shapes[
+                              active_strip_data.active_state.division_value
+                            ]
+                          }
+                        />
+                      </div>
+                    ) : 
+                    <div className="rgb-visualizer"></div>}
+                    {active_strip_data ? (
                     <StripController active_strip_data={active_strip_data} />
+                    ) : null}
                   </div>
                 </div>
-              ) : null}
+              
             </div>
           </>
         ) : (

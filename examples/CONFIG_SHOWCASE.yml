@@ -1,0 +1,492 @@
+desirated_framerate: 60
+display_shell_interface: false
+scene_camera:
+  x: 0
+  y: 0
+  z: -6.2
+is_zmq_api_enabled: true
+is_serial_enabled: false
+color_schemes:
+  - - red
+    - green
+    - blue
+  - - black
+    - blue
+  - - '#2a04ff'
+    - '#ff9604'
+  - - '#02e6ff'
+    - '#ff4a02'
+  - - '#2bff01'
+    - '#ff0127'
+  - - '#fff700'
+    - '#f700ff'
+  - - red
+  - - green
+  - - blue
+  - - yellow
+  - - pink
+  - - '#ee00ac'
+    - blue
+audio_ports:
+  - max_frequency: 12000
+    min_frequency: 200
+    min_volume_threshold: 1.0e-07
+    n_rolling_history: 4
+    name: Built-in Microphone
+    number_of_audio_samples: 24
+    sampling_rate: 44000
+  - max_frequency: 12000
+    min_frequency: 200
+    min_volume_threshold: 1.0e-07
+    n_rolling_history: 4
+    name: Loopback Audio
+    number_of_audio_samples: 24
+    sampling_rate: 44000
+strips:
+  - name: Horizontal Bar 1
+    serial_port_name: /dev/tty.usbserial-A50285BI
+    active_state_index: 0
+    is_online: false
+    midi_ports_for_changing_mode:
+      - Audio2Led ChangeMod Bar 1
+    midi_ports_for_visualization:
+      - Audio2Led Synth
+    original_physical_shape:
+      - 40
+    midi_range:
+      - 47
+      - 73
+    scene:
+      backgrounds:
+        - svg_string:
+            M330.193798,0.5 C331.436439,0.5 332.561439,1.00367966 333.375779,1.81801948
+            C334.190119,2.63235931 334.693798,3.75735931 334.693798,5 L334.693798,5 L334.693798,227
+            C334.693798,228.242641 334.190119,229.367641 333.375779,230.181981 C332.561439,230.99632
+            331.436439,231.5 330.193798,231.5 L330.193798,231.5 L5,231.5 C3.75735931,231.5
+            2.63235931,230.99632 1.81801948,230.181981 C1.00367966,229.367641 0.5,228.242641
+            0.5,227 L0.5,227 L0.5,5 C0.5,3.75735931 1.00367966,2.63235931 1.81801948,1.81801948
+            C2.63235931,1.00367966 3.75735931,0.5 5,0.5 L5,0.5 Z
+        - svg_string:
+            M703.096899,0.5 C704.33954,0.5 705.46454,1.00367966 706.27888,1.81801948
+            C707.09322,2.63235931 707.596899,3.75735931 707.596899,5 L707.596899,5 L707.596899,227
+            C707.596899,228.242641 707.09322,229.367641 706.27888,230.181981 C705.46454,230.99632
+            704.33954,231.5 703.096899,231.5 L703.096899,231.5 L377.903101,231.5 C376.66046,231.5
+            375.53546,230.99632 374.72112,230.181981 C373.90678,229.367641 373.403101,228.242641
+            373.403101,227 L373.403101,227 L373.403101,5 C373.403101,3.75735931 373.90678,2.63235931
+            374.72112,1.81801948 C375.53546,1.00367966 376.66046,0.5 377.903101,0.5 L377.903101,0.5
+            Z
+        - svg_string:
+            M1076,0.5 C1077.24264,0.5 1078.36764,1.00367966 1079.18198,1.81801948
+            C1079.99632,2.63235931 1080.5,3.75735931 1080.5,5 L1080.5,5 L1080.5,227 C1080.5,228.242641
+            1079.99632,229.367641 1079.18198,230.181981 C1078.36764,230.99632 1077.24264,231.5
+            1076,231.5 L1076,231.5 L750.806202,231.5 C749.563561,231.5 748.438561,230.99632
+            747.624221,230.181981 C746.809881,229.367641 746.306202,228.242641 746.306202,227
+            L746.306202,227 L746.306202,5 C746.306202,3.75735931 746.809881,2.63235931
+            747.624221,1.81801948 C748.438561,1.00367966 749.563561,0.5 750.806202,0.5
+            L750.806202,0.5 Z
+      shapes:
+        - pixel_range:
+            - 0
+            - 40
+          svg_string: M38.5 40.5 295.5 40.5
+    states:
+      - name: Scroll
+        active_visualizer_effect: scroll
+        active_color_scheme_index: 0
+        active_audio_channel_index: 1
+        audio_samples_filter_min: 0
+        audio_samples_filter_max: 24
+        audio_gain: 1
+        audio_decay: 0.2
+        division_value: 0
+        max_brightness: 255
+        time_interval: 64
+        chunk_size: 5
+        blur_value: 0.1
+        is_reverse: false
+        is_mirror: false
+  - name: Horizontal Bar 2
+    serial_port_name: /dev/tty.usbserial-A50285BI2
+    active_state_index: 0
+    is_online: false
+    midi_ports_for_changing_mode:
+      - Audio2Led ChangeMod Bar 2
+    midi_ports_for_visualization:
+      - Audio2Led Synth
+    original_physical_shape:
+      - 40
+    midi_range:
+      - 47
+      - 73
+    scene:
+      shapes:
+        - pixel_range:
+            - 0
+            - 40
+          svg_string: M38.5 78.5 295.5 78.5
+    states:
+      - name: Energy
+        active_visualizer_effect: energy
+        active_color_scheme_index: 0
+        active_audio_channel_index: 1
+        audio_samples_filter_min: 0
+        audio_samples_filter_max: 24
+        audio_gain: 0.1
+        audio_decay: 0.5
+        division_value: 0
+        max_brightness: 255
+        time_interval: 361
+        chunk_size: 16
+        blur_value: 0.7
+        is_reverse: false
+        is_mirror: false
+  - name: Horizontal Bar 3
+    serial_port_name: /dev/tty.usbserial-A50285BI3
+    active_state_index: 0
+    is_online: false
+    midi_ports_for_changing_mode:
+      - Audio2Led ChangeMod Bar 3
+    midi_ports_for_visualization:
+      - Audio2Led Synth
+    original_physical_shape:
+      - 40
+    midi_range:
+      - 47
+      - 73
+    scene:
+      shapes:
+        - pixel_range:
+            - 0
+            - 40
+          svg_string: M38.5 116.5 295.5 116.5
+    states:
+      - name: Flash
+        active_visualizer_effect: channel_flash
+        active_color_scheme_index: 6
+        active_audio_channel_index: 1
+        audio_samples_filter_min: 0
+        audio_samples_filter_max: 24
+        audio_gain: 0.4
+        audio_decay: 0.5
+        division_value: 2
+        max_brightness: 255
+        time_interval: 361
+        chunk_size: 16
+        blur_value: 10.6
+        is_reverse: false
+        is_mirror: false
+  - name: Horizontal Bar 4
+    serial_port_name: /dev/tty.usbserial-A50285BI4
+    active_state_index: 0
+    is_online: false
+    midi_ports_for_changing_mode:
+      - Audio2Led ChangeMod Bar 4
+    midi_ports_for_visualization:
+      - Audio2Led Synth
+    original_physical_shape:
+      - 40
+    midi_range:
+      - 47
+      - 73
+    scene:
+      shapes:
+        - pixel_range:
+            - 0
+            - 40
+          svg_string: M38.5 154.5 295.5 154.5
+    states:
+      - name: Intensity
+        active_visualizer_effect: channel_intensity
+        active_color_scheme_index: 0
+        active_audio_channel_index: 1
+        audio_samples_filter_min: 0
+        audio_samples_filter_max: 24
+        audio_gain: 1.0
+        audio_decay: 0.5
+        division_value: 2
+        max_brightness: 255
+        time_interval: 361
+        chunk_size: 16
+        blur_value: 0.1
+        is_reverse: false
+        is_mirror: false
+  - name: Horizontal Bar 5
+    serial_port_name: /dev/tty.usbserial-A50285BI5
+    active_state_index: 0
+    is_online: false
+    midi_ports_for_changing_mode:
+      - Audio2Led ChangeMod Bar 5
+    midi_ports_for_visualization:
+      - Audio2Led Synth
+    original_physical_shape:
+      - 40
+    midi_range:
+      - 47
+      - 73
+    scene:
+      shapes:
+        - pixel_range:
+            - 0
+            - 40
+          svg_string: M38.5 193.5 295.5 193.5
+    states:
+      - name: Forevermore
+        active_visualizer_effect: spectrum
+        active_color_scheme_index: 0
+        active_audio_channel_index: 1
+        audio_samples_filter_min: 0
+        audio_samples_filter_max: 24
+        audio_gain: 1.0
+        audio_decay: 0.5
+        division_value: 0
+        max_brightness: 255
+        time_interval: 140
+        chunk_size: 16
+        blur_value: 0.1
+        is_reverse: false
+        is_mirror: false
+  - name: Horizontal Bar 6
+    serial_port_name: /dev/tty.usbserial-A50285BI6
+    active_state_index: 0
+    is_online: false
+    midi_ports_for_changing_mode:
+      - Audio2Led ChangeMod Bar 6
+    midi_ports_for_visualization:
+      - Audio2Led Synth
+    original_physical_shape:
+      - 40
+    midi_range:
+      - 47
+      - 73
+    scene:
+      shapes:
+        - pixel_range:
+            - 0
+            - 40
+          svg_string: M412 40.5 669 40.5
+    states:
+      - name: Forevermore2
+        active_visualizer_effect: piano_scroll
+        active_color_scheme_index: 0
+        active_audio_channel_index: 0
+        audio_samples_filter_min: 0
+        audio_samples_filter_max: 24
+        audio_gain: 0.4
+        audio_decay: 0.5
+        division_value: 0
+        max_brightness: 255
+        time_interval: 148
+        chunk_size: 16
+        blur_value: 0.1
+        is_reverse: false
+        is_mirror: false
+  - name: Horizontal Bar 7
+    serial_port_name: /dev/tty.usbserial-A50285BI7
+    active_state_index: 0
+    is_online: false
+    midi_ports_for_changing_mode:
+      - Audio2Led ChangeMod Bar 7
+    midi_ports_for_visualization:
+      - Audio2Led Synth
+    original_physical_shape:
+      - 40
+    midi_range:
+      - 47
+      - 73
+    scene:
+      shapes:
+        - pixel_range:
+            - 0
+            - 40
+          svg_string: M412 91.1666667 669 91.1666667
+    states:
+      - name: Forevermore
+        active_visualizer_effect: piano_note
+        active_color_scheme_index: 0
+        active_audio_channel_index: 0
+        audio_samples_filter_min: 0
+        audio_samples_filter_max: 24
+        audio_gain: 0.4
+        audio_decay: 0.5
+        division_value: 0
+        max_brightness: 255
+        time_interval: 270
+        chunk_size: 16
+        blur_value: 1.2
+        is_reverse: false
+        is_mirror: false
+  - name: Horizontal Bar 8
+    serial_port_name: /dev/tty.usbserial-A50285BI8
+    active_state_index: 0
+    is_online: false
+    midi_ports_for_changing_mode:
+      - Audio2Led ChangeMod Bar 8
+    midi_ports_for_visualization:
+      - Audio2Led Synth
+    original_physical_shape:
+      - 40
+    midi_range:
+      - 47
+      - 73
+    scene:
+      shapes:
+        - pixel_range:
+            - 0
+            - 40
+          svg_string: M412 141.833333 669 141.833333
+    states:
+      - name: AltShapes
+        active_visualizer_effect: piano_echo
+        active_color_scheme_index: 0
+        active_audio_channel_index: 0
+        audio_samples_filter_min: 0
+        audio_samples_filter_max: 24
+        audio_gain: 0.4
+        audio_decay: 0.5
+        division_value: 0
+        max_brightness: 255
+        time_interval: 1
+        chunk_size: 16
+        blur_value: 0.1
+        is_reverse: false
+        is_mirror: false
+  - name: Horizontal Bar 9
+    serial_port_name: /dev/tty.usbserial-A50285BI9
+    active_state_index: 0
+    is_online: false
+    midi_ports_for_changing_mode:
+      - Audio2Led ChangeMod Bar 9
+    midi_ports_for_visualization:
+      - Audio2Led Synth
+    original_physical_shape:
+      - 40
+    midi_range:
+      - 47
+      - 73
+    scene:
+      shapes:
+        - pixel_range:
+            - 0
+            - 40
+          svg_string: M412 192.5 669 192.5
+    states:
+      - name: AltShapes
+        active_visualizer_effect: pitchwheel_flash
+        active_color_scheme_index: 0
+        active_audio_channel_index: 0
+        audio_samples_filter_min: 0
+        audio_samples_filter_max: 24
+        audio_gain: 0.4
+        audio_decay: 0.5
+        division_value: 0
+        max_brightness: 255
+        time_interval: 262
+        chunk_size: 16
+        blur_value: 10.6
+        is_reverse: false
+        is_mirror: true
+  - name: Horizontal Bar 10
+    serial_port_name: /dev/tty.usbserial-A50285BI10
+    active_state_index: 0
+    is_online: false
+    midi_ports_for_changing_mode:
+      - Audio2Led ChangeMod Bar 10
+    midi_ports_for_visualization:
+      - Audio2Led Synth
+    original_physical_shape:
+      - 40
+    midi_range:
+      - 47
+      - 73
+    scene:
+      shapes:
+        - pixel_range:
+            - 0
+            - 40
+          svg_string: M784.903101 40.5 1041.9031 40.5
+    states:
+      - name: AltShapes
+        active_visualizer_effect: alternate_color_chunks
+        active_color_scheme_index: 0
+        active_audio_channel_index: 0
+        audio_samples_filter_min: 0
+        audio_samples_filter_max: 24
+        audio_gain: 0.4
+        audio_decay: 0.5
+        division_value: 0
+        max_brightness: 255
+        time_interval: 64
+        chunk_size: 10
+        blur_value: 1.5
+        is_reverse: false
+        is_mirror: false
+  - name: Horizontal Bar 11
+    serial_port_name: /dev/tty.usbserial-A50285BI11
+    active_state_index: 0
+    is_online: false
+    midi_ports_for_changing_mode:
+      - Audio2Led ChangeMod Bar 11
+    midi_ports_for_visualization:
+      - Audio2Led Synth
+    original_physical_shape:
+      - 40
+    midi_range:
+      - 47
+      - 73
+    scene:
+      shapes:
+        - pixel_range:
+            - 0
+            - 40
+          svg_string: M784.903101 116.5 1041.9031 116.5
+    states:
+      - name: AltShapes
+        active_visualizer_effect: alternate_color_shapes
+        active_color_scheme_index: 0
+        active_audio_channel_index: 0
+        audio_samples_filter_min: 0
+        audio_samples_filter_max: 24
+        audio_gain: 0.4
+        audio_decay: 0.5
+        division_value: 0
+        max_brightness: 255
+        time_interval: 64
+        chunk_size: 10
+        blur_value: 1.5
+        is_reverse: false
+        is_mirror: false
+  - name: Horizontal Bar 12
+    serial_port_name: /dev/tty.usbserial-A50285BI12
+    active_state_index: 0
+    is_online: false
+    midi_ports_for_changing_mode:
+      - Audio2Led ChangeMod Bar 12
+    midi_ports_for_visualization:
+      - Audio2Led Synth
+    original_physical_shape:
+      - 40
+    midi_range:
+      - 47
+      - 73
+    scene:
+      shapes:
+        - pixel_range:
+            - 0
+            - 40
+          svg_string: M784.903101 192.5 1041.9031 192.5
+    states:
+      - name: Fade Colors
+        active_visualizer_effect: transition_color_shapes
+        active_color_scheme_index: 0
+        active_audio_channel_index: 0
+        audio_samples_filter_min: 0
+        audio_samples_filter_max: 24
+        audio_gain: 0.4
+        audio_decay: 0.5
+        division_value: 0
+        max_brightness: 255
+        time_interval: 64
+        chunk_size: 10
+        blur_value: 1.5
+        is_reverse: false
+        is_mirror: false

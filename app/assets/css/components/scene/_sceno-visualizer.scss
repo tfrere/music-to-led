@@ -1,8 +1,6 @@
 .sceno-visualizer-holder {
-  border-bottom: 1px solid rgba(255, 255, 255, 0.05);
   position: relative;
   background: $visualizer-color;
-  margin-bottom: 20px;
   width: 100%;
   height: 300px;
   &--full-screen {
@@ -168,4 +166,10 @@
   z-index: $scenoVisualizerZIndex;
   font-size: 10px;
   pointer-events: none;
+}
+
+.sceno-visualizer__camera-coordinates {
+  transform: translateY(-30px) translateX(10px);
+  font-size: 10px;
+  color: rgba(255, 255, 255, 0.2);
 }

@@ -37,7 +37,7 @@
   display: flex;
   padding-right: 0px;
   margin-right: 0px;
-  margin-bottom: 20px;
+  margin-bottom: 0px;
   flex-wrap: wrap;
   .strip-controller__button {
     flex-grow: 1;
@@ -60,7 +60,6 @@
     width: 50%;
     padding-right: 0px;
     margin-right: 20px;
-    margin-bottom: 0px;
     flex-wrap: wrap;
     .strip-controller__button {
       flex-grow: 1;

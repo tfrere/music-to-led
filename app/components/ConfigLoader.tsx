@@ -75,7 +75,7 @@ class ConfigLoader extends React.Component {
             // that.props.onBackendLoaded();
           }, 1000);
         } else {
-          console.log(res.error);
+          console.log(res);
           this.setState({
             isTestingConfigFile: false,
             errorMessage: res.error
@@ -99,7 +99,7 @@ class ConfigLoader extends React.Component {
             <div>
               {!this.state.isLoadingApp ? (
                 <>
-                  <h3>Choose a config file to load</h3>
+                  <h3>Select a config file</h3>
                   <div className="config-loader__content-wrapper">
                     {/* <div className="config-loader__content-wrapper__create">
                       <span>Not implemented yet</span>

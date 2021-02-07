@@ -137,7 +137,7 @@ class StripController extends React.Component {
 
           return (
             <Button
-              alt={guessNoteFromNumber(elem.note_int)}
+              alt={`${elem.label} ${guessNoteFromNumber(elem.note_int)}`}
               key={elem.name + index}
               className={isActiveClass + ' button--has-type'}
               onClick={() => {
@@ -181,7 +181,7 @@ class StripController extends React.Component {
               <div className="strip-controller-group__item strip-controller-group__item--modifiers ">
                 <h5 className="label">Modifiers</h5>
                 <div style={{ display: 'flex' }}>
-                  <div style={{ width: '25%' }}>
+                  <div style={{ width: '35%' }}>
                     <ColorPicker
                       onChange={index => {
                         this.sendNote(20, index);
@@ -190,7 +190,7 @@ class StripController extends React.Component {
                       schemes={config.color_schemes}
                     />
                   </div>
-                  <div style={{ width: '25%' }}>
+                  {/* <div style={{ width: '25%' }}>
                     <Select
                       alt={guessNoteFromNumber(26)}
                       options={[
@@ -208,8 +208,8 @@ class StripController extends React.Component {
                         );
                       }}
                     />
-                  </div>
-                  <div style={{ width: '50%' }}>
+                  </div> */}
+                  <div style={{ width: '65%' }}>
                     <div className="button-group button-group--stretched">
                       <Button
                         alt={guessNoteFromNumber(17)}

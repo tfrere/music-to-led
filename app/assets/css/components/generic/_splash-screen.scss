@@ -3,7 +3,7 @@
   top: 0;
   left: 0;
   z-index: 999;
-  background-color: #061b28;
+  background-color: $backgroundColor;
   text-align: center;
   display: flex;
   align-items: center;
@@ -12,6 +12,20 @@
   height: 100%;
   opacity: 1;
   transition: all 200ms ease;
+  p {
+    font-weight: 600;
+    color: rgba(255, 255, 255, 0.3);
+    width: 250px;
+    text-align: center;
+    // text-shadow: 0.5px 0.5px 0px lighten($backgroundColor, 75%);
+  }
+  span {
+    position: absolute;
+    color: rgba(255, 255, 255, 0.1);
+    bottom: 20px;
+    left: 0;
+    right: 0;
+  }
 }
 
 .splash-screen--invisible {
@@ -23,5 +37,4 @@
   width: 100px;
   height: 100px;
   margin: 0 auto;
-  margin-bottom: 20px;
 }

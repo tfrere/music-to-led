@@ -54,10 +54,10 @@ export const testConfigPythonBackendProcess = (globals, configFilePath) => {
           args: args
         },
         function(err, res) {
-          console.log(err, res);
+          console.log("toto", err, res);
 
           if (!err && !res) {
-            reject({ success: false, error: '' });
+            resolve({ success: false, error: 'Something went wrong. Please check your config file.' });
           } else if (res[0].includes('is valid')) {
             resolve({ success: true, error: '' });
           } else {
@@ -74,7 +74,7 @@ export const testConfigPythonBackendProcess = (globals, configFilePath) => {
         function(err, res) {
           console.log(err, res);
           if (!err && !res) {
-            reject({ success: false, error: '' });
+            resolve({ success: false, error: 'Something went wrong. Please check your config file.' });
           } else if (res.includes('is valid')) {
             resolve({ success: true, error: '' });
           } else {

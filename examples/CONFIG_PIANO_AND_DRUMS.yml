@@ -1,5 +1,9 @@
 desirated_framerate: 60
 display_shell_interface: false
+scene_camera:
+  x: 0
+  y: 0
+  z: -7
 is_zmq_api_enabled: true
 is_serial_enabled: false
 color_schemes:
@@ -37,7 +41,7 @@ audio_ports:
 strips:
 - name: Piano strips
   serial_port_name: /dev/tty.usbserial-A50285BI
-  active_state_index: 1
+  active_state_index: 2
   is_online: false
   midi_ports_for_changing_mode:
   - Audio2Led ChangeMod Bar 1
@@ -182,7 +186,7 @@ strips:
     audio_samples_filter_min: 0
     audio_samples_filter_max: 24
     audio_gain: 0.1
-    audio_decay: 0.1
+    audio_decay: 0.2
     division_value: 0
     max_brightness: 255
     time_interval: 484
@@ -197,9 +201,9 @@ strips:
     audio_samples_filter_min: 0
     audio_samples_filter_max: 24
     audio_gain: 1
-    audio_decay: 0.1
+    audio_decay: 0.2
     division_value: 0
-    max_brightness: 142
+    max_brightness: 255
     time_interval: 120
     chunk_size: 20
     blur_value: 0.1
@@ -207,12 +211,12 @@ strips:
     is_mirror: false
   - name: midi-scroll-shape-fast
     active_visualizer_effect: piano_echo
-    active_color_scheme_index: 0
+    active_color_scheme_index: 8
     active_audio_channel_index: 0
     audio_samples_filter_min: 0
     audio_samples_filter_max: 24
     audio_gain: 1
-    audio_decay: 0.1
+    audio_decay: 0.2
     division_value: 0
     max_brightness: 255
     time_interval: 500
@@ -227,7 +231,7 @@ strips:
     audio_samples_filter_min: 0
     audio_samples_filter_max: 24
     audio_gain: 1
-    audio_decay: 0.1
+    audio_decay: 0.2
     division_value: 0
     max_brightness: 255
     time_interval: 1
@@ -242,7 +246,7 @@ strips:
     audio_samples_filter_min: 0
     audio_samples_filter_max: 24
     audio_gain: 1
-    audio_decay: 0.1
+    audio_decay: 0.2
     division_value: 0
     max_brightness: 255
     time_interval: 500
@@ -257,7 +261,7 @@ strips:
     audio_samples_filter_min: 0
     audio_samples_filter_max: 24
     audio_gain: 1
-    audio_decay: 0.1
+    audio_decay: 0.2
     division_value: 0
     max_brightness: 255
     time_interval: 120
@@ -300,7 +304,7 @@ strips:
     audio_samples_filter_min: 0
     audio_samples_filter_max: 24
     audio_gain: 1
-    audio_decay: 0.1
+    audio_decay: 0.2
     division_value: 0
     max_brightness: 142
     time_interval: 120
@@ -395,7 +399,7 @@ strips:
     audio_samples_filter_min: 0
     audio_samples_filter_max: 24
     audio_gain: 1
-    audio_decay: 0.1
+    audio_decay: 0.2
     division_value: 0
     max_brightness: 255
     time_interval: 120
@@ -410,7 +414,7 @@ strips:
     audio_samples_filter_min: 0
     audio_samples_filter_max: 24
     audio_gain: 0.1
-    audio_decay: 0.1
+    audio_decay: 0.2
     division_value: 0
     max_brightness: 255
     time_interval: 484
@@ -425,7 +429,7 @@ strips:
     audio_samples_filter_min: 0
     audio_samples_filter_max: 24
     audio_gain: 1
-    audio_decay: 0.1
+    audio_decay: 0.2
     division_value: 0
     max_brightness: 142
     time_interval: 120
@@ -440,7 +444,7 @@ strips:
     audio_samples_filter_min: 0
     audio_samples_filter_max: 24
     audio_gain: 1
-    audio_decay: 0.1
+    audio_decay: 0.2
     division_value: 0
     max_brightness: 255
     time_interval: 1
@@ -455,7 +459,7 @@ strips:
     audio_samples_filter_min: 0
     audio_samples_filter_max: 24
     audio_gain: 1
-    audio_decay: 0.1
+    audio_decay: 0.2
     division_value: 0
     max_brightness: 255
     time_interval: 500
@@ -470,7 +474,7 @@ strips:
     audio_samples_filter_min: 0
     audio_samples_filter_max: 24
     audio_gain: 1
-    audio_decay: 0.1
+    audio_decay: 0.2
     division_value: 0
     max_brightness: 255
     time_interval: 120

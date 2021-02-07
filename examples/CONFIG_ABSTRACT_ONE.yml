@@ -1,5 +1,9 @@
 desirated_framerate: 60
 display_shell_interface: false
+scene_camera:
+  x: 0
+  y: 0
+  z: -5.2
 is_zmq_api_enabled: true
 is_serial_enabled: false
 color_schemes:
@@ -19,6 +23,12 @@ color_schemes:
   - '#f700ff'
 - - '#ee00ac'
   - blue
+- - '#ee00ac'
+  - black
+  - black
+  - black
+  - black
+  - black
 audio_ports:
 - max_frequency: 12000
   min_frequency: 200
@@ -63,23 +73,23 @@ strips:
       scale: 1
   states:
   - name: Scroll
-    active_visualizer_effect: scroll
-    active_color_scheme_index: 0
+    active_visualizer_effect: clear_frame
+    active_color_scheme_index: 8
     active_audio_channel_index: 1
     audio_samples_filter_min: 0
     audio_samples_filter_max: 24
     audio_gain: 1.0
-    audio_decay: 0.1
+    audio_decay: 0.2
     division_value: 1
     max_brightness: 255
     time_interval: 1
     chunk_size: 2
     blur_value: 0.1
-    is_reverse: true
-    is_mirror: true
+    is_reverse: false
+    is_mirror: false
 - name: SideBars
   serial_port_name: /dev/tty.usbserial-A50285BI2
-  active_state_index: 0
+  active_state_index: 1
   is_online: false
   midi_ports_for_changing_mode:
   - Audio2Led ChangeMod Bar 2
@@ -154,7 +164,7 @@ strips:
     audio_samples_filter_min: 0
     audio_samples_filter_max: 24
     audio_gain: 1.0
-    audio_decay: 0.1
+    audio_decay: 0.2
     division_value: 0
     max_brightness: 255
     time_interval: 92
@@ -162,6 +172,21 @@ strips:
     blur_value: 1.8
     is_reverse: false
     is_mirror: true
+  - name: MID
+    active_visualizer_effect: piano_echo
+    active_color_scheme_index: 8
+    active_audio_channel_index: 0
+    audio_samples_filter_min: 0
+    audio_samples_filter_max: 24
+    audio_gain: 1
+    audio_decay: 0.1
+    division_value: 0
+    max_brightness: 255
+    time_interval: 120
+    chunk_size: 5
+    blur_value: 0.1
+    is_reverse: false
+    is_mirror: false
 - name: TopBottomBar
   serial_port_name: /dev/tty.usbserial-A50285BI3
   active_state_index: 0
@@ -195,12 +220,12 @@ strips:
     audio_samples_filter_min: 0
     audio_samples_filter_max: 24
     audio_gain: 1.0
-    audio_decay: 0.1
+    audio_decay: 0.2
     division_value: 0
     max_brightness: 255
     time_interval: 1
     chunk_size: 5
-    blur_value: 0.1
+    blur_value: 1.5
     is_reverse: false
     is_mirror: true
 - name: BorderBars
@@ -235,18 +260,18 @@ strips:
       - 40
       svg_string: M305 185 405 185
   states:
-  - name: Scroll
-    active_visualizer_effect: scroll
+  - name: Scroll2
+    active_visualizer_effect: alternate_color_chunks
     active_color_scheme_index: 0
     active_audio_channel_index: 1
     audio_samples_filter_min: 0
     audio_samples_filter_max: 24
     audio_gain: 1.0
-    audio_decay: 0.1
+    audio_decay: 0.2
     division_value: 0
     max_brightness: 255
     time_interval: 1
     chunk_size: 5
-    blur_value: 0.1
+    blur_value: 2.1
     is_reverse: false
     is_mirror: true

@@ -36,7 +36,7 @@ class ColorPicker extends React.Component {
           triggerNode={
             <Button
               alt="G-1"
-              className="button button--square button--has-type"
+              className="button button--square button--has-color-scheme button--has-type"
             >
               <ColorScheme
                 scheme={this.props.schemes[this.props.activeSchemeIndex]}

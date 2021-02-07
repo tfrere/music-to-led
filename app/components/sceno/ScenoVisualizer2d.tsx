@@ -14,30 +14,17 @@ let size = 50;
 let divisions = 30;
 
 class ScenoVisualizer2d extends React.Component {
+
   constructor(props) {
     super(props);
-    const scenes = this.props.config._strips.map(strip => {
-      return strip.scene;
-    });
 
     let renderer = new THREE.WebGLRenderer({ alpha: true, antialias: true });
-    let camera = new THREE.PerspectiveCamera(
-      45,
-      this.props.width / this.props.height,
-      0.1,
-      1000
-    );
-    // let camera = new THREE.OrthographicCamera(
-    //   this.props.width / -2,
-    //   this.props.width / 2,
-    //   this.props.height / 2,
-    //   this.props.height / -2,
-    //   0.1,
-    //   1000
-    // );
-    camera.position.x = 0;
-    camera.position.y = 0.05;
-    camera.position.z = -6.2;
+    let camera = new THREE.PerspectiveCamera(45,this.props.width / this.props.height,0.1,1000);
+
+    let controls = new OrbitControls(camera, renderer.domElement);
+    camera.position.x = this.props.config.scene_camera.x || 0;
+    camera.position.y = this.props.config.scene_camera.y || 0;
+    camera.position.z = this.props.config.scene_camera.z || -16;
     camera.lookAt(0, 0, 0);
 
     let light = new THREE.AmbientLight(0x404040, 100); // soft white light
@@ -55,13 +42,12 @@ class ScenoVisualizer2d extends React.Component {
       centerGridColor
     );
     gridHelper.position.set(0, -3, 0);
-    let axis = new THREE.AxisHelper(10);
-
+    let axis = new THREE.AxisHelper(.1);
 
     this.state = {
       hasDarkMode: false,
       scene: new THREE.Scene(),
-      scenes: scenes,
+      scenes: null,
       axis:axis,
       fog:fog,
       camera: camera,
@@ -69,18 +55,19 @@ class ScenoVisualizer2d extends React.Component {
       renderer: renderer,
       lineMaterial: lineMaterial,
       lineColor: lineColor,
-      controls: new OrbitControls(camera, renderer.domElement),
+      controls: controls,
       gridHelper: gridHelper,
       backgroundColor: backgroundColor,
       shapesObjects: [],
       groupObject: null
     };
-    // console.log(props);
 
     document.addEventListener('keydown', this.handleKeyDown);
+    window.addEventListener('resize', this.onWindowResize);
   }
 
   onWindowResize = () => {
+    // TO DO : do not have to being called every frame
     this.state.camera.aspect = this.props.width / this.props.height;
     this.state.camera.updateProjectionMatrix();
     this.state.renderer.setSize(this.props.width, this.props.height);
@@ -101,9 +88,10 @@ class ScenoVisualizer2d extends React.Component {
   };
 
   componentWillUnmount() {
+    this.setState({groupObject: null});
     this.stopLoop();
     document.removeEventListener('keydown', this.handleKeyDown);
-    window.addEventListener('resize', this.onWindowResize, false);
+    window.removeEventListener('resize', this.onWindowResize, false);
   }
 
   startLoop = () => {
@@ -130,34 +118,40 @@ class ScenoVisualizer2d extends React.Component {
       controls,
       axis,
       gridHelper,
-      scenes,
       light
     } = this.state;
+    let that = this;
+
+    const scenes = this.props.config._strips.map(strip => {
+      return strip.scene;
+    });
 
     renderer.setClearColor(0x000000, 0); // the default
 
-    // controls.enablePan = false;
+    controls.enablePan = false;
+    controls.minZoom = 3;
+    controls.maxZoom = 10;
     // controls.enableZoom = false;
     scene.add(gridHelper);
     scene.add(light);
     // scene.add(axis);
     scene.fog = fog;
 
-    renderer.setSize(this.props.width, this.props.height);
+    renderer.setSize(that.props.width, that.props.height);
     renderer.toneMapping = THREE.ReinhardToneMapping;
 
     // https://threejs.org/examples/#webgl_postprocessing_unreal_bloom
 
-    this.mount.appendChild(renderer.domElement);
+    that.mount.appendChild(renderer.domElement);
 
     let shapesObjects = [];
     let backgroundObjects = [];
-    var groupObject = new THREE.Group();
+    let groupObject = new THREE.Group();
 
     scenes.map((scene, sceneIndex) => {
       scene.shapes.map(shape => {
         shapesObjects.push(
-          this.createShape(
+          that.createShape(
             shape.svg_string,
             shape,
             sceneIndex
@@ -167,45 +161,51 @@ class ScenoVisualizer2d extends React.Component {
       if(scene.backgrounds) {
         scene.backgrounds.map(background => {
           backgroundObjects.push(
-            this.createBackground(background.svg_string)
+            that.createBackground(background.svg_string)
           );
         });
       }
       
     });
-    var mergedShapesObjects = [].concat.apply([], shapesObjects);
-    var mergedBackgroundObjects = [].concat.apply([], backgroundObjects);
 
-    this.setState(
-      {
-        shapesObjects: mergedShapesObjects
-      },
-      () => {
-        mergedShapesObjects.map(object => {
-          groupObject.add(object);
-        });
-        mergedBackgroundObjects.map(object => {
-          groupObject.add(object);
-        });
-        this.setState({ groupObject: groupObject });
+    let mergedShapesObjects = [].concat.apply([], shapesObjects);
+    let mergedBackgroundObjects = [].concat.apply([], backgroundObjects);
 
-        const groupCenter = computeGroupCenter(groupObject);
-        groupObject.position.copy(groupCenter).negate(); 
+    mergedShapesObjects.map(object => {
+      groupObject.add(object);
+    });
 
-        scene.add(groupObject);
+    mergedBackgroundObjects.map(object => {
+      groupObject.add(object);
+    });
 
-        this.startLoop();
-      }
-    );
+    that.setState({ scenes: scenes, shapesObjects: mergedShapesObjects, groupObject: groupObject }, () => {
+      that.centerObjects();
+
+      scene.add(that.state.groupObject);
+
+      that.onWindowResize();
+      that.startLoop();
+    });
+
+  }
+
+  centerObjects = () => {
+    // console.log("numberofobjectsinthegroup", this.state.groupObject.children.length);
+    const groupCenter = computeGroupCenter(this.state.groupObject);
+    // console.log(groupCenter);
+    let test = this.state.groupObject.position.copy(groupCenter).negate(); 
+    // console.log(test);
+
   }
 
   createBackground = (background) => {
 
-    var shapepath = transformSVGPath(background);
-    var objects = [];
+    let shapepath = transformSVGPath(background);
+    let objects = [];
     if(shapepath != -1) {
-      var simpleShape = shapepath.toShapes(true);
-      for (var i = 0; i < simpleShape.length; i++){
+      let simpleShape = shapepath.toShapes(true);
+      for (let i = 0; i < simpleShape.length; i++){
         let shape3d = new THREE.BufferGeometry().setFromPoints(simpleShape[i].getPoints());
         let line = new THREE.Line(shape3d, this.state.lineMaterial);
         line.scale.set(-.01,-.01,.01);
@@ -213,7 +213,7 @@ class ScenoVisualizer2d extends React.Component {
       }
     }
     else {
-      console.log("wierd shape detected !");
+      console.log("wired shape detected !");
     }
     return objects;
   };
@@ -232,11 +232,9 @@ class ScenoVisualizer2d extends React.Component {
 
     while (++i < pixels_length) {
       const coords = properties.getPointAtLength(gap * i);
-      var geometry = new THREE.SphereGeometry(.04, .04, .04);
-      var material = new THREE.MeshPhongMaterial({
-        color: 0x000000
-      });
-      var object = new THREE.Mesh(geometry, material);
+      let geometry = new THREE.SphereGeometry(.04, .04, .04);
+      let material = new THREE.MeshPhongMaterial({color: 0x000000});
+      let object = new THREE.Mesh(geometry, material);
       object.scene_index = sceneIndex;
       object.pixel_index = shape.pixel_range[0] + i;
       objects.push(object);
@@ -244,6 +242,9 @@ class ScenoVisualizer2d extends React.Component {
       object.position.y = (coords.y / 100) * -1;
       if(shape.z_index) {
         object.position.z = shape.z_index;
+      }
+      else {
+        object.position.z = 0;
       }
     }
 
@@ -286,14 +287,19 @@ class ScenoVisualizer2d extends React.Component {
       scene.add(gridHelper);
       this.state.lineMaterial.color.setStyle(this.state.lineColor);
     }
-
     this.onWindowResize();
-
+    // console.log(this.state.camera.position);
+    // console.log(this.state.camera.rotation);
     renderer.render(scene, camera);
   };
 
+  computeCameraCoordinates = () => {
+    return `x: ${Math.round(this.state.camera.position.x * 100) / 100 }   y: ${Math.round(this.state.camera.position.y * 100) / 100 }   z: ${Math.round(this.state.camera.position.z * 100) / 100 }`;
+  }
+
   render() {
     return (
+      <>
       <div
         style={{
           width: this.props.width,
@@ -304,6 +310,8 @@ class ScenoVisualizer2d extends React.Component {
         }}
         className="sceno-visualizer"
       ></div>
+      <p className="sceno-visualizer__camera-coordinates">{this.computeCameraCoordinates()}</p>
+      </>
     );
   }
 }

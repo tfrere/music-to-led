@@ -1,5 +1,9 @@
 desirated_framerate: 60
 display_shell_interface: false
+scene_camera:
+  x: 6.1
+  y: 4
+  z: 0
 is_zmq_api_enabled: true
 is_serial_enabled: false
 color_schemes:
@@ -156,7 +160,7 @@ strips:
     audio_samples_filter_min: 0
     audio_samples_filter_max: 24
     audio_gain: 0.1
-    audio_decay: 0.1
+    audio_decay: 0.2
     division_value: 0
     max_brightness: 255
     time_interval: 25
@@ -171,7 +175,7 @@ strips:
     audio_samples_filter_min: 0
     audio_samples_filter_max: 24
     audio_gain: 1
-    audio_decay: 0.1
+    audio_decay: 0.2
     division_value: 0
     max_brightness: 255
     time_interval: 120
@@ -180,17 +184,17 @@ strips:
     is_reverse: true
     is_mirror: true
   - name: Forward
-    active_visualizer_effect: alternate_color_shapes
-    active_color_scheme_index: 0
-    active_audio_channel_index: 0
+    active_visualizer_effect: channel_flash
+    active_color_scheme_index: 8
+    active_audio_channel_index: 1
     audio_samples_filter_min: 0
     audio_samples_filter_max: 24
     audio_gain: 1
-    audio_decay: 0.1
+    audio_decay: 0.2
     division_value: 0
     max_brightness: 255
     time_interval: 500
-    chunk_size: 5
-    blur_value: 0.1
+    chunk_size: 20
+    blur_value: 4.6
     is_reverse: false
     is_mirror: false

@@ -22,7 +22,7 @@ class SplashScreen extends React.Component {
   componentDidMount() {
     this.intervalId = setInterval(
       () => this.setState({ current_step: this.state.current_step + 1 }),
-      2500
+      1500
     );
   }
 
@@ -39,9 +39,8 @@ class SplashScreen extends React.Component {
       <div id="splashscreen" className={classes}>
         <div>
           <img className="splash-screen__logo" src={logoSrc} />
-          <h1>MUSIC TO LED</h1>
-          <span>1.0.0-alpha</span>
           <p>{this.state.sentences[this.state.current_step]}</p>
+          <span>1.0.0-alpha</span>
         </div>
       </div>
     );
